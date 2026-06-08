@@ -74,7 +74,7 @@ export function LoginPage() {
           </h1>
 
           <p className="text-slate-600">
-            Sign in to continue your research journey
+            Sign in to collaborate, share solutions, and grow knowledge together
           </p>
         </div>
 

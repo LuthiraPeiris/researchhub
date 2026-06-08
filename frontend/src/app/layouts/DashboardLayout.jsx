@@ -418,7 +418,7 @@ const sidebarLabelClass = sidebarCollapsed
 ) : (
   <div className="flex-1">
     <h2 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-      ResearchHub Workspace
+      CollabSolve Workspace
     </h2>
   </div>
 )}
