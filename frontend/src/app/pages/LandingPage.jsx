@@ -34,14 +34,14 @@ export function LandingPage() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white">
               <img
-                src="/researchhub-logo.png"
-                alt="ResearchHub Logo"
+                src="/collabsolve-logo.png"
+                alt="CollabSolve Logo"
                 className="w-full h-full object-cover"
               />
             </div>
 
             <span className="text-xl font-bold tracking-tight text-slate-950">
-              ResearchHub
+              CollabSolve
             </span>
           </div>
 
@@ -72,17 +72,17 @@ export function LandingPage() {
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/80 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm mb-6">
                 <div className="w-5 h-5 rounded-md overflow-hidden flex items-center justify-center bg-white">
                   <img
-                    src="/researchhub-logo.png"
-                    alt="ResearchHub Logo"
+                    src="/collabsolve-logo.png"
+                    alt="CollabSolve Logo"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                Research collaboration made simple
+                Solve problems together. Build knowledge together.
               </div>
 
-              <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 text-slate-950">
+              <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.2] tracking-tight mb-8 text-slate-950">
                 Collaborative
-                <span className="block bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent pb-2">
                   Problem Solving
                 </span>
               </h1>
@@ -153,10 +153,10 @@ export function LandingPage() {
                     <div className="space-y-4">
                       {[
                         {
-                          step: "01",
-                          title: "Post a research problem",
-                          desc: "Share your question, challenge, or idea.",
-                          color: "bg-blue-500",
+                            step: "01",
+                            title: "Share your challenge",
+                            desc: "Post your academic or technical problem and explain what support you need.",
+                            color: "bg-blue-500",
                         },
                         {
                           step: "02",
@@ -230,7 +230,7 @@ export function LandingPage() {
                   Built for
                 </p>
                 <p className="text-lg font-bold text-slate-950">
-                  Students & Researchers
+                  Students, Researchers & Developers
                 </p>
               </div>
 
@@ -265,12 +265,11 @@ export function LandingPage() {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 mb-4">
-              Why ResearchHub?
+              Why CollabSolve?
             </h2>
 
             <p className="text-lg text-slate-600">
-              A complete workspace designed for research teams, students, and
-              problem solvers.
+              A complete problem-solving workspace for students, researchers, and developers to collaborate, verify solutions, and grow shared knowledge.
             </p>
           </div>
 
@@ -360,7 +359,7 @@ export function LandingPage() {
               </h2>
 
               <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                ResearchHub helps users move from confusion to clarity through
+                CollabSolve helps users move from confusion to clarity through
                 structured discussion, contribution, and solution sharing.
               </p>
 
@@ -368,7 +367,7 @@ export function LandingPage() {
                 to="/register"
                 className="group inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-slate-950 text-white font-semibold hover:bg-slate-800 transition-all shadow-lg"
               >
-                Join ResearchHub
+                Join CollabSolve
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -377,8 +376,8 @@ export function LandingPage() {
               {[
                 {
                   number: "01",
-                  title: "Create or discover a problem",
-                  desc: "Users can post challenges or search existing research problems.",
+                  title: "Share or discover a challenge",
+                  desc: "Post an academic or technical problem, or explore existing challenges already discussed by the community.",
                 },
                 {
                   number: "02",
@@ -436,8 +435,8 @@ export function LandingPage() {
         <div className="relative mx-auto max-w-3xl">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl overflow-hidden bg-white shadow-xl shadow-blue-300/40">
             <img
-              src="/researchhub-logo.png"
-              alt="ResearchHub Logo"
+              src="/collabsolve-logo.png"
+              alt="CollabSolve Logo"
               className="w-full h-full object-cover"
             />
           </div>
@@ -452,7 +451,7 @@ export function LandingPage() {
           </h2>
 
           <p className="text-lg md:text-xl text-slate-600 mb-9 max-w-2xl mx-auto leading-relaxed">
-            Join thousands of researchers solving complex problems together.
+            Join a community where students, researchers, and developers solve real challenges and turn verified solutions into shared knowledge.
           </p>
 
           <Link
@@ -471,7 +470,7 @@ export function LandingPage() {
       <footer className="border-t border-slate-200 py-6 px-6 bg-gradient-to-r from-white via-blue-50 to-violet-50">
         <div className="container mx-auto text-center text-slate-500">
           <p>
-            &copy; 2026 ResearchHub. Building the future of collaborative
+            &copy; 2026 CollabSolve. Building the future of collaborative
             research.
           </p>
         </div>

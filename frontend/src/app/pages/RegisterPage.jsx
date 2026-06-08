@@ -75,14 +75,14 @@ export function RegisterPage() {
           <Link to="/" className="inline-flex items-center gap-3 mb-7">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white">
               <img
-                src="/researchhub-logo.png"
-                alt="ResearchHub Logo"
+                src="/collabsolve-logo.png"
+                alt="CollabSolve Logo"
                 className="w-full h-full object-cover"
               />
             </div>
 
             <span className="text-2xl font-bold tracking-tight text-slate-950">
-              ResearchHub
+              CollabSolve
             </span>
           </Link>
 
@@ -91,7 +91,7 @@ export function RegisterPage() {
           </h1>
 
           <p className="text-slate-600">
-            Join the collaborative research community
+            Join a community where students, researchers, and developers solve problems together
           </p>
         </div>
 
@@ -101,7 +101,11 @@ export function RegisterPage() {
           <div className="relative rounded-[2rem] border border-white bg-white/85 backdrop-blur-xl p-8 shadow-2xl shadow-slate-900/10">
             <div className="space-y-3 mb-5">
               <AppAlert type="error" message={error} onClose={() => setError("")} />
-              <AppAlert type="success" message={message} onClose={() => setMessage("")} />
+              <AppAlert
+                type="success"
+                message={success}
+                onClose={() => setSuccess("")}
+              />
             </div>
 
             <form className="space-y-5" onSubmit={handleRegister}>

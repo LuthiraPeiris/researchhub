@@ -228,22 +228,22 @@ const sidebarLabelClass = sidebarCollapsed
     } gap-2`}
   >
     <Link
-      to="/"
+      to="/app"
       className={`flex items-center ${
         sidebarCollapsed ? "justify-center" : "gap-2"
       }`}
     >
       <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white dark:bg-gray-800">
         <img
-          src="/researchhub-logo.png"
-          alt="ResearchHub Logo"
+          src="/collabsolve-logo.png"
+          alt="CollabSolve Logo"
           className="w-full h-full object-cover"
         />
       </div>
 
       {!sidebarCollapsed && (
         <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-          ResearchHub
+          CollabSolve
         </span>
       )}
     </Link>
@@ -544,7 +544,7 @@ const sidebarLabelClass = sidebarCollapsed
               {showUserMenu && (
                 <div className="absolute right-0 mt-2 w-56 rounded-xl border border-gray-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-gray-800 dark:bg-gray-900">
                   <div className="p-4 border-b border-gray-200 bg-gradient-to-br from-blue-50 to-purple-50 dark:border-gray-800 dark:from-gray-800 dark:to-gray-900">
-                    <div className="font-medium text-gray-900">
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">
                       {displayName}
                     </div>
 
@@ -552,7 +552,7 @@ const sidebarLabelClass = sidebarCollapsed
                       @{currentUser?.email?.split("@")[0] || "user"}
                     </div>
 
-                    <div className="mt-2 text-xs text-[#0ea5e9] font-medium capitalize">
+                    <div className="mt-2 text-xs text-[#0ea5e9] dark:text-[#38bdf8] font-medium capitalize">
                       {currentUser?.role || "User"}
                     </div>
                   </div>

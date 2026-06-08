@@ -409,7 +409,7 @@ export function UserProfile() {
               <span className="flex items-center gap-2">
                 <LinkIcon className="w-4 h-4" />
                 <a href="#" className="text-[#0ea5e9] hover:underline dark:text-[#38bdf8]">
-                  ResearchHub Profile
+                  CollabSolve Profile
                 </a>
               </span>
 
