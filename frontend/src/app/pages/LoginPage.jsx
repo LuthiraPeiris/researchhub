@@ -59,13 +59,13 @@ export function LoginPage() {
           <Link to="/" className="inline-flex items-center gap-3 mb-7">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white">
               <img
-                src="/researchhub-logo.png"
-                alt="ResearchHub Logo"
+                src="/collabsolve-logo.png"
+                alt="CollabSolve Logo"
                 className="w-full h-full object-cover"
               />
             </div>
             <span className="text-2xl font-bold tracking-tight text-slate-950">
-              ResearchHub
+              CollabSolve
             </span>
           </Link>
 
@@ -74,7 +74,7 @@ export function LoginPage() {
           </h1>
 
           <p className="text-slate-600">
-            Sign in to continue your research journey
+            Sign in to collaborate, share solutions, and grow knowledge together
           </p>
         </div>
 

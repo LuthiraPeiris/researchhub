@@ -439,8 +439,8 @@ const handleSharePost = async () => {
 
     if (navigator.share) {
       await navigator.share({
-        title: problem?.title || "ResearchHub Problem",
-        text: problem?.description || "Check this problem on ResearchHub",
+        title: problem?.title || "CollabSolve Problem",
+        text: problem?.description || "Check this problem on CollabSolve",
         url: shareUrl,
       });
 
