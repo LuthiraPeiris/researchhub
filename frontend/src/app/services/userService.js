@@ -147,3 +147,24 @@ export const getUserFields = async (userId) => {
 
   return data;
 };
+
+export const updateUserSkills = async (userId, skills) => {
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/users/${userId}/skills`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ skills }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update skills");
+  }
+
+  return data;
+};
