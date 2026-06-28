@@ -306,6 +306,70 @@ export const searchPosts = async (req, res) => {
   }
 };
 
+export const getSimilarProblems = async (req, res) => {
+  try {
+    const { title = "", description = "", field_id } = req.query;
+
+    const searchText = `${title} ${description}`.toLowerCase();
+
+    const keywords = [
+      ...new Set(
+        searchText
+          .replace(/[^a-zA-Z0-9\s]/g, " ")
+          .split(/\s+/)
+          .filter((word) => word.length >= 3)
+      ),
+    ].slice(0, 8);
+
+    if (keywords.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    const conditions = keywords
+      .map(() => "(LOWER(posts.title) LIKE ? OR LOWER(posts.description) LIKE ?)")
+      .join(" OR ");
+
+    const params = [];
+
+    keywords.forEach((word) => {
+      params.push(`%${word}%`, `%${word}%`);
+    });
+
+    let sql = `
+      SELECT 
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.status,
+        posts.difficulty_level,
+        posts.created_at,
+        fields.field_name
+      FROM posts
+      LEFT JOIN fields ON posts.field_id = fields.field_id
+      WHERE (${conditions})
+    `;
+
+    if (field_id) {
+      sql += " AND posts.field_id = ?";
+      params.push(field_id);
+    }
+
+    sql += `
+      ORDER BY posts.created_at DESC
+      LIMIT 5
+    `;
+
+    const [similarProblems] = await db.query(sql, params);
+
+    res.status(200).json(similarProblems);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to find similar problems",
+      error: error.message,
+    });
+  }
+};
+
 // ================= TOGGLE SAVE POST =================
 
 export const toggleSavePost = async (req, res) => {

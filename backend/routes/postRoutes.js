@@ -6,6 +6,7 @@ import {
   updatePost,
   deletePost,
   searchPosts,
+  getSimilarProblems,
   toggleSavePost,
   getPostSaveStatus,
   getMySavedPosts,
@@ -16,6 +17,7 @@ import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/search", searchPosts);
+router.get("/similar", getSimilarProblems);
 router.get("/saved/me", protect, getMySavedPosts);
 
 router.get("/:postId/save-status", protect, getPostSaveStatus);
