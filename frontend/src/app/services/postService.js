@@ -204,3 +204,21 @@ export const getMySavedPosts = async () => {
 
   return data;
 };
+
+export const getRecommendedPosts = async () => {
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/posts/recommended`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch recommended posts");
+  }
+
+  return data;
+};

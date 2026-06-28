@@ -10,6 +10,7 @@ import {
   toggleSavePost,
   getPostSaveStatus,
   getMySavedPosts,
+  getRecommendedPosts,
 } from "../controllers/postController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -19,6 +20,7 @@ const router = express.Router();
 router.get("/search", searchPosts);
 router.get("/similar", getSimilarProblems);
 router.get("/saved/me", protect, getMySavedPosts);
+router.get("/recommended", protect, getRecommendedPosts);
 
 router.get("/:postId/save-status", protect, getPostSaveStatus);
 router.post("/:postId/save", protect, toggleSavePost);
