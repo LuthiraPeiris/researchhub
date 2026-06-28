@@ -9,6 +9,7 @@ import {
   Trash2,
   Save,
   AlertTriangle,
+  Tags,
 } from "lucide-react";
 
 import {
@@ -20,7 +21,18 @@ import {
   deleteAccount,
 } from "../services/settingsService";
 
-import { logoutUser } from "../services/authService";
+import { getCurrentUser, logoutUser } from "../services/authService";
+import { getUserProfile, updateUserSkills } from "../services/userService";
+
+const AVAILABLE_SKILLS = [
+  "Java",
+  "React",
+  "IoT",
+  "Machine Learning",
+  "Cybersecurity",
+  "Research Writing",
+  "Database",
+];
 
 export function SettingsPage() {
   const navigate = useNavigate();
@@ -46,12 +58,18 @@ export function SettingsPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const currentUser = getCurrentUser();
+  const [selectedSkills, setSelectedSkills] = useState([]);
+
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const [notificationData, userSettingsData] = await Promise.all([
+        const [notificationData, userSettingsData, profileData] = await Promise.all([
           getNotificationPreferences(),
           getUserSettings(),
+          currentUser?.user_id
+            ? getUserProfile(currentUser.user_id)
+            : Promise.resolve({ skills: [] }),
         ]);
 
         setNotificationPrefs({
@@ -67,6 +85,7 @@ export function SettingsPage() {
         const savedTheme = userSettingsData.theme || "light";
         setTheme(savedTheme);
         applyTheme(savedTheme);
+        setSelectedSkills(profileData.skills || []);
       } catch (err) {
         setError(err.message || "Failed to load settings");
       }
@@ -170,6 +189,30 @@ export function SettingsPage() {
     }
   };
 
+  const handleSkillToggle = (skill) => {
+  setSelectedSkills((prev) =>
+    prev.includes(skill)
+      ? prev.filter((item) => item !== skill)
+      : [...prev, skill]
+  );
+};
+
+const handleSaveSkills = async () => {
+  try {
+    setLoading(true);
+    setError("");
+    setMessage("");
+
+    await updateUserSkills(currentUser.user_id, selectedSkills);
+
+    setMessage("Skills updated successfully");
+  } catch (err) {
+    setError(err.message || "Failed to update skills");
+  } finally {
+    setLoading(false);
+  }
+};
+
   const notificationItems = [
     {
       key: "comment_notifications",
@@ -261,6 +304,52 @@ export function SettingsPage() {
           </button>
         </form>
       </div>
+
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+  <div className="flex items-center gap-3 mb-5">
+    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 dark:bg-blue-950/40 dark:border-blue-900/60">
+      <Tags className="w-5 h-5 text-[#0ea5e9]" />
+    </div>
+
+    <div>
+      <h2 className="text-xl text-gray-900 dark:text-gray-100">Skill Tags</h2>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        Choose the skills and fields you want to show on your profile.
+      </p>
+    </div>
+  </div>
+
+  <div className="flex flex-wrap gap-3">
+    {AVAILABLE_SKILLS.map((skill) => {
+      const isSelected = selectedSkills.includes(skill);
+
+      return (
+        <button
+          key={skill}
+          type="button"
+          onClick={() => handleSkillToggle(skill)}
+          className={`px-4 py-2 rounded-full text-sm border transition-all ${
+            isSelected
+              ? "bg-blue-50 text-[#0ea5e9] border-blue-200 dark:bg-blue-950/40 dark:text-[#38bdf8] dark:border-blue-900/60"
+              : "bg-gray-50 text-gray-700 border-gray-200 hover:border-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+          }`}
+        >
+          {skill}
+        </button>
+      );
+    })}
+  </div>
+
+  <button
+    type="button"
+    onClick={handleSaveSkills}
+    disabled={loading}
+    className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity disabled:opacity-60"
+  >
+    <Save className="w-4 h-4" />
+    Save Skills
+  </button>
+</div>
 
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <div className="flex items-center gap-3 mb-5">

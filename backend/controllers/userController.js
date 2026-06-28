@@ -45,9 +45,18 @@ export const getUserProfile = async (req, res) => {
       [userId]
     );
 
+    const [skills] = await db.query(
+      `SELECT skill_name
+     FROM user_skills
+     WHERE user_id = ?
+     ORDER BY skill_name ASC`,
+     [userId]
+    );
+
     res.status(200).json({
       ...users[0],
       badges,
+      skills: skills.map((skill) => skill.skill_name),
     });
   } catch (error) {
     res.status(500).json({
@@ -374,6 +383,60 @@ export const getUserFields = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Failed to fetch user fields",
+      error: error.message,
+    });
+  }
+};
+
+export const updateUserSkills = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { skills } = req.body;
+
+    if (Number(userId) !== req.user.user_id && req.user.role !== "admin") {
+      return res.status(403).json({
+        message: "You are not allowed to update these skills",
+      });
+    }
+
+    if (!Array.isArray(skills)) {
+      return res.status(400).json({
+        message: "Skills must be an array",
+      });
+    }
+
+    const allowedSkills = [
+      "Java",
+      "React",
+      "IoT",
+      "Machine Learning",
+      "Cybersecurity",
+      "Research Writing",
+      "Database",
+    ];
+
+    const validSkills = skills.filter((skill) =>
+      allowedSkills.includes(skill)
+    );
+
+    await db.query("DELETE FROM user_skills WHERE user_id = ?", [userId]);
+
+    if (validSkills.length > 0) {
+      const values = validSkills.map((skill) => [userId, skill]);
+
+      await db.query(
+        "INSERT INTO user_skills (user_id, skill_name) VALUES ?",
+        [values]
+      );
+    }
+
+    res.status(200).json({
+      message: "Skills updated successfully",
+      skills: validSkills,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update skills",
       error: error.message,
     });
   }

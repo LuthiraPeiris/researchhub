@@ -9,6 +9,7 @@ import {
   getMySolutions,
   getUserSolutions,
   getUserFields,
+  updateUserSkills,
 } from "../controllers/userController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -24,6 +25,7 @@ router.get("/me/solutions", protect, getMySolutions);
 router.get("/:userId/posts", getUserPosts);
 router.get("/:userId/solutions", getUserSolutions);
 router.get("/:userId/fields", getUserFields);
+router.put("/:userId/skills", protect, updateUserSkills);
 router.get("/:userId", getUserProfile);
 
 router.put("/:userId", protect, updateUserProfile);

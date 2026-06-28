@@ -12,7 +12,11 @@ import {
   Inbox,
 } from "lucide-react";
 
-import { getAllPosts, searchPosts } from "../services/postService";
+import {
+  getAllPosts,
+  searchPosts,
+  getRecommendedPosts,
+} from "../services/postService";
 import { getCurrentUser } from "../services/authService";
 import { getFields } from "../services/fieldService";
 import { getDashboardSummary } from "../services/dashboardService";
@@ -29,6 +33,9 @@ export function Dashboard() {
 
   const [fields, setFields] = useState([]);
   const [summary, setSummary] = useState(null);
+
+  const [recommendedPosts, setRecommendedPosts] = useState([]);
+  const [recommendedSkills, setRecommendedSkills] = useState([]);
 
   const [filters, setFilters] = useState({
     field_id: searchParams.get("field_id") || "all",
@@ -72,6 +79,23 @@ export function Dashboard() {
 
   fetchDashboardSummary();
 }, []);
+
+useEffect(() => {
+  const fetchRecommendedPosts = async () => {
+    try {
+      const data = await getRecommendedPosts();
+
+      setRecommendedPosts(data.posts || []);
+      setRecommendedSkills(data.skills || []);
+    } catch (err) {
+      console.error("Failed to load recommended posts", err);
+    }
+  };
+
+  if (currentUser?.user_id) {
+    fetchRecommendedPosts();
+  }
+}, [currentUser?.user_id]);
 
   useEffect(() => {
   setFilters({
@@ -295,6 +319,51 @@ const hasActiveFilters =
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
+          {recommendedPosts.length > 0 && !searchQuery && !hasActiveFilters && (
+  <div className="space-y-4">
+    <div className="flex items-center justify-between">
+      <div>
+        <h2 className="text-2xl text-gray-900 dark:text-gray-100">
+          Recommended For You
+        </h2>
+
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Based on your skills: {recommendedSkills.join(", ")}
+        </p>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {recommendedPosts.slice(0, 4).map((problem) => (
+        <Link
+          key={problem.post_id}
+          to={`/app/problem/${problem.post_id}`}
+          className="block rounded-xl border border-blue-200 bg-blue-50/60 p-5 hover:border-blue-300 hover:shadow-lg transition-all dark:border-blue-900/60 dark:bg-blue-950/20 dark:hover:border-blue-700"
+        >
+          <h3 className="text-gray-900 dark:text-gray-100 mb-2 line-clamp-1">
+            {problem.title}
+          </h3>
+
+          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
+            {problem.description}
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {problem.field_name && (
+              <span className="px-3 py-1 rounded-full text-xs bg-white text-blue-700 border border-blue-100 dark:bg-gray-900 dark:text-blue-300 dark:border-blue-900/60">
+                {problem.field_name}
+              </span>
+            )}
+
+            <span className="px-3 py-1 rounded-full text-xs bg-white text-gray-700 border border-gray-200 capitalize dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700">
+              {problem.status || "open"}
+            </span>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+)}
           <div className="flex items-center justify-between">
   <h2 className="text-2xl text-gray-900 dark:text-gray-100">
     {searchQuery || hasActiveFilters

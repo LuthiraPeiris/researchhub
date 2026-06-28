@@ -306,6 +306,155 @@ export const searchPosts = async (req, res) => {
   }
 };
 
+export const getSimilarProblems = async (req, res) => {
+  try {
+    const { title = "", description = "", field_id } = req.query;
+
+    const searchText = `${title} ${description}`.toLowerCase();
+
+    const keywords = [
+      ...new Set(
+        searchText
+          .replace(/[^a-zA-Z0-9\s]/g, " ")
+          .split(/\s+/)
+          .filter((word) => word.length >= 3)
+      ),
+    ].slice(0, 8);
+
+    if (keywords.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    const conditions = keywords
+      .map(() => "(LOWER(posts.title) LIKE ? OR LOWER(posts.description) LIKE ?)")
+      .join(" OR ");
+
+    const params = [];
+
+    keywords.forEach((word) => {
+      params.push(`%${word}%`, `%${word}%`);
+    });
+
+    let sql = `
+      SELECT 
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.status,
+        posts.difficulty_level,
+        posts.created_at,
+        fields.field_name
+      FROM posts
+      LEFT JOIN fields ON posts.field_id = fields.field_id
+      WHERE (${conditions})
+    `;
+
+    if (field_id) {
+      sql += " AND posts.field_id = ?";
+      params.push(field_id);
+    }
+
+    sql += `
+      ORDER BY posts.created_at DESC
+      LIMIT 5
+    `;
+
+    const [similarProblems] = await db.query(sql, params);
+
+    res.status(200).json(similarProblems);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to find similar problems",
+      error: error.message,
+    });
+  }
+};
+
+export const getRecommendedPosts = async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+
+    const [skills] = await db.query(
+      `
+      SELECT skill_name
+      FROM user_skills
+      WHERE user_id = ?
+      `,
+      [userId]
+    );
+
+    const skillNames = skills.map((skill) => skill.skill_name);
+
+    if (skillNames.length === 0) {
+      return res.status(200).json({
+        skills: [],
+        posts: [],
+      });
+    }
+
+    const conditions = skillNames
+      .map(
+        () =>
+          `(fields.field_name LIKE ? OR posts.title LIKE ? OR posts.description LIKE ?)`
+      )
+      .join(" OR ");
+
+    const params = [];
+
+    skillNames.forEach((skill) => {
+      const searchValue = `%${skill}%`;
+      params.push(searchValue, searchValue, searchValue);
+    });
+
+    params.push(userId);
+
+    const [posts] = await db.query(
+      `
+      SELECT 
+        posts.*,
+        users.full_name,
+        fields.field_name,
+        COUNT(DISTINCT solutions.solution_id) AS solution_count,
+        MAX(solutions.created_at) AS latest_solution_at
+      FROM posts
+      LEFT JOIN users ON posts.user_id = users.user_id
+      LEFT JOIN fields ON posts.field_id = fields.field_id
+      LEFT JOIN solutions ON posts.post_id = solutions.post_id
+      WHERE (${conditions})
+        AND posts.user_id != ?
+      GROUP BY 
+        posts.post_id,
+        posts.user_id,
+        posts.title,
+        posts.description,
+        posts.post_type,
+        posts.field_id,
+        posts.difficulty_level,
+        posts.status,
+        posts.created_at,
+        posts.updated_at,
+        users.full_name,
+        fields.field_name
+      ORDER BY
+        CASE WHEN posts.status = 'open' THEN 0 ELSE 1 END,
+        posts.created_at DESC
+      LIMIT 6
+      `,
+      params
+    );
+
+    res.status(200).json({
+      skills: skillNames,
+      posts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch recommended posts",
+      error: error.message,
+    });
+  }
+};
+
 // ================= TOGGLE SAVE POST =================
 
 export const toggleSavePost = async (req, res) => {

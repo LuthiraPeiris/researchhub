@@ -7,7 +7,7 @@ import {
   Code,
   Database,
 } from "lucide-react";
-import { createPost } from "../services/postService";
+import { createPost, getSimilarProblems } from "../services/postService";
 import { uploadPostAttachments } from "../services/uploadService";
 import { getFields } from "../services/fieldService";
 import { AppAlert } from "../components/AppAlert";
@@ -28,6 +28,8 @@ export function PostProblem() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [similarProblems, setSimilarProblems] = useState([]);
+  const [checkingSimilar, setCheckingSimilar] = useState(false);
 
   const availableTags = [
     "Machine Learning",
@@ -59,6 +61,38 @@ export function PostProblem() {
 
   fetchFields();
 }, []);
+
+useEffect(() => {
+  const title = formData.title.trim();
+  const description = formData.description.trim();
+
+  if (title.length < 3 && description.length < 10) {
+    setSimilarProblems([]);
+    setCheckingSimilar(false);
+    return;
+  }
+
+  const timeoutId = setTimeout(async () => {
+    try {
+      setCheckingSimilar(true);
+
+      const data = await getSimilarProblems({
+        title,
+        description,
+        field_id: formData.field_id,
+      });
+
+      setSimilarProblems(data);
+    } catch (err) {
+      console.error("Failed to check similar problems:", err);
+      setSimilarProblems([]);
+    } finally {
+      setCheckingSimilar(false);
+    }
+  }, 600);
+
+  return () => clearTimeout(timeoutId);
+}, [formData.title, formData.description, formData.field_id]);
 
   const handleChange = (e) => {
     setFormData({
@@ -183,6 +217,7 @@ const validateFiles = (selectedFiles) => {
       }
 
       setMessage("Problem published successfully!");
+      setSimilarProblems([]);
 
       setFormData({
         title: "",
@@ -276,6 +311,49 @@ const validateFiles = (selectedFiles) => {
             context
           </p>
         </div>
+
+        {(checkingSimilar || similarProblems.length > 0) && (
+  <div className="rounded-xl border border-blue-200 bg-blue-50 p-6 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/30">
+    <h3 className="mb-2 text-lg font-semibold text-blue-900 dark:text-blue-100">
+      Similar problems already discussed
+    </h3>
+
+    {checkingSimilar ? (
+      <p className="text-sm text-blue-700 dark:text-blue-300">
+        Checking similar problems...
+      </p>
+    ) : (
+      <div className="space-y-3">
+        {similarProblems.map((problem) => (
+          <div
+            key={problem.post_id}
+            className="rounded-lg border border-blue-100 bg-white p-4 dark:border-blue-900/60 dark:bg-gray-900"
+          >
+            <h4 className="font-medium text-gray-900 dark:text-gray-100">
+              {problem.title}
+            </h4>
+
+            <p className="mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
+              {problem.description}
+            </p>
+
+            <div className="mt-2 flex flex-wrap gap-2 text-xs">
+              {problem.field_name && (
+                <span className="rounded-full bg-blue-100 px-2 py-1 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200">
+                  {problem.field_name}
+                </span>
+              )}
+
+              <span className="rounded-full bg-gray-100 px-2 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                {problem.status}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
 
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <label className="block mb-4 text-gray-900 dark:text-gray-100">Attachments</label>

@@ -82,6 +82,34 @@ export const searchPosts = async (filters = {}) => {
   return data;
 };
 
+export const getSimilarProblems = async (filters = {}) => {
+  const params = new URLSearchParams();
+
+  if (filters.title) {
+    params.append("title", filters.title);
+  }
+
+  if (filters.description) {
+    params.append("description", filters.description);
+  }
+
+  if (filters.field_id) {
+    params.append("field_id", filters.field_id);
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/posts/similar?${params.toString()}`
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch similar problems");
+  }
+
+  return data;
+};
+
 export const updatePost = async (postId, postData) => {
   const token = getToken();
 
@@ -172,6 +200,24 @@ export const getMySavedPosts = async () => {
 
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch saved problems");
+  }
+
+  return data;
+};
+
+export const getRecommendedPosts = async () => {
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/posts/recommended`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch recommended posts");
   }
 
   return data;

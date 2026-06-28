@@ -289,6 +289,14 @@ export function UserProfile() {
     0
   );
 
+  const profileSkills = Array.isArray(profile.skills)
+  ? profile.skills
+      .map((skill) =>
+        typeof skill === "string" ? skill : skill.skill_name
+      )
+      .filter(Boolean)
+  : [];
+
   return (
     <div className="p-6 text-gray-900 dark:text-gray-100">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -424,9 +432,22 @@ export function UserProfile() {
               </span>
             </div>
 
+            {profileSkills.length > 0 && (
+  <div className="flex flex-wrap gap-2 mb-6">
+    {profileSkills.map((skill) => (
+      <span
+        key={skill}
+        className="px-3 py-1 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60"
+      >
+        {skill}
+      </span>
+    ))}
+  </div>
+)}
+
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#0ea5e9] to-[#06b6d4] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#0ea5e9] to-[#06b6d4] bg-clip-text text-transparent">
                   {reputation}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -435,7 +456,7 @@ export function UserProfile() {
               </div>
 
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#06b6d4] to-[#a855f7] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#06b6d4] to-[#a855f7] bg-clip-text text-transparent">
                   {solvedPosts}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -444,7 +465,7 @@ export function UserProfile() {
               </div>
 
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#a855f7] to-[#0ea5e9] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#a855f7] to-[#0ea5e9] bg-clip-text text-transparent">
                   {userPosts.length}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -453,7 +474,7 @@ export function UserProfile() {
               </div>
 
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#10b981] to-[#06b6d4] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#10b981] to-[#06b6d4] bg-clip-text text-transparent">
                   {userSolutions.length}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -462,7 +483,7 @@ export function UserProfile() {
               </div>
 
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#f59e0b] to-[#a855f7] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#f59e0b] to-[#a855f7] bg-clip-text text-transparent">
                   {verifiedSolutions.length}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -471,7 +492,7 @@ export function UserProfile() {
               </div>
 
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#10b981] to-[#06b6d4] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#10b981] to-[#06b6d4] bg-clip-text text-transparent">
                   {openPosts}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -480,7 +501,7 @@ export function UserProfile() {
               </div>
 
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] bg-clip-text text-transparent">
+                <div className="text-2xl mb-1 bg-linear-to-r from-[#0ea5e9] to-[#a855f7] bg-clip-text text-transparent">
                   {level}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -497,7 +518,7 @@ export function UserProfile() {
               onClick={() => setActiveTab("activity")}
               className={`flex-1 min-w-max px-6 py-4 transition-all ${
                 activeTab === "activity"
-                  ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
+                  ? "bg-linear-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
                   : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
               }`}
             >
@@ -508,7 +529,7 @@ export function UserProfile() {
               onClick={() => setActiveTab("problems")}
               className={`flex-1 min-w-max px-6 py-4 transition-all ${
                 activeTab === "problems"
-                  ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
+                  ? "bg-linear-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
                   : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
               }`}
             >
