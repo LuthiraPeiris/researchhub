@@ -242,10 +242,10 @@ const handleSaveSkills = async () => {
   ];
 
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-6 text-gray-900 dark:text-gray-100">
+    <div className="mx-auto max-w-5xl space-y-5 p-5 lg:p-7 text-slate-900 dark:text-slate-100">
       <div>
-        <h1 className="text-3xl text-gray-900 dark:text-gray-100 mb-2">Settings</h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Settings</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Manage your account security, notifications, and preferences.
         </p>
       </div>
@@ -253,15 +253,15 @@ const handleSaveSkills = async () => {
       <AppAlert type="error" message={error} onClose={() => setError("")} />
       <AppAlert type="success" message={message} onClose={() => setMessage("")} />
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 dark:bg-blue-950/40 dark:border-blue-900/60">
-            <Lock className="w-5 h-5 text-[#0ea5e9]" />
+      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-5 flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
+            <Lock className="h-4 w-4" />
           </div>
 
           <div>
-            <h2 className="text-xl text-gray-900 dark:text-gray-100">Change Password</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Change Password</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Update your account password securely.
             </p>
           </div>
@@ -274,7 +274,7 @@ const handleSaveSkills = async () => {
             value={passwordData.currentPassword}
             onChange={handlePasswordChange}
             placeholder="Current password"
-            className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+            className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
           />
 
           <input
@@ -283,7 +283,7 @@ const handleSaveSkills = async () => {
             value={passwordData.newPassword}
             onChange={handlePasswordChange}
             placeholder="New password"
-            className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+            className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
           />
 
           <input
@@ -292,27 +292,27 @@ const handleSaveSkills = async () => {
             value={passwordData.confirmPassword}
             onChange={handlePasswordChange}
             placeholder="Confirm new password"
-            className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+            className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="px-5 py-3 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity disabled:opacity-60"
+            className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Saving..." : "Change Password"}
           </button>
         </form>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-  <div className="flex items-center gap-3 mb-5">
-    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 dark:bg-blue-950/40 dark:border-blue-900/60">
-      <Tags className="w-5 h-5 text-[#0ea5e9]" />
+      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+  <div className="mb-5 flex items-center gap-3">
+    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
+      <Tags className="h-4 w-4" />
     </div>
 
     <div>
-      <h2 className="text-xl text-gray-900 dark:text-gray-100">Skill Tags</h2>
+      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Skill Tags</h2>
       <p className="text-sm text-gray-600 dark:text-gray-400">
         Choose the skills and fields you want to show on your profile.
       </p>
@@ -328,10 +328,10 @@ const handleSaveSkills = async () => {
           key={skill}
           type="button"
           onClick={() => handleSkillToggle(skill)}
-          className={`px-4 py-2 rounded-full text-sm border transition-all ${
+          className={`rounded-md border px-3 py-2 text-sm transition-colors ${
             isSelected
-              ? "bg-blue-50 text-[#0ea5e9] border-blue-200 dark:bg-blue-950/40 dark:text-[#38bdf8] dark:border-blue-900/60"
-              : "bg-gray-50 text-gray-700 border-gray-200 hover:border-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+              ? "border-blue-200 bg-blue-50 font-medium text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300"
+              : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
           }`}
         >
           {skill}
@@ -344,22 +344,22 @@ const handleSaveSkills = async () => {
     type="button"
     onClick={handleSaveSkills}
     disabled={loading}
-    className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity disabled:opacity-60"
+    className="mt-5 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
   >
-    <Save className="w-4 h-4" />
+    <Save className="h-4 w-4" />
     Save Skills
   </button>
 </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 dark:bg-blue-950/40 dark:border-blue-900/60">
-            <Bell className="w-5 h-5 text-[#0ea5e9]" />
+      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-5 flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
+            <Bell className="h-4 w-4" />
           </div>
 
           <div>
-            <h2 className="text-xl text-gray-900 dark:text-gray-100">Notification Preferences</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Notification Preferences</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Choose which notifications you want to receive.
             </p>
           </div>
@@ -369,25 +369,25 @@ const handleSaveSkills = async () => {
           {notificationItems.map((item) => (
             <div
               key={item.key}
-              className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/70"
+              className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/40"
             >
               <div>
-                <h3 className="text-sm text-gray-900 dark:text-gray-100">{item.title}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{item.desc}</p>
+                <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">{item.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{item.desc}</p>
               </div>
 
               <button
                 type="button"
                 onClick={() => handleNotificationToggle(item.key)}
-                className={`w-12 h-6 rounded-full transition-colors ${
-                  notificationPrefs[item.key] ? "bg-[#0ea5e9]" : "bg-gray-300 dark:bg-gray-700"
+                className={`relative h-6 w-11 rounded-full transition-colors ${
+                  notificationPrefs[item.key] ? "bg-blue-600" : "bg-slate-300 dark:bg-slate-700"
                 }`}
               >
                 <span
-                  className={`block w-5 h-5 rounded-full bg-white transition-transform ${
+                  className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${
                     notificationPrefs[item.key]
-                      ? "translate-x-6"
-                      : "translate-x-1"
+                      ? "translate-x-5"
+                      : "translate-x-0"
                   }`}
                 />
               </button>
@@ -399,22 +399,22 @@ const handleSaveSkills = async () => {
           type="button"
           onClick={handleSaveNotifications}
           disabled={loading}
-          className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity disabled:opacity-60"
+          className="mt-5 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <Save className="w-4 h-4" />
+          <Save className="h-4 w-4" />
           Save Notifications
         </button>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 dark:bg-blue-950/40 dark:border-blue-900/60">
-            <Palette className="w-5 h-5 text-[#0ea5e9]" />
+      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-5 flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
+            <Palette className="h-4 w-4" />
           </div>
 
           <div>
-            <h2 className="text-xl text-gray-900 dark:text-gray-100">Theme Options</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Theme Options</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Save your preferred theme option.
             </p>
           </div>
@@ -426,7 +426,7 @@ const handleSaveSkills = async () => {
     setTheme(e.target.value);
     applyTheme(e.target.value);
   }}
-  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+  className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
 >
           <option value="light">Light</option>
           <option value="dark">Dark</option>
@@ -437,22 +437,22 @@ const handleSaveSkills = async () => {
           type="button"
           onClick={handleSaveTheme}
           disabled={loading}
-          className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity disabled:opacity-60"
+          className="mt-5 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <Save className="w-4 h-4" />
+          <Save className="h-4 w-4" />
           Save Theme
         </button>
       </div>
 
-      <div className="rounded-xl border border-red-200 bg-red-50 p-6 shadow-sm dark:border-red-900/70 dark:bg-red-950/30">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center border border-red-200 dark:bg-red-950/60 dark:border-red-800">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
+      <div className="rounded-xl border border-red-200 bg-white p-5 shadow-sm dark:border-red-900/70 dark:bg-slate-900">
+        <div className="mb-5 flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-300">
+            <AlertTriangle className="h-4 w-4" />
           </div>
 
           <div>
-            <h2 className="text-xl text-red-700 dark:text-red-300">Delete Account</h2>
-            <p className="text-sm text-red-600 dark:text-red-400">
+            <h2 className="text-base font-semibold text-red-700 dark:text-red-300">Delete Account</h2>
+            <p className="text-sm text-red-500 dark:text-red-400">
               Permanently delete your account and all related data.
             </p>
           </div>
@@ -463,16 +463,16 @@ const handleSaveSkills = async () => {
           value={deletePassword}
           onChange={(e) => setDeletePassword(e.target.value)}
           placeholder="Enter password to confirm"
-          className="w-full px-4 py-3 rounded-lg bg-white border border-red-200 focus:border-red-400 focus:ring-2 focus:ring-red-100 focus:outline-none text-gray-900 dark:bg-gray-900 dark:border-red-900/70 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-red-900/40"
+          className="w-full rounded-md border border-red-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-red-400 focus:ring-2 focus:ring-red-100 dark:border-red-900/70 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-red-900/40"
         />
 
         <button
           type="button"
           onClick={handleDeleteAccount}
           disabled={loading || !deletePassword}
-          className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors disabled:opacity-60"
+          className="mt-5 inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="h-4 w-4" />
           Delete Account
         </button>
       </div>

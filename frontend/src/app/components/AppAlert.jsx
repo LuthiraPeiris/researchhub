@@ -12,33 +12,33 @@ export function AppAlert({ type = "info", message, onClose }) {
   const styles = {
     success: {
       wrapper:
-        "border-green-200 bg-green-50 text-green-800 dark:border-green-900/70 dark:bg-green-950/40 dark:text-green-300",
+        "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300",
       iconBox:
-        "bg-green-100 text-green-600 dark:bg-green-950/70 dark:text-green-300",
+        "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-300",
       Icon: CheckCircle,
       title: "Success",
     },
     error: {
       wrapper:
-        "border-red-200 bg-red-50 text-red-800 dark:border-red-900/70 dark:bg-red-950/40 dark:text-red-300",
+        "border-red-200 bg-red-50 text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300",
       iconBox:
-        "bg-red-100 text-red-600 dark:bg-red-950/70 dark:text-red-300",
+        "bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-300",
       Icon: XCircle,
       title: "Error",
     },
     warning: {
       wrapper:
-        "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-900/70 dark:bg-yellow-950/40 dark:text-yellow-300",
+        "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300",
       iconBox:
-        "bg-yellow-100 text-yellow-600 dark:bg-yellow-950/70 dark:text-yellow-300",
+        "bg-amber-100 text-amber-600 dark:bg-amber-950/50 dark:text-amber-300",
       Icon: AlertCircle,
       title: "Warning",
     },
     info: {
       wrapper:
-        "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/70 dark:bg-blue-950/40 dark:text-blue-300",
+        "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300",
       iconBox:
-        "bg-blue-100 text-[#0ea5e9] dark:bg-blue-950/70 dark:text-[#38bdf8]",
+        "bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-300",
       Icon: Info,
       title: "Info",
     },
@@ -49,28 +49,29 @@ export function AppAlert({ type = "info", message, onClose }) {
 
   return (
     <div
-      className={`rounded-xl border px-4 py-3 shadow-sm transition-all ${current.wrapper}`}
+      role="alert"
+      className={`rounded-lg border px-4 py-3 shadow-sm ${current.wrapper}`}
     >
       <div className="flex items-start gap-3">
         <div
-          className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${current.iconBox}`}
+          className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md ${current.iconBox}`}
         >
-          <Icon className="w-5 h-5" />
+          <Icon className="h-4 w-4" />
         </div>
 
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold">{current.title}</div>
-          <p className="text-sm opacity-90 leading-relaxed">{message}</p>
+          <p className="mt-0.5 text-sm leading-6 opacity-90">{message}</p>
         </div>
 
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+            className="rounded-md p-1 opacity-60 transition-colors hover:bg-black/5 hover:opacity-100 dark:hover:bg-white/10"
             aria-label="Close alert"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         )}
       </div>

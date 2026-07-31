@@ -49,40 +49,40 @@ export function SavedProblems() {
 
   const getDifficultyStyle = (difficulty) => {
     if (difficulty === "advanced") {
-      return "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300";
+      return "border-blue-100 bg-blue-50 text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300";
     }
 
     if (difficulty === "intermediate") {
-      return "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-300";
+      return "border-amber-100 bg-amber-50 text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300";
     }
 
-    return "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300";
+    return "border-emerald-100 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300";
   };
 
   return (
-    <div className="p-6 space-y-6 text-gray-900 dark:text-gray-100">
-      <div className="flex items-start justify-between gap-4">
+    <div className="mx-auto max-w-6xl space-y-5 p-5 lg:p-7 text-slate-900 dark:text-slate-100">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl text-gray-900 dark:text-gray-100 mb-2">
+          <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
             Saved Problems
           </h1>
 
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             View all problems you saved for later.
           </p>
         </div>
 
         <Link
           to="/app"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0ea5e9] text-white hover:bg-[#0284c7] transition-colors shadow-sm"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
         >
           Browse Problems
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
 
       {loading && (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-500 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
           Loading saved problems...
         </div>
       )}
@@ -94,25 +94,25 @@ export function SavedProblems() {
       )}
 
       {!loading && !error && posts.length === 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white p-10 shadow-sm text-center dark:border-gray-800 dark:bg-gray-900">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center mx-auto mb-4 border border-blue-100 dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
-            <Bookmark className="w-7 h-7 text-[#0ea5e9] dark:text-[#38bdf8]" />
+        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+            <Bookmark className="h-6 w-6" />
           </div>
 
-          <h2 className="text-xl text-gray-900 dark:text-gray-100 mb-2">
+          <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
             No saved problems yet
           </h2>
 
-          <p className="text-gray-600 dark:text-gray-400 mb-5">
+          <p className="mb-5 text-sm text-slate-500 dark:text-slate-400">
             Save useful problems and they will appear here.
           </p>
 
           <Link
             to="/app"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0ea5e9] text-white hover:bg-[#0284c7] transition-colors"
+            className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
           >
             Browse Problems
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       )}
@@ -123,26 +123,26 @@ export function SavedProblems() {
             <Link
               key={problem.post_id}
               to={`/app/problem/${problem.post_id}`}
-              className="block rounded-xl border border-gray-200 bg-white p-6 hover:border-blue-300 hover:shadow-lg transition-all shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:hover:border-blue-700"
+              className="group block rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h3 className="text-lg mb-2 text-gray-900 hover:text-[#0ea5e9] transition-colors dark:text-gray-100 dark:hover:text-[#38bdf8]">
+              <div className="mb-3 flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <h3 className="mb-2 text-base font-semibold leading-6 text-slate-900 transition-colors group-hover:text-blue-700 dark:text-slate-100 dark:group-hover:text-blue-400">
                     {problem.title}
                   </h3>
 
-                  <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                     <span>by {problem.full_name || "Unknown User"}</span>
 
                     <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
+                      <Clock className="h-3.5 w-3.5" />
                       Saved {formatDate(problem.saved_at)}
                     </span>
                   </div>
                 </div>
 
                 <div
-                  className={`px-3 py-1 rounded-full text-xs capitalize ${getDifficultyStyle(
+                  className={`rounded-md border px-2.5 py-1 text-xs font-medium capitalize ${getDifficultyStyle(
                     problem.difficulty_level
                   )}`}
                 >
@@ -150,39 +150,39 @@ export function SavedProblems() {
                 </div>
               </div>
 
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2 dark:text-gray-400">
+              <p className="mb-4 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
                 {problem.description}
               </p>
 
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="mb-4 flex flex-wrap gap-2">
                 {problem.field_name && (
-                  <span className="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700">
+                  <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                     {problem.field_name}
                   </span>
                 )}
 
-                <span className="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200 capitalize dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700">
+                <span className="rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs capitalize text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                   {problem.post_type || "problem"}
                 </span>
 
-                <span className="px-3 py-1 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100 capitalize dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60">
+                <span className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300">
                   {problem.status || "open"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex flex-wrap items-center gap-5 border-t border-slate-100 pt-3 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
                 <span className="flex items-center gap-1">
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="h-4 w-4" />
                   Open discussion
                 </span>
 
                 <span className="flex items-center gap-1">
-                  <TrendingUp className="w-4 h-4" />
+                  <TrendingUp className="h-4 w-4" />
                   View details
                 </span>
 
-                <span className="flex items-center gap-1 text-[#0ea5e9] dark:text-[#38bdf8]">
-                  <FileText className="w-4 h-4" />
+                <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+                  <FileText className="h-4 w-4" />
                   Saved
                 </span>
               </div>
