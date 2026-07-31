@@ -68,14 +68,14 @@ export function MySolutions() {
   );
 
   return (
-    <div className="p-6 space-y-6 text-gray-900 dark:text-gray-100">
+    <div className="mx-auto max-w-6xl space-y-5 p-5 lg:p-7 text-slate-900 dark:text-slate-100">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl text-gray-900 dark:text-gray-100 mb-2">
+          <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
             My Solutions
           </h1>
 
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             View the solutions you submitted, their verification status, and
             likes.
           </p>
@@ -83,76 +83,76 @@ export function MySolutions() {
 
         <Link
           to="/app"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0ea5e9] text-white hover:bg-[#0284c7] transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
         >
           Find Problems
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0ea5e9] to-[#06b6d4] flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Target className="w-5 h-5 text-white" />
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 transition-colors hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-300">
+              <Target className="h-4 w-4" />
             </div>
 
             <div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">
+              <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
                 {solutions.length}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 My Solutions
               </div>
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#10b981] to-[#06b6d4] flex items-center justify-center shadow-lg shadow-green-500/20">
-              <CheckCircle className="w-5 h-5 text-white" />
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 transition-colors hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <CheckCircle className="h-4 w-4" />
             </div>
 
             <div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">
+              <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
                 {verifiedCount}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 Verified
               </div>
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#f59e0b] to-[#a855f7] flex items-center justify-center shadow-lg shadow-yellow-500/20">
-              <XCircle className="w-5 h-5 text-white" />
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 transition-colors hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-300">
+              <XCircle className="h-4 w-4" />
             </div>
 
             <div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">
+              <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
                 {pendingCount}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 Pending
               </div>
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#a855f7] to-[#0ea5e9] flex items-center justify-center shadow-lg shadow-purple-500/20">
-              <ThumbsUp className="w-5 h-5 text-white" />
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 transition-colors hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-violet-50 text-violet-600 dark:bg-violet-950/40 dark:text-violet-300">
+              <ThumbsUp className="h-4 w-4" />
             </div>
 
             <div>
-              <div className="text-2xl text-gray-900 dark:text-gray-100">
+              <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
                 {totalLikes}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 Total Likes
               </div>
             </div>
@@ -173,12 +173,12 @@ export function MySolutions() {
         )}
 
       {!loading && !error && solutions.length === 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white p-10 shadow-sm text-center dark:border-gray-800 dark:bg-gray-900">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center mx-auto mb-4 border border-blue-100 dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
-            <FileText className="w-7 h-7 text-[#0ea5e9] dark:text-[#38bdf8]" />
+        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+            <FileText className="h-6 w-6 text-slate-500 dark:text-slate-400" />
           </div>
 
-          <h2 className="text-xl text-gray-900 dark:text-gray-100 mb-2">
+          <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
             You have not submitted any solutions yet
           </h2>
 
@@ -188,7 +188,7 @@ export function MySolutions() {
 
           <Link
             to="/app"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0ea5e9] text-white hover:bg-[#0284c7] transition-colors"
+            className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
           >
             Browse Problems
             <ArrowRight className="w-4 h-4" />
@@ -205,29 +205,33 @@ export function MySolutions() {
             return (
               <div
                 key={solution.solution_id}
-                className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg transition-all dark:border-gray-800 dark:bg-gray-900 dark:hover:border-blue-700"
+                className={`rounded-lg border bg-white p-5 shadow-sm transition-colors dark:bg-slate-900 ${
+                  isVerified
+                    ? "border-l-4 border-l-emerald-500 border-y-slate-200 border-r-slate-200 dark:border-y-slate-800 dark:border-r-slate-800"
+                    : "border-slate-200 hover:border-blue-200 dark:border-slate-800 dark:hover:border-blue-800"
+                }`}
               >
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg text-gray-900 dark:text-gray-100">
+                      <h3 className="text-base font-semibold leading-6 text-slate-900 dark:text-slate-100">
                         {solution.post_title || "Original Problem"}
                       </h3>
 
                       {isVerified ? (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-green-50 text-green-700 border border-green-100 dark:bg-green-950/40 dark:text-green-300 dark:border-green-900/60">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
                           <CheckCircle className="w-3 h-3" />
                           Verified
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-yellow-50 text-yellow-700 border border-yellow-100 dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-900/60">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300">
                           <XCircle className="w-3 h-3" />
                           Pending
                         </span>
                       )}
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                       <span>Your solution</span>
 
                       <span className="flex items-center gap-1">
@@ -243,27 +247,27 @@ export function MySolutions() {
                   </div>
 
                   {isVerified && (
-                    <div className="w-10 h-10 rounded-lg bg-green-50 border border-green-100 flex items-center justify-center dark:bg-green-950/40 dark:border-green-900/60">
-                      <Award className="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-300">
+                      <Award className="h-4 w-4" />
                     </div>
                   )}
                 </div>
 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3 dark:text-gray-400">
+                <p className="mb-4 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
                   {solution.solution_text}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200 capitalize dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700">
+                  <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs capitalize text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                     {solution.post_type || "problem"}
                   </span>
 
-                  <span className="px-3 py-1 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100 capitalize dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60">
+                  <span className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300">
                     Problem: {solution.post_status || "open"}
                   </span>
 
                   {solution.difficulty_level && (
-                    <span className="px-3 py-1 rounded-full text-xs bg-purple-50 text-purple-700 border border-purple-100 capitalize dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-900/60">
+                    <span className="rounded-md border border-violet-100 bg-violet-50 px-2.5 py-1 text-xs capitalize text-violet-700 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-300">
                       {solution.difficulty_level}
                     </span>
                   )}
@@ -272,7 +276,7 @@ export function MySolutions() {
                 <div className="flex items-center gap-3">
                   <Link
                     to={`/app/problem/${solution.post_id}`}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-200 bg-blue-50 text-[#0ea5e9] hover:bg-blue-100 transition-colors text-sm dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-[#38bdf8] dark:hover:bg-blue-950/60"
+                    className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
                     <MessageSquare className="w-4 h-4" />
                     Open Original Problem

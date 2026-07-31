@@ -17,7 +17,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/search", searchPosts);
+router.get("/search", protect, searchPosts);
 router.get("/similar", getSimilarProblems);
 router.get("/saved/me", protect, getMySavedPosts);
 router.get("/recommended", protect, getRecommendedPosts);
@@ -25,7 +25,7 @@ router.get("/recommended", protect, getRecommendedPosts);
 router.get("/:postId/save-status", protect, getPostSaveStatus);
 router.post("/:postId/save", protect, toggleSavePost);
 
-router.get("/", getAllPosts);
+router.get("/", protect, getAllPosts);
 router.get("/:id", getPostById);
 router.post("/", protect, createPost);
 router.put("/:id", protect, updatePost);

@@ -237,10 +237,12 @@ const validateFiles = (selectedFiles) => {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto text-gray-900 dark:text-gray-100">
-      <div className="mb-8">
-        <h1 className="text-3xl mb-2 text-gray-900 dark:text-gray-100">Post a Problem</h1>
-        <p className="text-gray-600 dark:text-gray-400">
+    <div className="mx-auto max-w-4xl p-5 lg:p-7 text-slate-900 dark:text-slate-100">
+      <div className="mb-6">
+        <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+          Post a Problem
+        </h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Share your challenge with the research community
         </p>
       </div>
@@ -251,8 +253,8 @@ const validateFiles = (selectedFiles) => {
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label className="block mb-2 text-gray-900 dark:text-gray-100">Problem Title</label>
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <label className="block mb-2 text-sm font-medium text-slate-800 dark:text-slate-200">Problem Title</label>
 
           <input
             type="text"
@@ -260,14 +262,14 @@ const validateFiles = (selectedFiles) => {
             value={formData.title}
             onChange={handleChange}
             placeholder="Describe your problem in one clear sentence..."
-            className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+            className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
           />
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label className="block mb-2 text-gray-900 dark:text-gray-100">Description</label>
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <label className="block mb-2 text-sm font-medium text-slate-800 dark:text-slate-200">Description</label>
 
-          <div className="mb-3 flex gap-2 p-2 rounded-lg bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+          <div className="mb-3 flex gap-1 rounded-md border border-slate-200 bg-slate-50 p-1.5 dark:border-slate-700 dark:bg-slate-800">
             <button
               type="button"
               className="px-3 py-1 rounded hover:bg-gray-200 transition-colors text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -313,13 +315,13 @@ const validateFiles = (selectedFiles) => {
         </div>
 
         {(checkingSimilar || similarProblems.length > 0) && (
-  <div className="rounded-xl border border-blue-200 bg-blue-50 p-6 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/30">
-    <h3 className="mb-2 text-lg font-semibold text-blue-900 dark:text-blue-100">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-800/40">
+    <h3 className="mb-2 text-sm font-semibold text-slate-800 dark:text-slate-200">
       Similar problems already discussed
     </h3>
 
     {checkingSimilar ? (
-      <p className="text-sm text-blue-700 dark:text-blue-300">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
         Checking similar problems...
       </p>
     ) : (
@@ -339,12 +341,12 @@ const validateFiles = (selectedFiles) => {
 
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               {problem.field_name && (
-                <span className="rounded-full bg-blue-100 px-2 py-1 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200">
+                <span className="rounded-md bg-blue-100 px-2 py-1 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200">
                   {problem.field_name}
                 </span>
               )}
 
-              <span className="rounded-full bg-gray-100 px-2 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+              <span className="rounded-md bg-gray-100 px-2 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 {problem.status}
               </span>
             </div>
@@ -355,11 +357,11 @@ const validateFiles = (selectedFiles) => {
   </div>
 )}
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label className="block mb-4 text-gray-900 dark:text-gray-100">Attachments</label>
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <label className="mb-3 block text-sm font-medium text-slate-800 dark:text-slate-200">Attachments</label>
 
-          <label className="block border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-800/70 dark:border-gray-700 dark:hover:border-blue-600">
-            <Upload className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-500" />
+          <label className="block cursor-pointer rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center transition-colors hover:border-blue-400 hover:bg-blue-50/30 dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-blue-700">
+            <Upload className="mx-auto mb-3 h-8 w-8 text-slate-400 dark:text-slate-500" />
 
             <p className="mb-2 text-gray-900 dark:text-gray-100">
               Drag and drop files here, or click to browse
@@ -390,7 +392,7 @@ const validateFiles = (selectedFiles) => {
                   className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200 dark:bg-gray-800/70 dark:border-gray-700"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center border border-blue-200 overflow-hidden dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
+                    <div className="w-14 h-14 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-blue-200 overflow-hidden dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
   {file.type.startsWith("image/") ? (
     <img
       src={URL.createObjectURL(file)}
@@ -425,8 +427,8 @@ const validateFiles = (selectedFiles) => {
           )}
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label className="block mb-4 text-gray-900 dark:text-gray-100">Tags</label>
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <label className="mb-3 block text-sm font-medium text-slate-800 dark:text-slate-200">Tags</label>
 
           <div className="flex flex-wrap gap-2">
             {availableTags.map((tag) => (
@@ -436,8 +438,8 @@ const validateFiles = (selectedFiles) => {
                 onClick={() => toggleTag(tag)}
                 className={`px-3 py-1.5 rounded-full text-sm transition-all ${
                   selectedTags.includes(tag)
-                    ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border border-[#0ea5e9] text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                    : "bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
+                    ? "border border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300"
+                    : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
                 }`}
               >
                 {tag}
@@ -446,15 +448,15 @@ const validateFiles = (selectedFiles) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-  <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-    <label className="block mb-2 text-gray-900 dark:text-gray-100">Field / Category</label>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+  <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <label className="mb-2 block text-sm font-medium text-slate-800 dark:text-slate-200">Field / Category</label>
 
     <select
       name="field_id"
       value={formData.field_id}
       onChange={handleChange}
-      className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+      className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
     >
       <option value="">Select field...</option>
 
@@ -472,8 +474,8 @@ const validateFiles = (selectedFiles) => {
     )}
   </div>
 
-  <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-    <label className="block mb-2 text-gray-900 dark:text-gray-100">
+  <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <label className="mb-2 block text-sm font-medium text-slate-800 dark:text-slate-200">
       Difficulty Level
     </label>
 
@@ -481,7 +483,7 @@ const validateFiles = (selectedFiles) => {
       name="difficulty_level"
       value={formData.difficulty_level}
       onChange={handleChange}
-      className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+      className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
     >
       <option value="">Select difficulty...</option>
       <option value="beginner">Beginner</option>
@@ -490,14 +492,14 @@ const validateFiles = (selectedFiles) => {
     </select>
   </div>
 
-  <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-    <label className="block mb-2 text-gray-900 dark:text-gray-100">Post Type</label>
+  <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <label className="mb-2 block text-sm font-medium text-slate-800 dark:text-slate-200">Post Type</label>
 
     <select
       name="post_type"
       value={formData.post_type}
       onChange={handleChange}
-      className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+      className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
     >
       <option value="problem">Problem</option>
       <option value="research">Research</option>
@@ -510,7 +512,7 @@ const validateFiles = (selectedFiles) => {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            className="px-6 py-3 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100 transition-colors dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+            className="rounded-md border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             Save as Draft
           </button>
@@ -518,7 +520,7 @@ const validateFiles = (selectedFiles) => {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Publishing..." : "Publish Problem"}
           </button>

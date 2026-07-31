@@ -193,10 +193,10 @@ const navLinkClass = (path, exact = false) => {
 
   return `group relative flex items-center ${
     sidebarCollapsed ? "justify-center px-3" : "gap-3 px-4"
-  } py-3 rounded-lg border transition-all duration-300 ease-in-out ${
+  } py-2.5 rounded-lg border text-sm font-medium transition-colors duration-200 ${
     active
-      ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-[#0ea5e9]/30 text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-[#0ea5e9]/40"
-      : "border-transparent text-gray-700 hover:bg-gray-100 hover:text-[#0ea5e9] dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-[#38bdf8]"
+      ? "bg-blue-50 border-blue-100 text-blue-700 dark:bg-blue-950/40 dark:border-blue-900/60 dark:text-blue-300"
+      : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
   }`;
 };
 
@@ -205,7 +205,7 @@ const sidebarLabelClass = sidebarCollapsed
   : "inline whitespace-nowrap";
 
   return (
-  <div className="min-h-screen bg-gray-50 text-gray-900 flex transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
+  <div className="min-h-screen bg-slate-50 text-slate-900 flex transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
     <style>
       {`
         @keyframes fadeIn {
@@ -220,8 +220,8 @@ const sidebarLabelClass = sidebarCollapsed
         }
       `}
     </style>
-      <aside className={`${sidebarWidthClass} h-screen sticky top-0 border-r border-gray-200 bg-white flex flex-col shadow-sm transition-all duration-300 ease-in-out flex-shrink-0 dark:border-gray-800 dark:bg-gray-900`}>
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+      <aside className={`${sidebarWidthClass} h-screen sticky top-0 border-r border-slate-200 bg-white flex flex-col shadow-sm transition-all duration-300 ease-in-out flex-shrink-0 dark:border-slate-800 dark:bg-slate-900`}>
+        <div className="p-4 border-b border-gray-200 dark:border-slate-800">
   <div
     className={`flex items-center ${
       sidebarCollapsed ? "justify-center" : "justify-between"
@@ -233,7 +233,7 @@ const sidebarLabelClass = sidebarCollapsed
         sidebarCollapsed ? "justify-center" : "gap-2"
       }`}
     >
-      <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white dark:bg-gray-800">
+      <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-sm bg-white dark:bg-slate-800">
         <img
           src="/collabsolve-logo.png"
           alt="CollabSolve Logo"
@@ -242,7 +242,7 @@ const sidebarLabelClass = sidebarCollapsed
       </div>
 
       {!sidebarCollapsed && (
-        <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <span className="text-xl font-semibold text-slate-900 dark:text-gray-100">
           CollabSolve
         </span>
       )}
@@ -253,7 +253,7 @@ const sidebarLabelClass = sidebarCollapsed
         type="button"
         onClick={() => setSidebarCollapsed(true)}
         title="Collapse sidebar"
-        className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors dark:text-gray-300 dark:hover:bg-gray-800"
+        className="p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors dark:text-slate-300 dark:hover:bg-slate-800"
       >
         <PanelLeftClose className="w-5 h-5" />
       </button>
@@ -265,20 +265,26 @@ const sidebarLabelClass = sidebarCollapsed
       type="button"
       onClick={() => setSidebarCollapsed(false)}
       title="Expand sidebar"
-      className="mt-4 w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors"
+      className="mt-4 w-full flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors"
     >
       <PanelLeftOpen className="w-5 h-5" />
     </button>
   )}
 </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-4 overflow-y-auto">
+          {!sidebarCollapsed && (
+            <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+              Workspace
+            </p>
+          )}
+          <div className="space-y-1">
          <Link
   to="/app"
   title="Dashboard"
   className={navLinkClass("/app", true)}
 >
-  <Home className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Home className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Dashboard</span>
 </Link>
 
@@ -287,7 +293,7 @@ const sidebarLabelClass = sidebarCollapsed
   title="Post Problem"
   className={navLinkClass("/app/post-problem")}
 >
-  <PlusCircle className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <PlusCircle className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Post Problem</span>
 </Link>
 
@@ -296,7 +302,7 @@ const sidebarLabelClass = sidebarCollapsed
   title="My Problems"
   className={navLinkClass("/app/my-problems")}
 >
-  <FileText className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <FileText className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>My Problems</span>
 </Link>
 
@@ -305,7 +311,7 @@ const sidebarLabelClass = sidebarCollapsed
   title="My Solutions"
   className={navLinkClass("/app/my-solutions")}
 >
-  <Lightbulb className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Lightbulb className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>My Solutions</span>
 </Link>
 
@@ -314,16 +320,24 @@ const sidebarLabelClass = sidebarCollapsed
   title="Received Solutions"
   className={navLinkClass("/app/received-solutions")}
 >
-  <Inbox className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Inbox className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Received Solutions</span>
 </Link>
 
+</div>
+
+          {!sidebarCollapsed && (
+            <p className="px-3 pb-2 pt-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+              Discover
+            </p>
+          )}
+          <div className="space-y-1">
 <Link
   to="/app/archive"
   title="Knowledge Base"
   className={navLinkClass("/app/archive")}
 >
-  <BookOpen className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <BookOpen className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Knowledge Base</span>
 </Link>
 
@@ -332,33 +346,42 @@ const sidebarLabelClass = sidebarCollapsed
   title="Leaderboard"
   className={navLinkClass("/app/leaderboard")}
 >
-  <Trophy className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Trophy className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Leaderboard</span>
 </Link>
 
+</div>
+
+          {!sidebarCollapsed && (
+            <p className="px-3 pb-2 pt-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+              Account
+            </p>
+          )}
+          <div className="space-y-1">
 <Link
   to={userProfilePath}
   title="Profile"
   className={navLinkClass("/app/profile")}
 >
-  <User className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <User className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Profile</span>
 </Link>
+          </div>
         </nav>
 
-        <div className="p-4 border-t border-gray-200 space-y-2 flex-shrink-0 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div className="p-4 border-t border-gray-200 space-y-2 flex-shrink-0 bg-white dark:border-slate-800 dark:bg-slate-900">
   <Link
   to="/app/settings"
   title="Settings"
   className={`group w-full flex items-center ${
   sidebarCollapsed ? "justify-center px-3" : "gap-3 px-4"
-} py-3 rounded-lg border transition-all duration-300 ease-in-out ${
+} py-2.5 rounded-lg border text-sm font-medium transition-colors duration-200 ${
   isActive("/app/settings")
-    ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-[#0ea5e9]/30 text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-[#0ea5e9]/40"
-    : "border-transparent text-gray-700 hover:bg-gray-100 hover:text-[#0ea5e9] dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-[#38bdf8]"
+    ? "bg-blue-50 border-blue-100 text-blue-700 dark:bg-blue-950/40 dark:border-blue-900/60 dark:text-blue-300"
+    : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
 }`}
 >
-  <Settings className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Settings className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Settings</span>
 </Link>
 
@@ -369,25 +392,25 @@ const sidebarLabelClass = sidebarCollapsed
   sidebarCollapsed ? "justify-center px-3" : "gap-3 px-4"
 } py-3 rounded-lg border border-transparent hover:bg-red-50 transition-all duration-300 ease-in-out text-red-500 dark:hover:bg-red-950/40`}
   >
-    <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+    <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105" />
     <span className={sidebarLabelClass}>Logout</span>
   </button>
 </div>
       </aside>
 
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        <header className="relative z-50 h-16 border-b border-gray-200 bg-white/80 backdrop-blur-xl flex items-center justify-between px-6 shadow-sm transition-colors duration-300 dark:border-gray-800 dark:bg-gray-900/80">
+        <header className="relative z-50 h-16 border-b border-slate-200 bg-white/80 backdrop-blur-xl flex items-center justify-between px-6 transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900/80">
           {showTopSearch ? (
   <form onSubmit={handleSearchSubmit} className="flex-1 max-w-2xl">
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
 
       <input
         type="text"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         placeholder="Search by title, description, field, or user..."
-        className="w-full pl-11 pr-20 py-2 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:ring-blue-900/40"
+        className="w-full pl-11 pr-20 py-2 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:ring-blue-900/40"
       />
 
       {searchText && (
@@ -401,7 +424,7 @@ const sidebarLabelClass = sidebarCollapsed
 
             navigate(`/app?${params.toString()}`);
           }}
-          className="absolute right-16 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-600"
+          className="absolute right-16 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
         >
           Clear
         </button>
@@ -409,7 +432,7 @@ const sidebarLabelClass = sidebarCollapsed
 
       <button
         type="submit"
-        className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 rounded-md bg-[#0ea5e9] text-white text-xs hover:bg-[#0284c7] transition-colors"
+        className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 rounded-md bg-blue-600 text-white text-xs hover:bg-blue-700 transition-colors"
       >
         Search
       </button>
@@ -417,7 +440,7 @@ const sidebarLabelClass = sidebarCollapsed
   </form>
 ) : (
   <div className="flex-1">
-    <h2 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+    <h2 className="text-sm font-medium text-slate-600 dark:text-slate-400">
       CollabSolve Workspace
     </h2>
   </div>
@@ -427,28 +450,28 @@ const sidebarLabelClass = sidebarCollapsed
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors dark:hover:bg-gray-800"
+                className="relative p-2 rounded-lg hover:bg-slate-100 transition-colors dark:hover:bg-slate-800"
               >
-                <Bell className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <Bell className="w-5 h-5 text-slate-700 dark:text-slate-300" />
 
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#0ea5e9] rounded-full text-white text-xs flex items-center justify-center shadow-lg shadow-blue-500/50">
+                  <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-blue-600 rounded-full text-white text-xs flex items-center justify-center shadow-md">
                     {unreadCount}
                   </span>
                 )}
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 rounded-xl border border-gray-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-gray-800 dark:bg-gray-900">
-                  <div className="p-4 border-b border-gray-200 flex items-center justify-between dark:border-gray-800">
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                <div className="absolute right-0 mt-2 w-80 rounded-xl border border-slate-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-slate-800 dark:bg-slate-900">
+                  <div className="p-4 border-b border-gray-200 flex items-center justify-between dark:border-slate-800">
+                    <h3 className="font-semibold text-slate-900 dark:text-gray-100">
                       Notifications
                     </h3>
 
                     {notifications.length > 0 && (
                       <button
                         onClick={handleMarkAllAsRead}
-                        className="text-xs text-[#0ea5e9] hover:underline font-medium"
+                        className="text-xs text-blue-600 hover:underline font-medium"
                       >
                         Mark all read
                       </button>
@@ -463,7 +486,7 @@ const sidebarLabelClass = sidebarCollapsed
                     )}
 
                     {!notificationError && notifications.length === 0 && (
-                      <div className="p-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="p-4 text-sm text-slate-500 dark:text-slate-400">
                         No notifications yet.
                       </div>
                     )}
@@ -472,22 +495,22 @@ const sidebarLabelClass = sidebarCollapsed
                       <button
                         key={notif.notification_id}
                         onClick={() => handleNotificationClick(notif)}
-                        className={`w-full text-left p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors dark:border-gray-800 dark:hover:bg-gray-800 ${
+                        className={`w-full text-left p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors dark:border-slate-800 dark:hover:bg-slate-800 ${
                           notif.is_read === 0 || notif.is_read === false
                             ? "bg-blue-50/50 dark:bg-blue-950/30"
                             : ""
                         }`}
                       >
-                        <p className="text-sm mb-1 text-gray-900 dark:text-gray-100">
+                        <p className="text-sm mb-1 text-slate-900 dark:text-gray-100">
                           {notif.message}
                         </p>
 
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {new Date(notif.created_at).toLocaleDateString()}
                           </span>
 
-                          <span className="text-xs text-[#0ea5e9] capitalize">
+                          <span className="text-xs text-blue-600 capitalize">
                             {notif.type}
                           </span>
                         </div>
@@ -495,13 +518,13 @@ const sidebarLabelClass = sidebarCollapsed
                     ))}
                   </div>
 
-                  <div className="p-3 border-t border-gray-200 text-center bg-gray-50 dark:border-gray-800 dark:bg-gray-950">
+                  <div className="p-3 border-t border-gray-200 text-center bg-gray-50 dark:border-slate-800 dark:bg-gray-950">
                     <button
                       onClick={() => {
                         setShowNotifications(false);
                         navigate("/app/notifications");
                       }}
-                      className="text-sm text-[#0ea5e9] hover:underline font-medium"
+                      className="text-sm text-blue-600 hover:underline font-medium"
                     >
                     View all notifications
                     </button>
@@ -511,48 +534,48 @@ const sidebarLabelClass = sidebarCollapsed
             </div>
 
             <div
-              className="relative pl-4 border-l border-gray-200 dark:border-gray-800"
+              className="relative pl-4 border-l border-gray-200 dark:border-slate-800"
               ref={userMenuRef}
             >
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors pr-2 py-1 dark:hover:bg-gray-800"
+                className="flex items-center gap-3 rounded-lg hover:bg-slate-100 transition-colors pr-2 py-1 dark:hover:bg-slate-800"
               >
                 <img
                   src={getProfileImageUrl(currentUser?.profile_picture)}
                   alt="User"
-                  className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
+                  className="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700"
                 />
 
                 <div className="text-sm text-left">
-                  <div className="font-medium text-gray-900 dark:text-gray-100">
+                  <div className="font-medium text-slate-900 dark:text-gray-100">
                     {displayName}
                   </div>
 
-                  <div className="text-gray-500 text-xs capitalize dark:text-gray-400">
+                  <div className="text-slate-500 text-xs capitalize dark:text-slate-400">
                     {currentUser?.role || "User"}
                   </div>
                 </div>
 
                 <ChevronDown
-                  className={`w-4 h-4 text-gray-500 transition-transform dark:text-gray-400 ${
+                  className={`w-4 h-4 text-slate-500 transition-transform dark:text-slate-400 ${
                     showUserMenu ? "rotate-180" : ""
                   }`}
                 />
               </button>
 
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-gray-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-gray-800 dark:bg-gray-900">
-                  <div className="p-4 border-b border-gray-200 bg-gradient-to-br from-blue-50 to-purple-50 dark:border-gray-800 dark:from-gray-800 dark:to-gray-900">
-                    <div className="font-semibold text-gray-900 dark:text-gray-100">
+                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-slate-800 dark:bg-slate-900">
+                  <div className="p-4 border-b border-gray-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="font-semibold text-slate-900 dark:text-gray-100">
                       {displayName}
                     </div>
 
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
                       @{currentUser?.email?.split("@")[0] || "user"}
                     </div>
 
-                    <div className="mt-2 text-xs text-[#0ea5e9] dark:text-[#38bdf8] font-medium capitalize">
+                    <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium capitalize">
                       {currentUser?.role || "User"}
                     </div>
                   </div>
@@ -560,7 +583,7 @@ const sidebarLabelClass = sidebarCollapsed
                   <div className="py-2">
                     <Link
                       to={userProfilePath}
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-slate-50 transition-colors text-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                       onClick={() => setShowUserMenu(false)}
                     >
                       <User className="w-4 h-4" />
@@ -569,7 +592,7 @@ const sidebarLabelClass = sidebarCollapsed
 
                     <Link
                       to="/app/settings"
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-slate-50 transition-colors text-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                       onClick={() => setShowUserMenu(false)}
                     >
                       <Settings className="w-4 h-4" />
@@ -577,7 +600,7 @@ const sidebarLabelClass = sidebarCollapsed
                     </Link>
                   </div>
 
-                  <div className="border-t border-gray-200 dark:border-gray-800">
+                  <div className="border-t border-gray-200 dark:border-slate-800">
                     <button
                       onClick={handleLogout}
                       className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-red-500 dark:hover:bg-red-950/40"

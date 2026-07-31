@@ -39,6 +39,8 @@ export const createPost = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
+    const userId = req.user.user_id;
+
     const [posts] = await db.query(
       `SELECT 
         posts.*,
@@ -53,7 +55,9 @@ export const getAllPosts = async (req, res) => {
       LEFT JOIN fields ON posts.field_id = fields.field_id
       LEFT JOIN solutions ON posts.post_id = solutions.post_id
 
-      GROUP BY 
+      WHERE posts.user_id != ?
+
+      GROUP BY
         posts.post_id,
         posts.user_id,
         posts.title,
@@ -67,7 +71,8 @@ export const getAllPosts = async (req, res) => {
         users.full_name,
         fields.field_name
 
-      ORDER BY posts.created_at DESC`
+      ORDER BY posts.created_at DESC`,
+      [userId]
     );
 
     res.status(200).json(posts);
@@ -200,6 +205,8 @@ export const deletePost = async (req, res) => {
 
 export const searchPosts = async (req, res) => {
   try {
+    const userId = req.user.user_id;
+
     const {
       query,
       field_id,
@@ -222,10 +229,10 @@ export const searchPosts = async (req, res) => {
       LEFT JOIN users ON posts.user_id = users.user_id
       LEFT JOIN fields ON posts.field_id = fields.field_id
       LEFT JOIN solutions ON posts.post_id = solutions.post_id
-      WHERE 1 = 1
-    `;
+      WHERE posts.user_id != ?
+      `;
 
-    const params = [];
+    const params = [userId];
 
     if (query && query.trim() !== "") {
       const searchValue = `%${query.trim()}%`;

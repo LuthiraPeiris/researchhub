@@ -593,7 +593,7 @@ const nestedComments = buildCommentTree(comments);
 
   if (loading) {
     return (
-      <div className="p-6 max-w-6xl mx-auto text-gray-900 dark:text-gray-100">
+      <div className="mx-auto max-w-6xl p-5 lg:p-7 text-slate-900 dark:text-slate-100">
         <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
           Loading problem details...
         </div>
@@ -603,7 +603,7 @@ const nestedComments = buildCommentTree(comments);
 
   if (!problem) {
     return (
-      <div className="p-6 max-w-6xl mx-auto text-gray-900 dark:text-gray-100">
+      <div className="mx-auto max-w-6xl p-5 lg:p-7 text-slate-900 dark:text-slate-100">
         <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-red-700 dark:border-red-900/70 dark:bg-red-950/40 dark:text-red-300">
           Problem not found.
         </div>
@@ -617,8 +617,10 @@ const nestedComments = buildCommentTree(comments);
   const renderComment = (comment, level = 0) => (
   <div
     key={comment.comment_id}
-    className={`rounded-lg border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800/70 ${
-      level > 0 ? "ml-8 mt-4 border-l-4 border-l-blue-200 dark:border-l-blue-800" : ""
+    className={`rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 ${
+      level > 0
+        ? "ml-6 mt-3 border-l-2 border-l-blue-200 dark:border-l-blue-800"
+        : ""
     }`}
   >
     <div className="flex items-start gap-4 mb-4">
@@ -629,7 +631,7 @@ const nestedComments = buildCommentTree(comments);
       : "/default-profile.png"
   }
   alt={comment.full_name}
-  className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
+  className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"
 />
 
       <div className="flex-1">
@@ -651,7 +653,7 @@ const nestedComments = buildCommentTree(comments);
       </div>
     </div>
 
-    <p className="text-gray-700 mb-4 whitespace-pre-line dark:text-gray-300">
+    <p className="mb-3 whitespace-pre-line text-sm leading-6 text-slate-700 dark:text-slate-300">
       {comment.comment_text}
     </p>
 
@@ -713,7 +715,7 @@ const nestedComments = buildCommentTree(comments);
           <button
             onClick={() => handleAddReply(comment.comment_id)}
             disabled={actionLoading}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {actionLoading ? "Replying..." : "Post Reply"}
           </button>
@@ -730,13 +732,13 @@ const nestedComments = buildCommentTree(comments);
 );
 
   return (
-    <div className="p-6 max-w-6xl mx-auto text-gray-900 dark:text-gray-100">
+    <div className="mx-auto max-w-6xl p-5 lg:p-7 text-slate-900 dark:text-slate-100">
       <div className="space-y-3 mb-5">
         <AppAlert type="error" message={error} onClose={() => setError("")} />
         <AppAlert type="success" message={message} onClose={() => setMessage("")} />
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-8 mb-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="mb-5 rounded-xl border border-slate-200 bg-white p-5 lg:p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             {isEditingPost ? (
@@ -797,7 +799,7 @@ const nestedComments = buildCommentTree(comments);
                   <button
                     onClick={handleUpdatePost}
                     disabled={actionLoading}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {actionLoading ? "Saving..." : "Save Changes"}
                   </button>
@@ -821,11 +823,11 @@ const nestedComments = buildCommentTree(comments);
                   {problem.difficulty_level}
                 </div>
 
-                <h1 className="text-3xl mb-4 text-gray-900 dark:text-gray-100">
+                <h1 className="mb-3 max-w-4xl text-2xl font-semibold leading-8 tracking-tight text-slate-900 dark:text-slate-100">
                   {problem.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
                   <div className="flex items-center gap-2">
                     <img
   src={
@@ -859,7 +861,7 @@ const nestedComments = buildCommentTree(comments);
               <>
                 <button
                   onClick={() => setIsEditingPost(true)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-gray-700 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                  className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                 >
                   Edit
                 </button>
@@ -867,7 +869,7 @@ const nestedComments = buildCommentTree(comments);
                 <button
                   onClick={handleDeletePost}
                   disabled={actionLoading}
-                  className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 transition-colors text-red-500 disabled:opacity-60 dark:border-red-900/70 dark:bg-red-950/30 dark:hover:bg-red-950/50 dark:text-red-300"
+                  className="rounded-md border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/30"
                 >
                   Delete
                 </button>
@@ -878,10 +880,10 @@ const nestedComments = buildCommentTree(comments);
   onClick={handleSavePost}
   disabled={actionLoading}
   title={isSaved ? "Remove from saved" : "Save problem"}
-  className={`p-3 rounded-lg border transition-colors disabled:opacity-60 ${
+  className={`rounded-md border p-2.5 transition-colors disabled:opacity-60 ${
   isSaved
-    ? "border-blue-200 bg-blue-50 text-[#0ea5e9] dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300"
-    : "border-gray-200 hover:bg-gray-50 text-gray-700 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+    ? "border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300"
+    : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
 }`}
 >
   <Bookmark className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
@@ -890,7 +892,7 @@ const nestedComments = buildCommentTree(comments);
 <button
   onClick={handleSharePost}
   title="Share problem"
-  className="p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-gray-700 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+  className="rounded-md border border-slate-200 p-2.5 text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
 >
   <Share2 className="w-5 h-5" />
 </button>
@@ -901,22 +903,22 @@ const nestedComments = buildCommentTree(comments);
           <>
             <div className="flex flex-wrap gap-2 mb-6">
               {problem.field_name && (
-                <span className="px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700">
+                <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                   {problem.field_name}
                 </span>
               )}
 
-              <span className="px-3 py-1 rounded-full text-sm bg-blue-50 text-blue-700 border border-blue-100 capitalize dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60">
+              <span className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300">
                 {problem.post_type}
               </span>
 
-              <span className="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700 border border-green-100 capitalize dark:bg-green-950/40 dark:text-green-300 dark:border-green-900/60">
+              <span className="rounded-md border border-emerald-100 bg-emerald-50 px-2.5 py-1 text-xs font-medium capitalize text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
                 {problem.status}
               </span>
             </div>
 
             <div className="prose prose-gray max-w-none mb-6">
-              <p className="text-gray-700 whitespace-pre-line dark:text-gray-300">
+              <p className="whitespace-pre-line text-[15px] leading-7 text-slate-700 dark:text-slate-300">
                 {problem.description}
               </p>
             </div>
@@ -924,13 +926,15 @@ const nestedComments = buildCommentTree(comments);
         )}
 
         <div className="space-y-2">
-          <h3 className="text-sm text-gray-600 mb-2 dark:text-gray-400">Attachments</h3>
+          <h3 className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            Attachments
+          </h3>
 
           {attachments.length === 0 && (
             <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200 dark:bg-gray-800/70 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center border border-blue-200 dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
-                  <FileText className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-blue-200 dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
+                  <FileText className="h-5 w-5 text-slate-500 dark:text-slate-400" />
                 </div>
 
                 <div>
@@ -951,7 +955,7 @@ const nestedComments = buildCommentTree(comments);
               className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200 dark:bg-gray-800/70 dark:border-gray-700"
             >
               <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center border border-blue-200 overflow-hidden dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
+                <div className="w-14 h-14 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-blue-200 overflow-hidden dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
   {attachment.file_type?.startsWith("image/") ? (
     <img
       src={getFileUrl(attachment.file_path)}
@@ -1003,14 +1007,14 @@ const nestedComments = buildCommentTree(comments);
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex border-b border-gray-200 dark:border-gray-800">
           <button
             onClick={() => setActiveTab("discussion")}
-            className={`flex-1 px-6 py-4 flex items-center justify-center gap-2 transition-all ${
+            className={`flex flex-1 items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium transition-colors ${
               activeTab === "discussion"
-                ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                ? "border-b-2 border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             }`}
           >
             <MessageSquare className="w-5 h-5" />
@@ -1019,10 +1023,10 @@ const nestedComments = buildCommentTree(comments);
 
           <button
             onClick={() => setActiveTab("solutions")}
-            className={`flex-1 px-6 py-4 flex items-center justify-center gap-2 transition-all ${
+            className={`flex flex-1 items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium transition-colors ${
               activeTab === "solutions"
-                ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                ? "border-b-2 border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             }`}
           >
             <CheckCircle className="w-5 h-5" />
@@ -1033,7 +1037,7 @@ const nestedComments = buildCommentTree(comments);
         <div className="p-6">
           {activeTab === "discussion" && (
             <div className="space-y-6">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/70">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
                 <textarea
                   rows={4}
                   value={commentText}
@@ -1046,7 +1050,7 @@ const nestedComments = buildCommentTree(comments);
                   <button
                     onClick={handleAddComment}
                     disabled={actionLoading}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {actionLoading ? "Posting..." : "Post Comment"}
                   </button>
@@ -1065,7 +1069,7 @@ const nestedComments = buildCommentTree(comments);
 
           {activeTab === "solutions" && (
             <div className="space-y-6">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/70">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
                 <textarea
                   rows={5}
                   value={solutionText}
@@ -1130,7 +1134,7 @@ const nestedComments = buildCommentTree(comments);
                   <button
                     onClick={handleAddSolution}
                     disabled={actionLoading}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {actionLoading ? "Submitting..." : "Submit Solution"}
                   </button>
