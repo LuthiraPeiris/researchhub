@@ -23,7 +23,14 @@ export const createPost = async (postData) => {
 };
 
 export const getAllPosts = async () => {
-  const response = await fetch(`${API_BASE_URL}/posts`);
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/posts`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   const data = await response.json();
 
   if (!response.ok) {
@@ -71,7 +78,16 @@ export const searchPosts = async (filters = {}) => {
     params.append("sort", filters.sort);
   }
 
-  const response = await fetch(`${API_BASE_URL}/posts/search?${params.toString()}`);
+  const token = getToken();
+
+  const response = await fetch(
+    `${API_BASE_URL}/posts/search?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   const data = await response.json();
 

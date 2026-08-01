@@ -24,11 +24,13 @@ export function NotificationsPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchNotifications = async () => {
     try {
       setLoading(true);
       setError("");
+      setMessage("");
 
       const data = await getNotifications();
       const notificationList = Array.isArray(data)
@@ -68,18 +70,18 @@ export function NotificationsPage() {
 
   const getNotificationStyle = (type) => {
     if (type === "solution") {
-      return "bg-blue-50 text-blue-700 border-blue-100";
+      return "border-blue-100 bg-blue-50 text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300";
     }
 
     if (type === "verification") {
-      return "bg-green-50 text-green-700 border-green-100";
+      return "border-emerald-100 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300";
     }
 
     if (type === "comment") {
-      return "bg-purple-50 text-purple-700 border-purple-100";
+      return "border-violet-100 bg-violet-50 text-violet-700 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-300";
     }
 
-    return "bg-gray-50 text-gray-700 border-gray-100";
+    return "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300";
   };
 
   const handleOpenNotification = async (notification) => {
@@ -158,11 +160,13 @@ export function NotificationsPage() {
   ).length;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between gap-4">
+    <div className="mx-auto max-w-6xl space-y-5 p-5 lg:p-7 text-slate-900 dark:text-slate-100">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl text-gray-900 mb-2">Notifications</h1>
-          <p className="text-gray-600">
+          <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+            Notifications
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             View updates about your problems, solutions, and account activity.
           </p>
         </div>
@@ -170,59 +174,75 @@ export function NotificationsPage() {
         {notifications.length > 0 && (
           <button
             onClick={handleMarkAllRead}
-            disabled={actionLoading}
-            className="px-4 py-2 rounded-lg border border-blue-200 bg-blue-50 text-[#0ea5e9] hover:bg-blue-100 transition-colors disabled:opacity-60"
+            disabled={actionLoading || unreadCount === 0}
+            className="rounded-md border border-slate-300 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             Mark all as read
           </button>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="text-2xl text-gray-900">{notifications.length}</div>
-          <div className="text-sm text-gray-600">Total Notifications</div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
+          <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
+            {notifications.length}
+          </div>
+          <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Total Notifications
+          </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="text-2xl text-gray-900">{unreadCount}</div>
-          <div className="text-sm text-gray-600">Unread</div>
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
+          <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
+            {unreadCount}
+          </div>
+          <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Unread
+          </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="text-2xl text-gray-900">
+        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
+          <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
             {notifications.length - unreadCount}
           </div>
-          <div className="text-sm text-gray-600">Read</div>
+          <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Read
+          </div>
         </div>
       </div>
 
       {loading && (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-gray-600">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-500 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
           Loading notifications...
         </div>
       )}
 
-      <div className="space-y-3 mb-5">
+      <div className="space-y-3">
         <AppAlert type="error" message={error} onClose={() => setError("")} />
-        <AppAlert type="success" message={message} onClose={() => setMessage("")} />
+        <AppAlert
+          type="success"
+          message={message}
+          onClose={() => setMessage("")}
+        />
       </div>
 
       {!loading && !error && notifications.length === 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white p-10 shadow-sm text-center">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center mx-auto mb-4 border border-blue-100">
-            <Bell className="w-7 h-7 text-[#0ea5e9]" />
+        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+            <Bell className="h-6 w-6" />
           </div>
 
-          <h2 className="text-xl text-gray-900 mb-2">No notifications yet</h2>
-          <p className="text-gray-600">
+          <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+            No notifications yet
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Important updates will appear here.
           </p>
         </div>
       )}
 
       {!loading && !error && notifications.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {notifications.map((notification) => {
             const Icon = getNotificationIcon(notification.type);
             const isUnread =
@@ -231,50 +251,50 @@ export function NotificationsPage() {
             return (
               <div
                 key={notification.notification_id}
-                className={`rounded-xl border p-5 shadow-sm transition-all ${
+                className={`rounded-lg border p-4 shadow-sm transition-colors ${
                   isUnread
-                    ? "border-blue-200 bg-blue-50/40"
-                    : "border-gray-200 bg-white"
+                    ? "border-l-4 border-l-blue-500 border-y-slate-200 border-r-slate-200 bg-blue-50/30 dark:border-y-slate-800 dark:border-r-slate-800 dark:bg-blue-950/10"
+                    : "border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
                 }`}
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3">
                   <div
-                    className={`w-11 h-11 rounded-lg flex items-center justify-center border ${getNotificationStyle(
+                    className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border ${getNotificationStyle(
                       notification.type
                     )}`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="h-4 w-4" />
                   </div>
 
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-gray-900 mb-1">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="min-w-0">
+                        <p className="mb-2 text-sm leading-6 text-slate-800 dark:text-slate-200">
                           {notification.message}
                         </p>
 
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                           <span>{formatDate(notification.created_at)}</span>
 
-                          <span className="capitalize px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+                          <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 capitalize text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             {notification.type}
                           </span>
 
                           {isUnread && (
-                            <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                            <span className="rounded-md border border-blue-100 bg-blue-50 px-2 py-1 font-medium text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300">
                               New
                             </span>
                           )}
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-shrink-0 items-center gap-2">
                         <button
                           onClick={() => handleOpenNotification(notification)}
                           disabled={actionLoading}
-                          className="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-blue-200 bg-blue-50 text-[#0ea5e9] hover:bg-blue-100 transition-colors text-sm disabled:opacity-60"
+                          className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          <ExternalLink className="h-4 w-4" />
                           Open
                         </button>
 
@@ -285,9 +305,10 @@ export function NotificationsPage() {
                             )
                           }
                           disabled={actionLoading}
-                          className="p-2 rounded-lg border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 transition-colors disabled:opacity-60"
+                          className="rounded-md border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/30"
+                          aria-label="Delete notification"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
                     </div>

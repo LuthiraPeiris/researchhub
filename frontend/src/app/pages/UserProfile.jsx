@@ -229,7 +229,7 @@ export function UserProfile() {
 
   if (loading) {
     return (
-      <div className="p-6">
+      <div className="p-5">
         <div className="max-w-6xl mx-auto rounded-xl border border-gray-200 bg-white p-8 shadow-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
           Loading profile...
         </div>
@@ -239,7 +239,7 @@ export function UserProfile() {
 
   if (error || !profile) {
     return (
-      <div className="p-6">
+      <div className="p-5">
         <div className="max-w-6xl mx-auto rounded-xl border border-red-200 bg-red-50 p-8 text-red-700 dark:border-red-900/70 dark:bg-red-950/40 dark:text-red-300">
           {error || "User profile not found"}
         </div>
@@ -298,27 +298,27 @@ export function UserProfile() {
   : [];
 
   return (
-    <div className="p-6 text-gray-900 dark:text-gray-100">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="p-5 lg:p-7 text-slate-900 dark:text-slate-100">
+      <div className="mx-auto max-w-6xl space-y-5">
         <div className="space-y-3 mb-5">
           <AppAlert type="success" message={message} onClose={() => setMessage("")} />
           <AppAlert type="error" message={error} onClose={() => setError("")} />
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <div className="h-32 bg-gradient-to-r from-[#0ea5e9] to-[#a855f7]" />
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="h-24 border-b border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-800" />
 
-          <div className="px-8 pb-8">
-            <div className="flex items-end gap-6 -mt-16 mb-6">
+          <div className="px-5 pb-6 sm:px-6">
+            <div className="-mt-12 mb-5 flex flex-col gap-4 sm:flex-row sm:items-end">
               <div className="relative">
                 <img
                   src={avatar}
                   alt={profile.full_name}
-                  className="w-32 h-32 rounded-2xl border-4 border-white shadow-xl bg-white object-cover dark:border-gray-900 dark:bg-gray-800"
+                  className="h-24 w-24 rounded-xl border-4 border-white bg-white object-cover shadow-md dark:border-slate-900 dark:bg-slate-800"
                 />
 
                 {currentUser?.user_id === profile.user_id && (
-                  <label className="absolute bottom-2 right-2 px-3 py-1 rounded-lg bg-[#0ea5e9] text-white text-xs cursor-pointer hover:bg-blue-600 transition">
+                  <label className="absolute bottom-1 right-1 cursor-pointer rounded-md bg-blue-600 px-2 py-1 text-[11px] font-medium text-white transition-colors hover:bg-blue-700">
                     {imageUploading ? "Uploading..." : "Change"}
                     <input
                       type="file"
@@ -331,13 +331,13 @@ export function UserProfile() {
                 )}
               </div>
 
-              <div className="flex-1 mt-16">
-                <div className="flex items-start justify-between">
+              <div className="flex-1 sm:pb-1">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h1 className="text-3xl mb-1 text-gray-900 dark:text-gray-100">
+                    <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                       {profile.full_name}
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       @{profile.email?.split("@")[0] || "researcher"}
                     </p>
                   </div>
@@ -346,7 +346,7 @@ export function UserProfile() {
                     <div className="flex items-center gap-3">
                       <Link
                         to="/app/saved-problems"
-                        className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-blue-200 bg-blue-50 text-[#0ea5e9] hover:bg-blue-100 transition-colors dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-[#38bdf8] dark:hover:bg-blue-950/60"
+                        className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                       >
                         <Bookmark className="w-4 h-4" />
                         Saved Problems
@@ -354,7 +354,7 @@ export function UserProfile() {
 
                       <button
                         onClick={() => setIsEditing(!isEditing)}
-                        className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30"
+                        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                       >
                         {isEditing ? "Cancel" : "Edit Profile"}
                       </button>
@@ -372,7 +372,7 @@ export function UserProfile() {
                   value={editForm.full_name}
                   onChange={handleEditChange}
                   placeholder="Full name"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+                  className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
                 />
 
                 <textarea
@@ -381,7 +381,7 @@ export function UserProfile() {
                   onChange={handleEditChange}
                   placeholder="Bio"
                   rows={3}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 resize-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+                  className="w-full resize-none rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
                 />
 
                 <input
@@ -390,24 +390,24 @@ export function UserProfile() {
                   value={editForm.university_or_organization}
                   onChange={handleEditChange}
                   placeholder="University / Organization"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-blue-900/40"
+                  className="w-full rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
                 />
 
                 <button
                   onClick={handleUpdateProfile}
                   disabled={editLoading}
-                  className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30 disabled:opacity-60"
+                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {editLoading ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             ) : (
-              <p className="text-lg mb-4 text-gray-700 dark:text-gray-300">
+              <p className="mb-4 max-w-3xl text-sm leading-6 text-slate-700 dark:text-slate-300">
                 {profile.bio || "No bio added yet."}
               </p>
             )}
 
-            <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-6">
+            <div className="mb-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
               <span className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 {profile.university_or_organization ||
@@ -416,7 +416,7 @@ export function UserProfile() {
 
               <span className="flex items-center gap-2">
                 <LinkIcon className="w-4 h-4" />
-                <a href="#" className="text-[#0ea5e9] hover:underline dark:text-[#38bdf8]">
+                <a href="#" className="text-blue-600 hover:underline dark:text-blue-400">
                   CollabSolve Profile
                 </a>
               </span>
@@ -437,7 +437,7 @@ export function UserProfile() {
     {profileSkills.map((skill) => (
       <span
         key={skill}
-        className="px-3 py-1 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60"
+        className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
       >
         {skill}
       </span>
@@ -445,66 +445,66 @@ export function UserProfile() {
   </div>
 )}
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#0ea5e9] to-[#06b6d4] bg-clip-text text-transparent">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {reputation}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Reputation
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#06b6d4] to-[#a855f7] bg-clip-text text-transparent">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {solvedPosts}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Solved
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#a855f7] to-[#0ea5e9] bg-clip-text text-transparent">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {userPosts.length}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Problems
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#10b981] to-[#06b6d4] bg-clip-text text-transparent">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {userSolutions.length}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Solutions
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#f59e0b] to-[#a855f7] bg-clip-text text-transparent">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {verifiedSolutions.length}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Verified
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#10b981] to-[#06b6d4] bg-clip-text text-transparent">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {openPosts}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Open
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-800 dark:bg-gray-800/70">
-                <div className="text-2xl mb-1 bg-linear-to-r from-[#0ea5e9] to-[#a855f7] bg-clip-text text-transparent">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="mb-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
                   {level}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Level
                 </div>
               </div>
@@ -512,14 +512,14 @@ export function UserProfile() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <div className="flex border-b border-gray-200 overflow-x-auto dark:border-gray-800">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex overflow-x-auto border-b border-slate-200 dark:border-slate-800">
             <button
               onClick={() => setActiveTab("activity")}
-              className={`flex-1 min-w-max px-6 py-4 transition-all ${
+              className={`min-w-max flex-1 border-b-2 px-5 py-3.5 text-sm font-medium transition-colors ${
                 activeTab === "activity"
-                  ? "bg-linear-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                  : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                  ? "border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                  : "border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               Activity
@@ -527,10 +527,10 @@ export function UserProfile() {
 
             <button
               onClick={() => setActiveTab("problems")}
-              className={`flex-1 min-w-max px-6 py-4 transition-all ${
+              className={`min-w-max flex-1 border-b-2 px-5 py-3.5 text-sm font-medium transition-colors ${
                 activeTab === "problems"
-                  ? "bg-linear-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                  : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                  ? "border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                  : "border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               Posted Problems
@@ -538,10 +538,10 @@ export function UserProfile() {
 
             <button
               onClick={() => setActiveTab("solutions")}
-              className={`flex-1 min-w-max px-6 py-4 transition-all ${
+              className={`min-w-max flex-1 border-b-2 px-5 py-3.5 text-sm font-medium transition-colors ${
                 activeTab === "solutions"
-                  ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                  : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                  ? "border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                  : "border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               Submitted Solutions
@@ -549,10 +549,10 @@ export function UserProfile() {
 
             <button
               onClick={() => setActiveTab("verified")}
-              className={`flex-1 min-w-max px-6 py-4 transition-all ${
+              className={`min-w-max flex-1 border-b-2 px-5 py-3.5 text-sm font-medium transition-colors ${
                 activeTab === "verified"
-                  ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                  : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                  ? "border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                  : "border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               Verified Solutions
@@ -560,10 +560,10 @@ export function UserProfile() {
 
             <button
               onClick={() => setActiveTab("fields")}
-              className={`flex-1 min-w-max px-6 py-4 transition-all ${
+              className={`min-w-max flex-1 border-b-2 px-5 py-3.5 text-sm font-medium transition-colors ${
                 activeTab === "fields"
-                  ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                  : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                  ? "border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                  : "border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               Fields
@@ -571,17 +571,17 @@ export function UserProfile() {
 
             <button
               onClick={() => setActiveTab("badges")}
-              className={`flex-1 min-w-max px-6 py-4 transition-all ${
+              className={`min-w-max flex-1 border-b-2 px-5 py-3.5 text-sm font-medium transition-colors ${
                 activeTab === "badges"
-                  ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-b-2 border-[#0ea5e9] text-[#0ea5e9] dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                  : "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                  ? "border-blue-600 bg-blue-50/50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+                  : "border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
               }`}
             >
               Badges
             </button>
           </div>
 
-          <div className="p-6">
+          <div className="p-5">
             {activeTab === "activity" && (
               <div className="space-y-4">
                 {userPosts.length === 0 && (
@@ -593,13 +593,13 @@ export function UserProfile() {
                 {userPosts.slice(0, 5).map((post) => (
                   <div
                     key={post.post_id}
-                    className="flex items-start gap-4 p-4 rounded-lg border border-gray-200 bg-gray-50 hover:border-blue-300 hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-800/70 dark:hover:border-blue-700"
+                    className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-4 transition-colors hover:border-blue-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center flex-shrink-0 border border-blue-200 dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
                       {post.status === "solved" ? (
-                        <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <CheckCircle className="h-4 w-4" />
                       ) : (
-                        <Target className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <Target className="h-4 w-4" />
                       )}
                     </div>
 
@@ -634,13 +634,13 @@ export function UserProfile() {
                   <Link
                     key={post.post_id}
                     to={`/app/problem/${post.post_id}`}
-                    className="block p-4 rounded-lg border border-gray-200 bg-gray-50 hover:border-blue-300 hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-800/70 dark:hover:border-blue-700"
+                    className="group block rounded-lg border border-slate-200 bg-white p-4 transition hover:border-blue-200 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
                   >
-                    <h3 className="text-gray-900 dark:text-gray-100 mb-2">
+                    <h3 className="mb-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-blue-700 dark:text-slate-100 dark:group-hover:text-blue-400">
                       {post.title}
                     </h3>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
+                    <p className="mb-3 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
                       {post.description}
                     </p>
 
@@ -672,7 +672,7 @@ export function UserProfile() {
                   <Link
                     key={solution.solution_id}
                     to={`/app/problem/${solution.post_id}`}
-                    className="block p-4 rounded-lg border border-gray-200 bg-gray-50 hover:border-blue-300 hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-800/70 dark:hover:border-blue-700"
+                    className="group block rounded-lg border border-slate-200 bg-white p-4 transition hover:border-blue-200 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
                   >
                     <div className="flex items-start justify-between gap-4 mb-2">
                       <div>
@@ -680,23 +680,23 @@ export function UserProfile() {
                           {solution.post_title || "Original Problem"}
                         </h3>
 
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                           Answered {formatDate(solution.created_at)}
                         </p>
                       </div>
 
                       {Number(solution.is_verified) === 1 ? (
-                        <span className="px-3 py-1 rounded-full text-xs bg-green-50 text-green-700 border border-green-100 dark:bg-green-950/40 dark:text-green-300 dark:border-green-900/60">
+                        <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
                           Verified
                         </span>
                       ) : (
-                        <span className="px-3 py-1 rounded-full text-xs bg-yellow-50 text-yellow-700 border border-yellow-100 dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-900/60">
+                        <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300">
                           Pending
                         </span>
                       )}
                     </div>
 
-                    <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 mb-3">
+                    <p className="mb-3 line-clamp-3 text-sm leading-6 text-slate-700 dark:text-slate-300">
                       {solution.solution_text}
                     </p>
 
@@ -729,10 +729,10 @@ export function UserProfile() {
                   <Link
                     key={solution.solution_id}
                     to={`/app/problem/${solution.post_id}`}
-                    className="block p-4 rounded-lg border border-green-200 bg-green-50/60 hover:border-green-300 hover:shadow-md transition-all dark:border-green-900/70 dark:bg-green-950/30 dark:hover:border-green-700"
+                    className="block rounded-lg border-l-4 border-l-emerald-500 border-y border-r border-y-slate-200 border-r-slate-200 bg-white p-4 transition hover:shadow-sm dark:border-y-slate-800 dark:border-r-slate-800 dark:bg-slate-900"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center dark:bg-green-950/40 dark:border-green-900/60">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-300">
                         <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                       </div>
 
@@ -748,7 +748,7 @@ export function UserProfile() {
                           )}
                         </p>
 
-                        <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 mb-3">
+                        <p className="mb-3 line-clamp-3 text-sm leading-6 text-slate-700 dark:text-slate-300">
                           {solution.solution_text}
                         </p>
 
@@ -763,7 +763,7 @@ export function UserProfile() {
                             Verified Solution
                           </span>
 
-                          <span className="px-3 py-1 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60">
+                          <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             {solution.like_count || 0} likes
                           </span>
                         </div>
@@ -788,18 +788,18 @@ export function UserProfile() {
                     {userFields.map((field) => (
                       <div
                         key={field.field_name}
-                        className="rounded-xl border border-gray-200 bg-gray-50 p-5 hover:border-blue-300 hover:shadow-md transition-all dark:border-gray-800 dark:bg-gray-800/70 dark:hover:border-blue-700"
+                        className="rounded-lg border border-slate-200 bg-white p-4 transition-colors hover:border-blue-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
                       >
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0ea5e9]/10 to-[#a855f7]/10 flex items-center justify-center border border-blue-200 dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-blue-900/60">
-                            <Tags className="w-5 h-5 text-[#0ea5e9] dark:text-[#38bdf8]" />
+                          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
+                            <Tags className="h-4 w-4" />
                           </div>
 
                           <div>
-                            <h3 className="text-gray-900 dark:text-gray-100">
+                            <h3 className="text-slate-900 dark:text-slate-100">
                               {field.field_name}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs text-slate-500 dark:text-slate-400">
                               {field.activity_count} activities
                             </p>
                           </div>
@@ -816,16 +816,20 @@ export function UserProfile() {
                 {displayedBadges.map((badge, i) => (
                   <div
                     key={i}
-                    className={`rounded-xl border p-6 text-center transition-all ${
+                    className={`rounded-lg border p-4 text-center transition-colors ${
                       badge.earned
-                        ? "border-blue-200 bg-gradient-to-br from-white to-blue-50 hover:scale-105 shadow-sm hover:shadow-lg dark:border-blue-900/60 dark:from-gray-900 dark:to-blue-950/30"
-                        : "border-gray-200 bg-gray-50 opacity-50 dark:border-gray-800 dark:bg-gray-800/70"
+                        ? "border-blue-200 bg-blue-50/40 dark:border-blue-900/60 dark:bg-blue-950/20"
+                        : "border-slate-200 bg-slate-50 opacity-50 dark:border-slate-800 dark:bg-slate-800/50"
                     }`}
                   >
                     <div
-                      className={`w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br ${badge.color} flex items-center justify-center shadow-lg`}
+                      className={`mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${
+                        badge.earned
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300"
+                          : "bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400"
+                      }`}
                     >
-                      <badge.icon className="w-8 h-8 text-white" />
+                      <badge.icon className="h-5 w-5" />
                     </div>
 
                     <h3 className="mb-1 text-gray-900 dark:text-gray-100">

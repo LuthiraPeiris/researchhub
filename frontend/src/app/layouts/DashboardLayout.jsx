@@ -20,6 +20,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { getCurrentUser, logoutUser } from "../services/authService";
 import API_BASE_URL from "../services/api";
+import { getFields } from "../services/fieldService";
 import {
   getNotifications,
   markNotificationAsRead,
@@ -36,10 +37,14 @@ export function DashboardLayout() {
   const [notifications, setNotifications] = useState([]);
   const [notificationError, setNotificationError] = useState("");
   const [searchText, setSearchText] = useState(searchParams.get("search") || "");
+  const [searchFields, setSearchFields] = useState([]);
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const notificationsRef = useRef(null);
   const userMenuRef = useRef(null);
+  const searchRef = useRef(null);
 
   const currentUser = getCurrentUser();
 
@@ -68,26 +73,58 @@ setNotifications(notificationList);
   }, []);
 
   useEffect(() => {
+  const fetchSearchFields = async () => {
+    try {
+      const data = await getFields();
+
+      const fieldList = Array.isArray(data)
+        ? data
+        : data.fields || [];
+
+      setSearchFields(fieldList);
+    } catch (error) {
+      console.error("Failed to load search suggestions:", error);
+      setSearchFields([]);
+    }
+  };
+
+  fetchSearchFields();
+}, []);
+
+  useEffect(() => {
     setSearchText(searchParams.get("search") || "");
   }, [searchParams]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        notificationsRef.current &&
-        !notificationsRef.current.contains(event.target)
-      ) {
-        setShowNotifications(false);
-      }
+  const handleClickOutside = (event) => {
+    if (
+      notificationsRef.current &&
+      !notificationsRef.current.contains(event.target)
+    ) {
+      setShowNotifications(false);
+    }
 
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setShowUserMenu(false);
-      }
-    };
+    if (
+      userMenuRef.current &&
+      !userMenuRef.current.contains(event.target)
+    ) {
+      setShowUserMenu(false);
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(event.target)
+    ) {
+      setShowSearchSuggestions(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   const isActive = (path) => {
     if (path === "/app" && location.pathname === "/app") return true;
@@ -100,8 +137,44 @@ setNotifications(notificationList);
     navigate("/login");
   };
 
-  const handleSearchSubmit = (e) => {
-  e.preventDefault();
+  const handleSearchChange = (event) => {
+  const value = event.target.value;
+
+  setSearchText(value);
+
+  const trimmedValue = value.trim().toLowerCase();
+
+  if (!trimmedValue) {
+    setSearchSuggestions([]);
+    setShowSearchSuggestions(false);
+    return;
+  }
+
+  const matchingFields = searchFields
+    .filter((field) =>
+      field.field_name
+        ?.toLowerCase()
+        .includes(trimmedValue)
+    )
+    .slice(0, 5);
+
+  setSearchSuggestions(matchingFields);
+  setShowSearchSuggestions(matchingFields.length > 0);
+};
+
+const handleSuggestionSelect = (fieldName) => {
+  setSearchText(fieldName);
+  setSearchSuggestions([]);
+  setShowSearchSuggestions(false);
+
+  const params = new URLSearchParams(searchParams);
+  params.set("search", fieldName);
+
+  navigate(`/app?${params.toString()}`);
+};
+
+  const handleSearchSubmit = (event) => {
+  event.preventDefault();
 
   const trimmedSearch = searchText.trim();
   const params = new URLSearchParams(searchParams);
@@ -112,6 +185,7 @@ setNotifications(notificationList);
     params.delete("search");
   }
 
+  setShowSearchSuggestions(false);
   navigate(`/app?${params.toString()}`);
 };
 
@@ -184,7 +258,7 @@ setNotifications(notificationList);
   return `${API_BASE_URL.replace("/api", "")}${imagePath}`;
 };
 
-  const sidebarWidthClass = sidebarCollapsed ? "w-20" : "w-64";
+  const sidebarWidthClass = sidebarCollapsed ? "w-[72px]" : "w-64";
 
 const navLinkClass = (path, exact = false) => {
   const active = exact
@@ -193,10 +267,10 @@ const navLinkClass = (path, exact = false) => {
 
   return `group relative flex items-center ${
     sidebarCollapsed ? "justify-center px-3" : "gap-3 px-4"
-  } py-3 rounded-lg border transition-all duration-300 ease-in-out ${
+  } py-2.5 rounded-md border text-sm font-medium transition-colors duration-200 ${
     active
-      ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-[#0ea5e9]/30 text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-[#0ea5e9]/40"
-      : "border-transparent text-gray-700 hover:bg-gray-100 hover:text-[#0ea5e9] dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-[#38bdf8]"
+      ? "bg-blue-50 border-blue-100 text-blue-700 dark:bg-blue-950/40 dark:border-blue-900/60 dark:text-blue-300"
+      : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
   }`;
 };
 
@@ -205,7 +279,7 @@ const sidebarLabelClass = sidebarCollapsed
   : "inline whitespace-nowrap";
 
   return (
-  <div className="min-h-screen bg-gray-50 text-gray-900 flex transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
+  <div className="flex min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
     <style>
       {`
         @keyframes fadeIn {
@@ -220,8 +294,8 @@ const sidebarLabelClass = sidebarCollapsed
         }
       `}
     </style>
-      <aside className={`${sidebarWidthClass} h-screen sticky top-0 border-r border-gray-200 bg-white flex flex-col shadow-sm transition-all duration-300 ease-in-out flex-shrink-0 dark:border-gray-800 dark:bg-gray-900`}>
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+      <aside className={`${sidebarWidthClass} sticky top-0 flex h-screen flex-shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900`}>
+        <div className="border-b border-slate-200 p-4 dark:border-slate-800">
   <div
     className={`flex items-center ${
       sidebarCollapsed ? "justify-center" : "justify-between"
@@ -233,16 +307,16 @@ const sidebarLabelClass = sidebarCollapsed
         sidebarCollapsed ? "justify-center" : "gap-2"
       }`}
     >
-      <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white dark:bg-gray-800">
+      <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-slate-800">
         <img
           src="/collabsolve-logo.png"
           alt="CollabSolve Logo"
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
 
       {!sidebarCollapsed && (
-        <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <span className="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
           CollabSolve
         </span>
       )}
@@ -253,9 +327,9 @@ const sidebarLabelClass = sidebarCollapsed
         type="button"
         onClick={() => setSidebarCollapsed(true)}
         title="Collapse sidebar"
-        className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors dark:text-gray-300 dark:hover:bg-gray-800"
+        className="rounded-md p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
       >
-        <PanelLeftClose className="w-5 h-5" />
+        <PanelLeftClose className="h-4 w-4" />
       </button>
     )}
   </div>
@@ -265,20 +339,26 @@ const sidebarLabelClass = sidebarCollapsed
       type="button"
       onClick={() => setSidebarCollapsed(false)}
       title="Expand sidebar"
-      className="mt-4 w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors"
+      className="mt-4 flex w-full items-center justify-center rounded-md p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
     >
-      <PanelLeftOpen className="w-5 h-5" />
+      <PanelLeftOpen className="h-4 w-4" />
     </button>
   )}
 </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 overflow-y-auto p-3">
+          {!sidebarCollapsed && (
+            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Workspace
+            </p>
+          )}
+          <div className="space-y-1">
          <Link
   to="/app"
   title="Dashboard"
   className={navLinkClass("/app", true)}
 >
-  <Home className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Home className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Dashboard</span>
 </Link>
 
@@ -287,7 +367,7 @@ const sidebarLabelClass = sidebarCollapsed
   title="Post Problem"
   className={navLinkClass("/app/post-problem")}
 >
-  <PlusCircle className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <PlusCircle className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Post Problem</span>
 </Link>
 
@@ -296,7 +376,7 @@ const sidebarLabelClass = sidebarCollapsed
   title="My Problems"
   className={navLinkClass("/app/my-problems")}
 >
-  <FileText className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <FileText className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>My Problems</span>
 </Link>
 
@@ -305,7 +385,7 @@ const sidebarLabelClass = sidebarCollapsed
   title="My Solutions"
   className={navLinkClass("/app/my-solutions")}
 >
-  <Lightbulb className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Lightbulb className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>My Solutions</span>
 </Link>
 
@@ -314,16 +394,24 @@ const sidebarLabelClass = sidebarCollapsed
   title="Received Solutions"
   className={navLinkClass("/app/received-solutions")}
 >
-  <Inbox className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Inbox className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Received Solutions</span>
 </Link>
 
+</div>
+
+          {!sidebarCollapsed && (
+            <p className="px-3 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Discover
+            </p>
+          )}
+          <div className="space-y-1">
 <Link
   to="/app/archive"
   title="Knowledge Base"
   className={navLinkClass("/app/archive")}
 >
-  <BookOpen className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <BookOpen className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Knowledge Base</span>
 </Link>
 
@@ -332,33 +420,42 @@ const sidebarLabelClass = sidebarCollapsed
   title="Leaderboard"
   className={navLinkClass("/app/leaderboard")}
 >
-  <Trophy className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Trophy className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Leaderboard</span>
 </Link>
 
+</div>
+
+          {!sidebarCollapsed && (
+            <p className="px-3 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Account
+            </p>
+          )}
+          <div className="space-y-1">
 <Link
   to={userProfilePath}
   title="Profile"
   className={navLinkClass("/app/profile")}
 >
-  <User className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <User className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Profile</span>
 </Link>
+          </div>
         </nav>
 
-        <div className="p-4 border-t border-gray-200 space-y-2 flex-shrink-0 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div className="flex-shrink-0 space-y-1 border-t border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
   <Link
   to="/app/settings"
   title="Settings"
   className={`group w-full flex items-center ${
   sidebarCollapsed ? "justify-center px-3" : "gap-3 px-4"
-} py-3 rounded-lg border transition-all duration-300 ease-in-out ${
+} py-2.5 rounded-md border text-sm font-medium transition-colors duration-200 ${
   isActive("/app/settings")
-    ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border-[#0ea5e9]/30 text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:border-[#0ea5e9]/40"
-    : "border-transparent text-gray-700 hover:bg-gray-100 hover:text-[#0ea5e9] dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-[#38bdf8]"
+    ? "bg-blue-50 border-blue-100 text-blue-700 dark:bg-blue-950/40 dark:border-blue-900/60 dark:text-blue-300"
+    : "border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
 }`}
 >
-  <Settings className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+  <Settings className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
   <span className={sidebarLabelClass}>Settings</span>
 </Link>
 
@@ -367,88 +464,112 @@ const sidebarLabelClass = sidebarCollapsed
     onClick={handleLogout}
     className={`group w-full flex items-center ${
   sidebarCollapsed ? "justify-center px-3" : "gap-3 px-4"
-} py-3 rounded-lg border border-transparent hover:bg-red-50 transition-all duration-300 ease-in-out text-red-500 dark:hover:bg-red-950/40`}
+} rounded-md border border-transparent py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30`}
   >
-    <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
+    <LogOut className="h-4.5 w-4.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-105" />
     <span className={sidebarLabelClass}>Logout</span>
   </button>
 </div>
       </aside>
 
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        <header className="relative z-50 h-16 border-b border-gray-200 bg-white/80 backdrop-blur-xl flex items-center justify-between px-6 shadow-sm transition-colors duration-300 dark:border-gray-800 dark:bg-gray-900/80">
+      <div className="flex h-screen min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="relative z-50 flex h-16 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur md:px-6 dark:border-slate-800 dark:bg-slate-900/95">
+          <Link to="/app" className="mr-3 flex items-center gap-2 md:hidden">
+            <img src="/collabsolve-logo.png" alt="CollabSolve" className="h-8 w-8 rounded-md object-cover" />
+            <span className="hidden text-sm font-semibold text-slate-900 sm:inline dark:text-slate-100">CollabSolve</span>
+          </Link>
           {showTopSearch ? (
-  <form onSubmit={handleSearchSubmit} className="flex-1 max-w-2xl">
-    <div className="relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+  <form
+    onSubmit={handleSearchSubmit}
+    className="max-w-2xl flex-1"
+  >
+    <div ref={searchRef} className="relative">
+      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
       <input
         type="text"
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={handleSearchChange}
+        onFocus={() => {
+          if (searchSuggestions.length > 0) {
+            setShowSearchSuggestions(true);
+          }
+        }}
         placeholder="Search by title, description, field, or user..."
-        className="w-full pl-11 pr-20 py-2 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#0ea5e9] focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:ring-blue-900/40"
+        autoComplete="off"
+        className="w-full rounded-md border border-slate-300 bg-white py-2.5 pl-10 pr-20 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
       />
-
-      {searchText && (
-        <button
-          type="button"
-          onClick={() => {
-            setSearchText("");
-
-            const params = new URLSearchParams(searchParams);
-            params.delete("search");
-
-            navigate(`/app?${params.toString()}`);
-          }}
-          className="absolute right-16 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-600"
-        >
-          Clear
-        </button>
-      )}
 
       <button
         type="submit"
-        className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 rounded-md bg-[#0ea5e9] text-white text-xs hover:bg-[#0284c7] transition-colors"
+        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700"
       >
         Search
       </button>
+
+      {showSearchSuggestions &&
+        searchSuggestions.length > 0 && (
+          <div className="absolute left-0 right-0 top-full z-[9999] mt-2 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div className="border-b border-slate-100 px-4 py-2 dark:border-slate-800">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Suggested fields
+              </p>
+            </div>
+
+            <div className="max-h-64 overflow-y-auto py-1">
+              {searchSuggestions.map((field) => (
+                <button
+                  key={field.field_id}
+                  type="button"
+                  onClick={() =>
+                    handleSuggestionSelect(field.field_name)
+                  }
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-blue-950/30 dark:hover:text-blue-300"
+                >
+                  <Search className="h-4 w-4 shrink-0 text-slate-400" />
+
+                  <span>{field.field_name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
     </div>
   </form>
 ) : (
   <div className="flex-1">
-    <h2 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+    <h2 className="text-sm font-medium text-slate-500 dark:text-slate-400">
       CollabSolve Workspace
     </h2>
   </div>
 )}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors dark:hover:bg-gray-800"
+                className="relative rounded-md p-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
               >
-                <Bell className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <Bell className="h-5 w-5 text-slate-600 dark:text-slate-300" />
 
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#0ea5e9] rounded-full text-white text-xs flex items-center justify-center shadow-lg shadow-blue-500/50">
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[11px] font-medium text-white">
                     {unreadCount}
                   </span>
                 )}
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 rounded-xl border border-gray-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-gray-800 dark:bg-gray-900">
-                  <div className="p-4 border-b border-gray-200 flex items-center justify-between dark:border-gray-800">
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                <div className="absolute right-0 z-[9999] mt-2 w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                  <div className="flex items-center justify-between border-b border-slate-200 p-4 dark:border-slate-800">
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                       Notifications
                     </h3>
 
                     {notifications.length > 0 && (
                       <button
                         onClick={handleMarkAllAsRead}
-                        className="text-xs text-[#0ea5e9] hover:underline font-medium"
+                        className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
                       >
                         Mark all read
                       </button>
@@ -463,7 +584,7 @@ const sidebarLabelClass = sidebarCollapsed
                     )}
 
                     {!notificationError && notifications.length === 0 && (
-                      <div className="p-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="p-4 text-sm text-slate-500 dark:text-slate-400">
                         No notifications yet.
                       </div>
                     )}
@@ -472,22 +593,22 @@ const sidebarLabelClass = sidebarCollapsed
                       <button
                         key={notif.notification_id}
                         onClick={() => handleNotificationClick(notif)}
-                        className={`w-full text-left p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors dark:border-gray-800 dark:hover:bg-gray-800 ${
+                        className={`w-full border-b border-slate-100 p-4 text-left transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800 ${
                           notif.is_read === 0 || notif.is_read === false
-                            ? "bg-blue-50/50 dark:bg-blue-950/30"
+                            ? "bg-blue-50/60 dark:bg-blue-950/20"
                             : ""
                         }`}
                       >
-                        <p className="text-sm mb-1 text-gray-900 dark:text-gray-100">
+                        <p className="mb-1 text-sm leading-5 text-slate-900 dark:text-slate-100">
                           {notif.message}
                         </p>
 
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {new Date(notif.created_at).toLocaleDateString()}
                           </span>
 
-                          <span className="text-xs text-[#0ea5e9] capitalize">
+                          <span className="text-xs capitalize text-blue-600 dark:text-blue-400">
                             {notif.type}
                           </span>
                         </div>
@@ -495,13 +616,13 @@ const sidebarLabelClass = sidebarCollapsed
                     ))}
                   </div>
 
-                  <div className="p-3 border-t border-gray-200 text-center bg-gray-50 dark:border-gray-800 dark:bg-gray-950">
+                  <div className="border-t border-slate-200 bg-slate-50 p-3 text-center dark:border-slate-800 dark:bg-slate-950">
                     <button
                       onClick={() => {
                         setShowNotifications(false);
                         navigate("/app/notifications");
                       }}
-                      className="text-sm text-[#0ea5e9] hover:underline font-medium"
+                      className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
                     >
                     View all notifications
                     </button>
@@ -511,48 +632,48 @@ const sidebarLabelClass = sidebarCollapsed
             </div>
 
             <div
-              className="relative pl-4 border-l border-gray-200 dark:border-gray-800"
+              className="relative border-l border-slate-200 pl-3 dark:border-slate-800"
               ref={userMenuRef}
             >
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors pr-2 py-1 dark:hover:bg-gray-800"
+                className="flex items-center gap-2 rounded-md py-1 pl-1 pr-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <img
                   src={getProfileImageUrl(currentUser?.profile_picture)}
                   alt="User"
-                  className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
+                  className="h-8 w-8 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"
                 />
 
                 <div className="text-sm text-left">
-                  <div className="font-medium text-gray-900 dark:text-gray-100">
+                  <div className="font-medium text-slate-900 dark:text-slate-100">
                     {displayName}
                   </div>
 
-                  <div className="text-gray-500 text-xs capitalize dark:text-gray-400">
+                  <div className="text-slate-500 text-xs capitalize dark:text-slate-400">
                     {currentUser?.role || "User"}
                   </div>
                 </div>
 
                 <ChevronDown
-                  className={`w-4 h-4 text-gray-500 transition-transform dark:text-gray-400 ${
+                  className={`h-4 w-4 text-slate-500 transition-transform dark:text-slate-400 ${
                     showUserMenu ? "rotate-180" : ""
                   }`}
                 />
               </button>
 
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-gray-200 bg-white backdrop-blur-xl shadow-xl overflow-hidden z-[9999] dark:border-gray-800 dark:bg-gray-900">
-                  <div className="p-4 border-b border-gray-200 bg-gradient-to-br from-blue-50 to-purple-50 dark:border-gray-800 dark:from-gray-800 dark:to-gray-900">
-                    <div className="font-semibold text-gray-900 dark:text-gray-100">
+                <div className="absolute right-0 z-[9999] mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900">
+                  <div className="border-b border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                       {displayName}
                     </div>
 
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
                       @{currentUser?.email?.split("@")[0] || "user"}
                     </div>
 
-                    <div className="mt-2 text-xs text-[#0ea5e9] dark:text-[#38bdf8] font-medium capitalize">
+                    <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium capitalize">
                       {currentUser?.role || "User"}
                     </div>
                   </div>
@@ -560,29 +681,29 @@ const sidebarLabelClass = sidebarCollapsed
                   <div className="py-2">
                     <Link
                       to={userProfilePath}
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                       onClick={() => setShowUserMenu(false)}
                     >
-                      <User className="w-4 h-4" />
+                      <User className="h-4 w-4" />
                       <span>View Profile</span>
                     </Link>
 
                     <Link
                       to="/app/settings"
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                       onClick={() => setShowUserMenu(false)}
                     >
-                      <Settings className="w-4 h-4" />
+                      <Settings className="h-4 w-4" />
                       <span>Settings</span>
                     </Link>
                   </div>
 
-                  <div className="border-t border-gray-200 dark:border-gray-800">
+                  <div className="border-t border-gray-200 dark:border-slate-800">
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-red-500 dark:hover:bg-red-950/40"
+                      className="flex w-full items-center gap-3 px-4 py-3 text-sm text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
                     >
-                      <LogOut className="w-4 h-4" />
+                      <LogOut className="h-4 w-4" />
                       <span>Logout</span>
                     </button>
                   </div>
@@ -593,7 +714,7 @@ const sidebarLabelClass = sidebarCollapsed
           </div>
         </header>
 
-        <main className="relative z-0 flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+        <main className="relative z-0 flex-1 overflow-y-auto bg-slate-50 transition-colors duration-300 dark:bg-slate-950">
   <div
     key={location.pathname}
     className="animate-[fadeIn_0.25s_ease-in-out]"

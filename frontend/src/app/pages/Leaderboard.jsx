@@ -60,14 +60,22 @@ export function Leaderboard() {
 
   const getBadgeColor = (badge) => {
     const colors = {
-      Expert: "from-[#a855f7] to-[#0ea5e9]",
-      Mentor: "from-[#f59e0b] to-[#0ea5e9]",
-      Collaborator: "from-[#0ea5e9] to-[#a855f7]",
-      "Problem Solver": "from-[#06b6d4] to-[#10b981]",
-      Beginner: "from-[#0ea5e9] to-[#06b6d4]",
+      Expert:
+        "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-300",
+      Mentor:
+        "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300",
+      Collaborator:
+        "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300",
+      "Problem Solver":
+        "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300",
+      Beginner:
+        "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
     };
 
-    return colors[badge] || "from-[#0ea5e9] to-[#06b6d4]";
+    return (
+      colors[badge] ||
+      "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+    );
   };
 
   const mostActive = topUsers[0]?.full_name || "No users yet";
@@ -89,25 +97,25 @@ export function Leaderboard() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto text-gray-900 dark:text-gray-100">
-      <div className="mb-8">
-        <h1 className="text-3xl mb-2 text-gray-900 dark:text-gray-100">
+    <div className="mx-auto max-w-6xl p-5 lg:p-7 text-slate-900 dark:text-slate-100">
+      <div className="mb-6">
+        <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
           Leaderboard
         </h1>
 
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Top contributors in the research community
         </p>
       </div>
 
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex gap-2">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setTimeframe("week")}
-            className={`px-4 py-2 rounded-lg transition-all ${
+            className={`rounded-md border px-3.5 py-2 text-sm font-medium transition-colors ${
               timeframe === "week"
-                ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border border-[#0ea5e9] text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                : "border border-gray-200 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300"
+                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             }`}
           >
             This Week
@@ -115,10 +123,10 @@ export function Leaderboard() {
 
           <button
             onClick={() => setTimeframe("month")}
-            className={`px-4 py-2 rounded-lg transition-all ${
+            className={`rounded-md border px-3.5 py-2 text-sm font-medium transition-colors ${
               timeframe === "month"
-                ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border border-[#0ea5e9] text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                : "border border-gray-200 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300"
+                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             }`}
           >
             This Month
@@ -126,24 +134,24 @@ export function Leaderboard() {
 
           <button
             onClick={() => setTimeframe("all")}
-            className={`px-4 py-2 rounded-lg transition-all ${
+            className={`rounded-md border px-3.5 py-2 text-sm font-medium transition-colors ${
               timeframe === "all"
-                ? "bg-gradient-to-r from-[#0ea5e9]/10 to-[#a855f7]/10 border border-[#0ea5e9] text-[#0ea5e9] shadow-sm dark:from-[#0ea5e9]/20 dark:to-[#a855f7]/20 dark:text-[#38bdf8]"
-                : "border border-gray-200 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300"
+                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             }`}
           >
             All Time
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-          <TrendingUp className="w-4 h-4" />
+        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <TrendingUp className="h-4 w-4" />
           {isSwitching ? "Updating..." : "Updated from database"}
         </div>
       </div>
 
       {loading && (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-500 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
           Loading leaderboard...
         </div>
       )}
@@ -153,7 +161,7 @@ export function Leaderboard() {
       </div>
 
       {!loading && !error && topUsers.length === 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm text-slate-500 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
           No leaderboard data available yet.
         </div>
       )}
@@ -164,76 +172,76 @@ export function Leaderboard() {
             isSwitching ? "opacity-50 scale-[0.99]" : "opacity-100 scale-100"
           }`}
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-3">
             {topUsers.slice(0, 3).map((user, i) => (
               <div
                 key={user.user_id}
-                className={`rounded-xl border overflow-hidden shadow-lg ${
+                className={`overflow-hidden rounded-xl border bg-white shadow-sm dark:bg-slate-900 ${
                   i === 0
-                    ? "border-yellow-300 bg-gradient-to-br from-yellow-50 to-orange-50 dark:border-yellow-900/70 dark:from-yellow-950/40 dark:to-orange-950/30"
+                    ? "border-amber-300 dark:border-amber-900/70"
                     : i === 1
-                    ? "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 dark:border-gray-700 dark:from-gray-800 dark:to-gray-900"
-                    : "border-orange-300 bg-gradient-to-br from-orange-50 to-red-50 dark:border-orange-900/70 dark:from-orange-950/40 dark:to-red-950/30"
+                    ? "border-slate-300 dark:border-slate-700"
+                    : "border-orange-300 dark:border-orange-900/70"
                 }`}
               >
                 <div
-                  className={`h-2 ${
+                  className={`h-1 ${
                     i === 0
-                      ? "bg-gradient-to-r from-yellow-400 to-orange-500"
+                      ? "bg-amber-400"
                       : i === 1
-                      ? "bg-gradient-to-r from-gray-300 to-gray-400"
-                      : "bg-gradient-to-r from-orange-400 to-red-400"
+                      ? "bg-slate-300 dark:bg-slate-600"
+                      : "bg-orange-400"
                   }`}
                 />
 
-                <div className="p-6 text-center">
+                <div className="p-5 text-center">
                   <div className="relative inline-block mb-4">
                     <img
                       src={user.avatar}
                       alt={user.full_name}
-                      className="w-20 h-20 rounded-full object-cover ring-4 ring-white dark:ring-gray-800"
+                      className="h-16 w-16 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700"
                     />
 
                     <div
-                      className={`absolute -top-2 -right-2 w-8 h-8 rounded-full ${
+                      className={`absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${
                         i === 0
-                          ? "bg-gradient-to-br from-yellow-400 to-orange-500"
+                          ? "bg-amber-400 text-white"
                           : i === 1
-                          ? "bg-gradient-to-br from-gray-300 to-gray-400"
-                          : "bg-gradient-to-br from-orange-400 to-red-400"
-                      } flex items-center justify-center text-white shadow-lg`}
+                          ? "bg-slate-300 text-slate-700 dark:bg-slate-600 dark:text-slate-100"
+                          : "bg-orange-400 text-white"
+                      }`}
                     >
                       {i === 0 ? <Trophy className="w-4 h-4" /> : i + 1}
                     </div>
                   </div>
 
-                  <h3 className="text-xl mb-1 text-gray-900 dark:text-gray-100">
+                  <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-slate-100">
                     {user.full_name}
                   </h3>
 
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">
                     @{user.username}
                   </p>
 
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs bg-gradient-to-r ${getBadgeColor(
+                      className={`rounded-full border px-2.5 py-1 text-xs font-medium ${getBadgeColor(
                         user.badge
-                      )} text-white shadow-sm`}
+                      )}`}
                     >
                       {user.badge}
                     </span>
 
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                       Level {user.level}
                     </span>
                   </div>
 
-                  <div className="text-2xl bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] bg-clip-text text-transparent">
+                  <div className="text-xl font-semibold text-slate-900 dark:text-slate-100">
                     {user.reputation.toLocaleString()}
                   </div>
 
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
                     reputation
                   </div>
                 </div>
@@ -241,36 +249,36 @@ export function Leaderboard() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-800/70">
-                    <th className="px-6 py-4 text-left text-sm text-gray-600 dark:text-gray-400">
+                  <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-800/50">
+                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Rank
                     </th>
-                    <th className="px-6 py-4 text-left text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       User
                     </th>
-                    <th className="px-6 py-4 text-left text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Badge
                     </th>
-                    <th className="px-6 py-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Level
                     </th>
-                    <th className="px-6 py-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Reputation
                     </th>
-                    <th className="px-6 py-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Solutions
                     </th>
-                    <th className="px-6 py-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Verified
                     </th>
-                    <th className="px-6 py-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Badges
                     </th>
-                    <th className="px-6 py-4 text-right text-sm text-gray-600 dark:text-gray-400">
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       Status
                     </th>
                   </tr>
@@ -280,9 +288,9 @@ export function Leaderboard() {
                   {topUsers.map((user, i) => (
                     <tr
                       key={user.user_id}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors dark:border-gray-800 dark:hover:bg-gray-800/70"
+                      className="border-b border-slate-100 transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50"
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           {i < 3 ? (
                             <Trophy
@@ -302,62 +310,62 @@ export function Leaderboard() {
                         </div>
                       </td>
 
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <img
                             src={user.avatar}
                             alt={user.full_name}
-                            className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
+                            className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"
                           />
 
                           <div>
-                            <div className="text-gray-900 dark:text-gray-100">
+                            <div className="text-sm font-medium text-slate-900 dark:text-slate-100">
                               {user.full_name}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                            <div className="text-xs text-slate-500 dark:text-slate-400">
                               @{user.username}
                             </div>
                           </div>
                         </div>
                       </td>
 
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <span
-                          className={`inline-block px-3 py-1 rounded-full text-xs bg-gradient-to-r ${getBadgeColor(
+                          className={`inline-block rounded-full border px-2.5 py-1 text-xs font-medium ${getBadgeColor(
                             user.badge
-                          )} text-white shadow-sm`}
+                          )}`}
                         >
                           {user.badge}
                         </span>
                       </td>
 
-                      <td className="px-6 py-4 text-right">
-                        <span className="text-[#0ea5e9] dark:text-[#38bdf8] font-medium">
+                      <td className="px-4 py-3 text-right">
+                        <span className="font-medium text-blue-600 dark:text-blue-400">
                           Level {user.level}
                         </span>
                       </td>
 
-                      <td className="px-6 py-4 text-right">
-                        <span className="bg-gradient-to-r from-[#0ea5e9] to-[#a855f7] bg-clip-text text-transparent font-medium">
+                      <td className="px-4 py-3 text-right">
+                        <span className="font-semibold text-slate-900 dark:text-slate-100">
                           {user.reputation.toLocaleString()}
                         </span>
                       </td>
 
-                      <td className="px-6 py-4 text-right text-gray-900 dark:text-gray-100">
+                      <td className="px-4 py-3 text-right text-sm text-slate-700 dark:text-slate-300">
                         {user.solutions || 0}
                       </td>
 
-                      <td className="px-6 py-4 text-right text-green-600 dark:text-green-400 font-medium">
+                      <td className="px-4 py-3 text-right text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         {user.verifiedSolutions || 0}
                       </td>
 
-                      <td className="px-6 py-4 text-right text-gray-900 dark:text-gray-100">
+                      <td className="px-4 py-3 text-right text-sm text-slate-700 dark:text-slate-300">
                         {user.badge_count || 0}
                       </td>
 
-                      <td className="px-6 py-4 text-right">
-                        <span className="flex items-center justify-end gap-1 text-green-600 dark:text-green-400 font-medium">
-                          <TrendingUp className="w-4 h-4" />
+                      <td className="px-4 py-3 text-right">
+                        <span className="flex items-center justify-end gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                          <TrendingUp className="h-4 w-4" />
                           {user.trend}
                         </span>
                       </td>
@@ -368,52 +376,52 @@ export function Leaderboard() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0ea5e9] to-[#06b6d4] flex items-center justify-center shadow-lg shadow-blue-500/20">
-                  <Zap className="w-5 h-5 text-white" />
+          <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300">
+                  <Zap className="h-4 w-4" />
                 </div>
 
                 <div>
-                  <h3 className="text-gray-900 dark:text-gray-100">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                     Most Active
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {mostActive}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#06b6d4] to-[#a855f7] flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                  <Award className="w-5 h-5 text-white" />
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-300">
+                  <Award className="h-4 w-4" />
                 </div>
 
                 <div>
-                  <h3 className="text-gray-900 dark:text-gray-100">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                     Top Contributor
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {topContributor}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#a855f7] to-[#0ea5e9] flex items-center justify-center shadow-lg shadow-purple-500/20">
-                  <Trophy className="w-5 h-5 text-white" />
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-violet-50 text-violet-600 dark:bg-violet-950/30 dark:text-violet-300">
+                  <Trophy className="h-4 w-4" />
                 </div>
 
                 <div>
-                  <h3 className="text-gray-900 dark:text-gray-100">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                     Rising Star
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {risingStar}
                   </p>
                 </div>
