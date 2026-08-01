@@ -1,344 +1,359 @@
 import { Link } from "react-router-dom";
-import { AppAlert } from "../components/AppAlert";
 import {
-  Users,
-  Zap,
-  Trophy,
-  Search,
-  BookOpen,
   ArrowRight,
+  BookOpen,
+  CheckCircle,
   FileText,
+  MessageSquare,
+  Search,
+  ShieldCheck,
+  Trophy,
 } from "lucide-react";
+
+
+const sampleProblems = [
+  {
+    title: "How can we improve MQTT reliability in unstable networks?",
+    description:
+      "Looking for practical approaches to retry logic, offline buffering, and message delivery guarantees for IoT devices.",
+    field: "IoT",
+    difficulty: "Intermediate",
+    solutions: 8,
+    status: "Open",
+  },
+  {
+    title: "Best approach for detecting similar research problems",
+    description:
+      "Comparing keyword matching, embeddings, and vector search for identifying previously discussed problems.",
+    field: "Machine Learning",
+    difficulty: "Advanced",
+    solutions: 5,
+    status: "Open",
+  },
+  {
+    title: "Designing a secure CI/CD pipeline for a student project",
+    description:
+      "Need guidance on Docker image scanning, secrets management, deployment approvals, and rollback strategy.",
+    field: "DevOps",
+    difficulty: "Intermediate",
+    solutions: 12,
+    status: "Solved",
+  },
+];
+
+const workflow = [
+  {
+    number: "01",
+    title: "Post a clear problem",
+    description:
+      "Share the context, field, difficulty, attachments, and the exact challenge you need help solving.",
+  },
+  {
+    number: "02",
+    title: "Collaborate on solutions",
+    description:
+      "Community members contribute explanations, technical approaches, resources, and supporting files.",
+  },
+  {
+    number: "03",
+    title: "Verify and preserve knowledge",
+    description:
+      "The most useful solution is verified and added to the Knowledge Archive for future users.",
+  },
+];
+
+const principles = [
+  {
+    icon: CheckCircle,
+    title: "Verified solutions",
+    description:
+      "Problem owners can select a final verified solution instead of leaving discussions unresolved.",
+  },
+  {
+    icon: Users,
+    title: "Professional contributors",
+    description:
+      "Profiles show skills, activity, reputation, badges, and verified contributions.",
+  },
+  {
+    icon: BookOpen,
+    title: "Reusable knowledge",
+    description:
+      "Solved problems become searchable references instead of being lost inside old discussions.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Structured collaboration",
+    description:
+      "Fields, difficulty levels, comments, attachments, and verification keep discussions organized.",
+  },
+];
 
 export function LandingPage() {
   return (
-    <div className="min-h-screen overflow-hidden bg-gradient-to-b from-[#eef6ff] via-[#f8fbff] to-[#f3efff] text-slate-900">
-      {/* Background */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#dbeafe_1px,transparent_1px),linear-gradient(to_bottom,#dbeafe_1px,transparent_1px)] bg-[size:80px_80px] opacity-45" />
-
-        <div className="absolute -top-40 left-1/2 h-[560px] w-[820px] -translate-x-1/2 rounded-full bg-blue-200/70 blur-3xl" />
-
-        <div className="absolute top-52 -right-40 h-[460px] w-[460px] rounded-full bg-violet-200/70 blur-3xl" />
-
-        <div className="absolute top-[720px] -left-40 h-[460px] w-[460px] rounded-full bg-cyan-200/70 blur-3xl" />
-
-        <div className="absolute top-[1250px] right-10 h-[420px] w-[420px] rounded-full bg-indigo-200/60 blur-3xl" />
-
-        <div className="absolute bottom-20 left-1/3 h-[460px] w-[460px] rounded-full bg-sky-200/60 blur-3xl" />
-      </div>
-
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-blue-500/20 bg-white">
-              <img
-                src="/collabsolve-logo.png"
-                alt="CollabSolve Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <span className="text-xl font-bold tracking-tight text-slate-950">
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
+          <Link to="/" className="flex items-center gap-2.5">
+            <img
+              src="/collabsolve-logo.png"
+              alt="CollabSolve"
+              className="h-9 w-9 rounded-lg object-cover"
+            />
+            <span className="text-lg font-semibold tracking-tight text-slate-950">
               CollabSolve
             </span>
+          </Link>
+
+          <div className="hidden items-center gap-7 text-sm text-slate-600 md:flex">
+            <a href="#problems" className="transition-colors hover:text-slate-950">
+              Problems
+            </a>
+            <a href="#archive" className="transition-colors hover:text-slate-950">
+              Knowledge Archive
+            </a>
+            <a href="#how-it-works" className="transition-colors hover:text-slate-950">
+              How it Works
+            </a>
+            <a href="#community" className="transition-colors hover:text-slate-950">
+              Community
+            </a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link
               to="/login"
-              className="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-100 transition-all"
+              className="rounded-md px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
             >
-              Login
+              Sign In
             </Link>
 
             <Link
               to="/register"
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-slate-950 hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
-              Get Started
+              Join CollabSolve
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="pt-28 pb-14 px-6">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left content */}
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/80 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm mb-6">
-                <div className="w-5 h-5 rounded-md overflow-hidden flex items-center justify-center bg-white">
-                  <img
-                    src="/collabsolve-logo.png"
-                    alt="CollabSolve Logo"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                Solve problems together. Build knowledge together.
-              </div>
+      <section className="relative overflow-hidden border-b border-slate-200 bg-slate-50">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-0 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-blue-100/70 blur-3xl" />
+          <div className="absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-cyan-100/70 blur-3xl" />
+          <div className="absolute left-0 top-24 h-44 w-44 rounded-full bg-indigo-100/60 blur-3xl" />
+        </div>
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-[1fr_0.95fr] lg:px-8 lg:py-20">
+          <div className="flex flex-col justify-center">
+            <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+              Solve real problems through{" "}
+              <span className="relative inline-block text-blue-700">
+                shared knowledge
+                <span className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-blue-200" />
+              </span>
+            </h1>
 
-              <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.2] tracking-tight mb-8 text-slate-950">
-                Collaborative
-                <span className="block bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-600 bg-clip-text text-transparent pb-2">
-                  Problem Solving
-                </span>
-              </h1>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              CollabSolve connects students, researchers, engineers, and
+              professionals to post problems, exchange solutions, verify useful
+              answers, and build a reusable knowledge archive.
+            </p>
 
-              <p className="text-lg md:text-xl text-slate-600 max-w-xl leading-relaxed mb-9">
-                Where researchers, engineers, and students unite to tackle
-                complex challenges together.
-              </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/register"
+                className="group inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-md"
+              >
+                Join the Community
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/register"
-                  className="group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all"
-                >
-                  Start Collaborating
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-
-                <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center px-7 py-4 rounded-2xl bg-white text-slate-800 font-semibold border border-slate-200 hover:border-blue-200 hover:bg-blue-50 transition-all shadow-sm"
-                >
-                  Explore Platform
-                </Link>
-              </div>
-
-              <div className="mt-8 grid sm:grid-cols-3 gap-4 max-w-xl">
-                <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                  <div className="text-2xl font-extrabold text-blue-600">
-                    10K+
-                  </div>
-                  <div className="text-sm text-slate-500">Active Users</div>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                  <div className="text-2xl font-extrabold text-violet-600">
-                    5K+
-                  </div>
-                  <div className="text-sm text-slate-500">Solved Problems</div>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                  <div className="text-2xl font-extrabold text-cyan-600">
-                    15K+
-                  </div>
-                  <div className="text-sm text-slate-500">Collaborations</div>
-                </div>
-              </div>
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50"
+              >
+                Explore Problems
+              </Link>
             </div>
 
-            {/* Right workflow visual */}
-            <div className="relative">
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-r from-blue-300/50 via-cyan-300/40 to-violet-300/50 blur-2xl" />
-
-              <div className="relative rounded-[2rem] border border-white bg-white/85 backdrop-blur-xl shadow-2xl shadow-slate-900/10 p-6">
-                <div className="rounded-3xl bg-slate-950 p-6 text-white mb-5 overflow-hidden relative">
-                  <div className="absolute -top-20 -right-16 h-48 w-48 rounded-full bg-blue-500/30 blur-3xl" />
-                  <div className="absolute -bottom-20 -left-16 h-48 w-48 rounded-full bg-violet-500/30 blur-3xl" />
-
-                  <div className="relative">
-                    <p className="text-sm text-blue-200 mb-2">
-                      Platform Workflow
-                    </p>
-                    <h3 className="text-2xl font-bold mb-6">
-                      From problem to solution
-                    </h3>
-
-                    <div className="space-y-4">
-                      {[
-                        {
-                            step: "01",
-                            title: "Share your challenge",
-                            desc: "Post your academic or technical problem and explain what support you need.",
-                            color: "bg-blue-500",
-                        },
-                        {
-                          step: "02",
-                          title: "Discuss with contributors",
-                          desc: "Students and experts collaborate together.",
-                          color: "bg-cyan-500",
-                        },
-                        {
-                          step: "03",
-                          title: "Build verified knowledge",
-                          desc: "Useful answers become reusable solutions.",
-                          color: "bg-violet-500",
-                        },
-                      ].map((item, i) => (
-                        <div
-                          key={i}
-                          className="flex gap-4 rounded-2xl bg-white/10 p-4 backdrop-blur-sm"
-                        >
-                          <div
-                            className={`h-11 w-11 shrink-0 rounded-xl ${item.color} flex items-center justify-center text-sm font-bold`}
-                          >
-                            {item.step}
-                          </div>
-
-                          <div>
-                            <h4 className="font-semibold text-white">
-                              {item.title}
-                            </h4>
-                            <p className="text-sm text-slate-300 mt-1">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="rounded-2xl border border-slate-200 bg-blue-50 p-5">
-                    <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-4">
-                      <Users className="w-5 h-5" />
-                    </div>
-                    <h4 className="font-bold text-slate-950">
-                      Team Collaboration
-                    </h4>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Work together on real problems.
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl border border-slate-200 bg-violet-50 p-5">
-                    <div className="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center mb-4">
-                      <Search className="w-5 h-5" />
-                    </div>
-                    <h4 className="font-bold text-slate-950">Smart Discovery</h4>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Find relevant discussions faster.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-500">
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-emerald-600" />
+                Structured problem posts
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-emerald-600" />
+                Verified final solutions
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-emerald-600" />
+                Public reputation profiles
+              </span>
             </div>
           </div>
 
-          {/* Brand trust strip */}
-          <div className="mt-12 rounded-3xl border border-slate-200 bg-white/75 backdrop-blur-xl p-6 shadow-xl shadow-slate-900/5">
-            <div className="grid md:grid-cols-3 gap-6 text-center">
+          {/* Product preview */}
+          <div className="relative">
+            <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-blue-100/70 via-white to-cyan-100/70 blur-2xl" />
+            <div className="relative rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
               <div>
-                <p className="text-sm font-medium text-slate-500 mb-1">
-                  Built for
-                </p>
-                <p className="text-lg font-bold text-slate-950">
-                  Students, Researchers & Developers
-                </p>
+                <div className="text-sm font-semibold text-slate-900">
+                  Open Problems
+                </div>
+                <div className="text-xs text-slate-500">
+                  Recent challenges from the community
+                </div>
               </div>
 
-              <div className="md:border-x border-slate-200">
-                <p className="text-sm font-medium text-slate-500 mb-1">
-                  Focused on
-                </p>
-                <p className="text-lg font-bold text-slate-950">
-                  Practical Problem Solving
-                </p>
+              <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600">
+                Workspace preview
+              </span>
+            </div>
+
+            <div className="p-4">
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <div className="rounded-md border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-400">
+                  Search problems, fields, or contributors
+                </div>
               </div>
 
-              <div>
-                <p className="text-sm font-medium text-slate-500 mb-1">
-                  Powered by
-                </p>
-                <p className="text-lg font-bold text-slate-950">
-                  Collaboration & Knowledge
-                </p>
+              <div className="space-y-3">
+                {sampleProblems.slice(0, 2).map((problem) => (
+                  <div
+                    key={problem.title}
+                    className="rounded-lg border border-slate-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-sm font-semibold leading-6 text-slate-900">
+                          {problem.title}
+                        </h3>
+                        <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600">
+                          {problem.description}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`rounded-md border px-2 py-1 text-xs font-medium ${
+                          problem.status === "Solved"
+                            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                            : "border-blue-200 bg-blue-50 text-blue-700"
+                        }`}
+                      >
+                        {problem.status}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-600">
+                        {problem.field}
+                      </span>
+                      <span className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600">
+                        {problem.difficulty}
+                      </span>
+                      <span className="ml-auto flex items-center gap-1 text-xs text-slate-500">
+                        <MessageSquare className="h-3.5 w-3.5" />
+                        {problem.solutions} solutions
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
+
+              <div className="mt-4 flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-100 text-emerald-700">
+                    <CheckCircle className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-emerald-900">
+                      Verified solution selected
+                    </div>
+                    <div className="text-xs text-emerald-700">
+                      Added to the Knowledge Archive
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 px-6 bg-gradient-to-b from-white/60 via-blue-50/70 to-violet-50/60">
-        <div className="container mx-auto max-w-7xl">
-          <div className="max-w-2xl mx-auto text-center mb-10">
-            <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 mb-4">
-              Platform Features
+      {/* Problems */}
+      <section id="problems" className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-600">
+                Problem discovery
+              </span>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+                Problems waiting for solutions
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                Explore structured challenges, understand the context, and contribute
+                a solution that helps the wider community.
+              </p>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 mb-4">
-              Why CollabSolve?
-            </h2>
-
-            <p className="text-lg text-slate-600">
-              A complete problem-solving workspace for students, researchers, and developers to collaborate, verify solutions, and grow shared knowledge.
-            </p>
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+            >
+              View all problems
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-7">
-            {[
-              {
-                icon: Users,
-                title: "Collaborative",
-                desc: "Work together with experts worldwide",
-                color: "bg-blue-100 text-blue-600",
-                line: "from-blue-500 to-cyan-400",
-              },
-              {
-                icon: Zap,
-                title: "Real-time",
-                desc: "Instant discussions and updates",
-                color: "bg-violet-100 text-violet-600",
-                line: "from-violet-500 to-fuchsia-400",
-              },
-              {
-                icon: Trophy,
-                title: "Gamified",
-                desc: "Earn reputation and achievements",
-                color: "bg-amber-100 text-amber-600",
-                line: "from-amber-400 to-orange-400",
-              },
-              {
-                icon: Search,
-                title: "Smart Search",
-                desc: "AI-powered recommendations",
-                color: "bg-cyan-100 text-cyan-600",
-                line: "from-cyan-500 to-blue-400",
-              },
-              {
-                icon: BookOpen,
-                title: "Knowledge Base",
-                desc: "Access thousands of solutions",
-                color: "bg-emerald-100 text-emerald-600",
-                line: "from-emerald-500 to-cyan-400",
-              },
-              {
-                icon: FileText,
-                title: "Advanced Tools",
-                desc: "Rich editor, file uploads, datasets",
-                color: "bg-fuchsia-100 text-fuchsia-600",
-                line: "from-fuchsia-500 to-violet-500",
-              },
-            ].map((feature, i) => (
+          <div className="grid gap-4 lg:grid-cols-3">
+            {sampleProblems.map((problem) => (
               <div
-                key={i}
-                className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-7 shadow-lg shadow-slate-900/5 hover:shadow-2xl hover:shadow-slate-900/10 hover:-translate-y-1 transition-all"
+                key={problem.title}
+                className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-md"
               >
-                <div
-                  className={`absolute top-0 left-0 h-1 w-full bg-gradient-to-r ${feature.line}`}
-                />
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-base font-semibold leading-6 text-slate-900">
+                    {problem.title}
+                  </h3>
 
-                <div
-                  className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}
-                >
-                  <feature.icon className="w-7 h-7" />
+                  <span
+                    className={`rounded-md border px-2 py-1 text-xs font-medium ${
+                      problem.status === "Solved"
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                        : "border-blue-200 bg-blue-50 text-blue-700"
+                    }`}
+                  >
+                    {problem.status}
+                  </span>
                 </div>
 
-                <h3 className="text-xl font-bold mb-2 text-slate-950">
-                  {feature.title}
-                </h3>
-
-                <p className="text-slate-600 leading-relaxed">
-                  {feature.desc}
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                  {problem.description}
                 </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600">
+                    {problem.field}
+                  </span>
+                  <span className="rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-600">
+                    {problem.difficulty}
+                  </span>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4 text-xs text-slate-500">
+                  <span className="flex items-center gap-1">
+                    <MessageSquare className="h-4 w-4" />
+                    {problem.solutions} solutions
+                  </span>
+                  <span>Updated recently</span>
+                </div>
               </div>
             ))}
           </div>
@@ -346,133 +361,274 @@ export function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="py-16 px-6 bg-gradient-to-b from-violet-50/40 via-white/70 to-cyan-50/50">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <div className="inline-flex rounded-full bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 mb-4">
-                How it works
-              </div>
+      <section id="how-it-works" className="border-y border-slate-200 bg-white py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-600">
+              How CollabSolve works
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+              From a problem to reusable knowledge
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Every useful discussion should lead to clarity, verification, and
+              knowledge that future users can find again.
+            </p>
+          </div>
 
-              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-950 mb-5">
-                Turn questions into shared knowledge.
-              </h2>
-
-              <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                CollabSolve helps users move from confusion to clarity through
-                structured discussion, contribution, and solution sharing.
-              </p>
-
-              <Link
-                to="/register"
-                className="group inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-slate-950 text-white font-semibold hover:bg-slate-800 transition-all shadow-lg"
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {workflow.map((step) => (
+              <div
+                key={step.number}
+                className="rounded-xl border border-slate-200 bg-white p-5"
               >
-                Join CollabSolve
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-sm font-semibold text-blue-700">
+                  {step.number}
+                </div>
+                <h3 className="mt-4 text-base font-semibold text-slate-900">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="space-y-5">
+      {/* Archive */}
+      <section id="archive" className="bg-slate-50 py-16">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+          <div className="flex flex-col justify-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-600">
+              Knowledge Archive
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+              Verified knowledge that stays useful
+            </h2>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600">
+              Solved problems and their verified solutions are preserved in a
+              searchable archive, helping future users learn from previous
+              discussions instead of solving the same problem again.
+            </p>
+
+            <div className="mt-6 space-y-3">
               {[
-                {
-                  number: "01",
-                  title: "Share or discover a challenge",
-                  desc: "Post an academic or technical problem, or explore existing challenges already discussed by the community.",
-                },
-                {
-                  number: "02",
-                  title: "Collaborate through discussion",
-                  desc: "The community can contribute ideas, resources, and possible solutions.",
-                },
-                {
-                  number: "03",
-                  title: "Build a reusable knowledge base",
-                  desc: "Solved problems become helpful references for future users.",
-                },
-              ].map((step, i) => (
-                <div
-                  key={i}
-                  className="rounded-3xl border border-slate-200 bg-white/85 p-6 shadow-lg shadow-slate-900/5 hover:-translate-y-1 transition-all"
-                >
-                  <div className="flex gap-5">
-                    <div className="h-12 w-12 shrink-0 rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 text-white flex items-center justify-center font-bold">
-                      {step.number}
-                    </div>
-
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-950 mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-slate-600 leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
+                "Searchable solved problems",
+                "Verified final solutions",
+                "Supporting files and attachments",
+                "Contributor and verification history",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 text-sm text-slate-700">
+                  <CheckCircle className="h-4 w-4 text-emerald-600" />
+                  {item}
                 </div>
               ))}
+            </div>
+
+            <Link
+              to="/login"
+              className="mt-8 inline-flex w-fit items-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              Explore the Archive
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex items-start gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-emerald-50 text-emerald-600">
+                <CheckCircle className="h-4 w-4" />
+              </div>
+
+              <div className="flex-1">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Improving telemetry reliability for ESP32 devices
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Problem by A. Perera · Verified recently
+                    </p>
+                  </div>
+
+                  <span className="rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+                    Intermediate
+                  </span>
+                </div>
+
+                <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    <FileText className="h-4 w-4" />
+                    Problem summary
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                    Devices frequently lose connectivity and telemetry messages
+                    are missed during unstable network conditions.
+                  </p>
+                </div>
+
+                <div className="mt-4 rounded-lg border-l-4 border-l-emerald-500 border-y border-r border-slate-200 bg-white p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
+                    <CheckCircle className="h-4 w-4" />
+                    Final verified solution
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                    Use local message buffering, exponential backoff, QoS-aware
+                    MQTT delivery, and a server-side deduplication strategy.
+                  </p>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-slate-100 pt-4 text-xs text-slate-500">
+                  <span>12 solution likes</span>
+                  <span>3 attached documents</span>
+                  <span>Verified by problem owner</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-<section className="py-16 px-6 bg-gradient-to-br from-cyan-50/40 via-blue-50/50 to-violet-50/50">
-  <div className="container mx-auto max-w-5xl">
-    <div className="relative">
-      {/* Outer glowing border like workflow card */}
-      <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-r from-blue-300/50 via-cyan-300/40 to-violet-300/50 blur-2xl" />
-
-      {/* Main CTA card */}
-      <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white/85 backdrop-blur-xl px-8 py-12 text-center shadow-2xl shadow-slate-900/10">
-        {/* Soft inner background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/60 to-violet-50/50" />
-
-        {/* Light professional glows */}
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-200/40 blur-3xl" />
-        <div className="absolute -bottom-28 right-0 h-72 w-72 rounded-full bg-violet-200/35 blur-3xl" />
-        <div className="absolute top-1/2 -left-28 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-200/35 blur-3xl" />
-
-        <div className="relative mx-auto max-w-3xl">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl overflow-hidden bg-white shadow-xl shadow-blue-300/40">
-            <img
-              src="/collabsolve-logo.png"
-              alt="CollabSolve Logo"
-              className="w-full h-full object-cover"
-            />
+      {/* Principles */}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-600">
+              Platform quality
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+              Designed for useful collaboration
+            </h2>
           </div>
 
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm">
-            <span className="h-2 w-2 rounded-full bg-cyan-500" />
-            Start building knowledge together
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {principles.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-xl border border-slate-200 bg-white p-5"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-blue-600">
+                  <item.icon className="h-4 w-4" />
+                </div>
+                <h3 className="mt-4 text-base font-semibold text-slate-900">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {item.description}
+                </p>
+              </div>
+            ))}
           </div>
-
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-5 text-slate-950">
-            Ready to Start?
-          </h2>
-
-          <p className="text-lg md:text-xl text-slate-600 mb-9 max-w-2xl mx-auto leading-relaxed">
-            Join a community where students, researchers, and developers solve real challenges and turn verified solutions into shared knowledge.
-          </p>
-
-          <Link
-            to="/register"
-            className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#1e3a8a] text-white font-bold hover:-translate-y-1 hover:bg-[#1d4ed8] hover:shadow-2xl hover:shadow-blue-300/50 transition-all"
-          >
-          Create Free Account
-          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
-      <footer className="border-t border-slate-200 py-6 px-6 bg-gradient-to-r from-white via-blue-50 to-violet-50">
-        <div className="container mx-auto text-center text-slate-500">
-          <p>
-            &copy; 2026 CollabSolve. Building the future of collaborative
-            research.
-          </p>
+      {/* CTA */}
+      <section className="border-t border-slate-200 bg-white py-16">
+        <div className="mx-auto max-w-5xl px-5 lg:px-8">
+          <div className="rounded-xl border border-blue-200 bg-blue-50 px-6 py-10 text-center sm:px-10">
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600 text-white">
+              <Trophy className="h-5 w-5" />
+            </div>
+
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+              Have a problem worth solving?
+            </h2>
+
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600">
+              Share it with a community of learners, researchers, engineers, and
+              professionals who are ready to contribute.
+            </p>
+
+            <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                to="/register"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              >
+                Create Free Account
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+              >
+                Explore the Community
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-slate-950 text-slate-300">
+        <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+          <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+            <div>
+              <div className="flex items-center gap-2.5">
+                <img
+                  src="/collabsolve-logo.png"
+                  alt="CollabSolve"
+                  className="h-9 w-9 rounded-lg object-cover"
+                />
+                <span className="text-lg font-semibold text-white">
+                  CollabSolve
+                </span>
+              </div>
+
+              <p className="mt-4 max-w-sm text-sm leading-6 text-slate-400">
+                A collaborative problem-solving platform for sharing challenges,
+                developing solutions, and preserving verified knowledge.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-white">Platform</h3>
+              <div className="mt-4 space-y-3 text-sm text-slate-400">
+                <a href="#problems" className="block hover:text-white">
+                  Problems
+                </a>
+                <a href="#archive" className="block hover:text-white">
+                  Knowledge Archive
+                </a>
+                <a href="#community" className="block hover:text-white">
+                  Contributors
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-white">Community</h3>
+              <div className="mt-4 space-y-3 text-sm text-slate-400">
+                <a href="#how-it-works" className="block hover:text-white">
+                  How it Works
+                </a>
+                <Link to="/login" className="block hover:text-white">
+                  Leaderboard
+                </Link>
+                <Link to="/register" className="block hover:text-white">
+                  Join Community
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-white">Account</h3>
+              <div className="mt-4 space-y-3 text-sm text-slate-400">
+                <Link to="/login" className="block hover:text-white">
+                  Sign In
+                </Link>
+                <Link to="/register" className="block hover:text-white">
+                  Register
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 border-t border-slate-800 pt-6 text-sm text-slate-500">
+            © 2026 CollabSolve. Collaborative problem solving and verified knowledge.
+          </div>
         </div>
       </footer>
     </div>
