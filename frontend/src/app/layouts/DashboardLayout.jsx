@@ -20,6 +20,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { getCurrentUser, logoutUser } from "../services/authService";
 import API_BASE_URL from "../services/api";
+import { getFields } from "../services/fieldService";
 import {
   getNotifications,
   markNotificationAsRead,
@@ -36,10 +37,14 @@ export function DashboardLayout() {
   const [notifications, setNotifications] = useState([]);
   const [notificationError, setNotificationError] = useState("");
   const [searchText, setSearchText] = useState(searchParams.get("search") || "");
+  const [searchFields, setSearchFields] = useState([]);
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const notificationsRef = useRef(null);
   const userMenuRef = useRef(null);
+  const searchRef = useRef(null);
 
   const currentUser = getCurrentUser();
 
@@ -68,26 +73,58 @@ setNotifications(notificationList);
   }, []);
 
   useEffect(() => {
+  const fetchSearchFields = async () => {
+    try {
+      const data = await getFields();
+
+      const fieldList = Array.isArray(data)
+        ? data
+        : data.fields || [];
+
+      setSearchFields(fieldList);
+    } catch (error) {
+      console.error("Failed to load search suggestions:", error);
+      setSearchFields([]);
+    }
+  };
+
+  fetchSearchFields();
+}, []);
+
+  useEffect(() => {
     setSearchText(searchParams.get("search") || "");
   }, [searchParams]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        notificationsRef.current &&
-        !notificationsRef.current.contains(event.target)
-      ) {
-        setShowNotifications(false);
-      }
+  const handleClickOutside = (event) => {
+    if (
+      notificationsRef.current &&
+      !notificationsRef.current.contains(event.target)
+    ) {
+      setShowNotifications(false);
+    }
 
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setShowUserMenu(false);
-      }
-    };
+    if (
+      userMenuRef.current &&
+      !userMenuRef.current.contains(event.target)
+    ) {
+      setShowUserMenu(false);
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(event.target)
+    ) {
+      setShowSearchSuggestions(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   const isActive = (path) => {
     if (path === "/app" && location.pathname === "/app") return true;
@@ -100,8 +137,44 @@ setNotifications(notificationList);
     navigate("/login");
   };
 
-  const handleSearchSubmit = (e) => {
-  e.preventDefault();
+  const handleSearchChange = (event) => {
+  const value = event.target.value;
+
+  setSearchText(value);
+
+  const trimmedValue = value.trim().toLowerCase();
+
+  if (!trimmedValue) {
+    setSearchSuggestions([]);
+    setShowSearchSuggestions(false);
+    return;
+  }
+
+  const matchingFields = searchFields
+    .filter((field) =>
+      field.field_name
+        ?.toLowerCase()
+        .includes(trimmedValue)
+    )
+    .slice(0, 5);
+
+  setSearchSuggestions(matchingFields);
+  setShowSearchSuggestions(matchingFields.length > 0);
+};
+
+const handleSuggestionSelect = (fieldName) => {
+  setSearchText(fieldName);
+  setSearchSuggestions([]);
+  setShowSearchSuggestions(false);
+
+  const params = new URLSearchParams(searchParams);
+  params.set("search", fieldName);
+
+  navigate(`/app?${params.toString()}`);
+};
+
+  const handleSearchSubmit = (event) => {
+  event.preventDefault();
 
   const trimmedSearch = searchText.trim();
   const params = new URLSearchParams(searchParams);
@@ -112,6 +185,7 @@ setNotifications(notificationList);
     params.delete("search");
   }
 
+  setShowSearchSuggestions(false);
   navigate(`/app?${params.toString()}`);
 };
 
@@ -405,34 +479,26 @@ const sidebarLabelClass = sidebarCollapsed
             <span className="hidden text-sm font-semibold text-slate-900 sm:inline dark:text-slate-100">CollabSolve</span>
           </Link>
           {showTopSearch ? (
-  <form onSubmit={handleSearchSubmit} className="max-w-2xl flex-1">
-    <div className="relative">
+  <form
+    onSubmit={handleSearchSubmit}
+    className="max-w-2xl flex-1"
+  >
+    <div ref={searchRef} className="relative">
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
       <input
         type="text"
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={handleSearchChange}
+        onFocus={() => {
+          if (searchSuggestions.length > 0) {
+            setShowSearchSuggestions(true);
+          }
+        }}
         placeholder="Search by title, description, field, or user..."
+        autoComplete="off"
         className="w-full rounded-md border border-slate-300 bg-white py-2.5 pl-10 pr-20 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:ring-blue-900/40"
       />
-
-      {searchText && (
-        <button
-          type="button"
-          onClick={() => {
-            setSearchText("");
-
-            const params = new URLSearchParams(searchParams);
-            params.delete("search");
-
-            navigate(`/app?${params.toString()}`);
-          }}
-          className="absolute right-16 top-1/2 -translate-y-1/2 text-xs text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
-        >
-          Clear
-        </button>
-      )}
 
       <button
         type="submit"
@@ -440,6 +506,34 @@ const sidebarLabelClass = sidebarCollapsed
       >
         Search
       </button>
+
+      {showSearchSuggestions &&
+        searchSuggestions.length > 0 && (
+          <div className="absolute left-0 right-0 top-full z-[9999] mt-2 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div className="border-b border-slate-100 px-4 py-2 dark:border-slate-800">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Suggested fields
+              </p>
+            </div>
+
+            <div className="max-h-64 overflow-y-auto py-1">
+              {searchSuggestions.map((field) => (
+                <button
+                  key={field.field_id}
+                  type="button"
+                  onClick={() =>
+                    handleSuggestionSelect(field.field_name)
+                  }
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-blue-950/30 dark:hover:text-blue-300"
+                >
+                  <Search className="h-4 w-4 shrink-0 text-slate-400" />
+
+                  <span>{field.field_name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
     </div>
   </form>
 ) : (

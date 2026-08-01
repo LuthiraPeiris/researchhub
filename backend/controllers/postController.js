@@ -84,6 +84,146 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
+
+export const getPublicRecentPosts = async (req, res) => {
+  try {
+    const [posts] = await db.query(`
+      SELECT
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.post_type,
+        posts.difficulty_level,
+        posts.status,
+        posts.created_at,
+        posts.updated_at,
+        fields.field_name,
+        COUNT(DISTINCT solutions.solution_id) AS solution_count
+      FROM posts
+      LEFT JOIN fields
+        ON posts.field_id = fields.field_id
+      LEFT JOIN solutions
+        ON posts.post_id = solutions.post_id
+      WHERE posts.is_archived = 0
+      GROUP BY
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.post_type,
+        posts.difficulty_level,
+        posts.status,
+        posts.created_at,
+        posts.updated_at,
+        fields.field_name
+      ORDER BY posts.created_at DESC
+      LIMIT 3
+    `);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Get public recent posts error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch recent problems",
+      error: error.message,
+    });
+  }
+};
+
+export const getPublicSolvedProblems = async (req, res) => {
+  try {
+    const [problems] = await db.query(`
+      SELECT
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.difficulty_level,
+        posts.status,
+        posts.updated_at,
+        fields.field_name,
+
+        solutions.solution_id,
+        solutions.solution_text,
+        solutions.verified_at,
+
+        solution_users.full_name AS solution_author
+
+      FROM posts
+
+      INNER JOIN solutions
+        ON posts.post_id = solutions.post_id
+        AND solutions.is_verified = 1
+
+      LEFT JOIN fields
+        ON posts.field_id = fields.field_id
+
+      LEFT JOIN users AS solution_users
+        ON solutions.user_id = solution_users.user_id
+
+      WHERE posts.status = 'solved'
+        AND posts.is_archived = 0
+
+      ORDER BY solutions.verified_at DESC
+      LIMIT 2
+    `);
+
+    res.status(200).json(problems);
+  } catch (error) {
+    console.error("Get public solved problems error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch solved problems",
+      error: error.message,
+    });
+  }
+};
+
+export const getPublicActiveProblems = async (req, res) => {
+  try {
+    const [posts] = await db.query(`
+      SELECT
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.post_type,
+        posts.difficulty_level,
+        posts.status,
+        posts.created_at,
+        posts.updated_at,
+        fields.field_name,
+        COUNT(DISTINCT solutions.solution_id) AS solution_count
+      FROM posts
+      LEFT JOIN fields
+        ON posts.field_id = fields.field_id
+      LEFT JOIN solutions
+        ON posts.post_id = solutions.post_id
+      WHERE posts.is_archived = 0
+        AND posts.status IN ('open', 'in_progress')
+      GROUP BY
+        posts.post_id,
+        posts.title,
+        posts.description,
+        posts.post_type,
+        posts.difficulty_level,
+        posts.status,
+        posts.created_at,
+        posts.updated_at,
+        fields.field_name
+      ORDER BY posts.updated_at DESC
+      LIMIT 3
+    `);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Get public active problems error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch active problems",
+      error: error.message,
+    });
+  }
+};
+
 export const getPostById = async (req, res) => {
   try {
     const { id } = req.params;
