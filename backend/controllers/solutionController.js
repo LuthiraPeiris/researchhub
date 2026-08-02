@@ -76,11 +76,15 @@ export const addSolution = async (req, res) => {
     });
 
     if (!validation.acceptable) {
+      const validationUnavailable = validation.checked === false;
+
       return res.status(422).json({
         code: "SOLUTION_VALIDATION_WARNING",
-        message:
-          "This solution does not appear to address the problem. Please revise it and try again.",
+        message: validationUnavailable
+          ? "AI verification is unavailable. Please try again."
+          : "This solution is not related to the problem. Please revise it.",
         validation: {
+          checked: validation.checked,
           reason: validation.reason,
           suggestion: validation.suggestion,
         },

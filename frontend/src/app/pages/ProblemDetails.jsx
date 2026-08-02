@@ -249,6 +249,7 @@ export function ProblemDetails() {
     setActionLoading(true);
     setError("");
     setMessage("");
+    setSolutionValidationWarning("");
 
     await addSolution(id, solutionText, solutionFiles);
 
