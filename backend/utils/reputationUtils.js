@@ -95,6 +95,7 @@ export const addReputationEvent = async ({
   }
 
   const connection = await db.getConnection();
+  let awarded = false;
 
   try {
     await connection.beginTransaction();
@@ -139,19 +140,29 @@ export const addReputationEvent = async ({
     );
 
     await connection.commit();
-
-    await checkAndAwardBadges(userId);
-
-    return {
-      awarded: true,
-      points,
-    };
+    awarded = true;
   } catch (error) {
-    await connection.rollback();
+    if (!awarded) {
+      await connection.rollback();
+    }
     throw error;
   } finally {
     connection.release();
   }
+
+  try {
+    await checkAndAwardBadges(userId);
+  } catch (error) {
+    console.error(
+      `Badge processing failed after awarding reputation to user ${userId}:`,
+      error,
+    );
+  }
+
+  return {
+    awarded: true,
+    points,
+  };
 };
 
 export const checkPopularSolutionBadge = async (solutionId) => {

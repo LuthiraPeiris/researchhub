@@ -27,3 +27,30 @@ dist-ssr
 
 uploads
 
+researchhub.sql
+*.sql.gz
+
+# Dependencies
+frontend/node_modules/
+backend/node_modules/
+
+# Environment variables
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+backend/.env
+backend/.env.local
+backend/.env.production
+
+# Frontend build
+frontend/dist/
+
+# Logs
+*.log
+
+# Local uploads
+backend/uploads/
+
+# IDE
+.vscode/
+.idea/

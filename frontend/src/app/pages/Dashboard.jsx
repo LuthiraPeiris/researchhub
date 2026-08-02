@@ -483,20 +483,42 @@ const hasActiveFilters =
 
           <div className="space-y-4">
             {posts.map((problem) => (
-              <Link
+              <div
                 key={problem.post_id}
-                to={`/app/problem/${problem.post_id}`}
-                className="group block rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
+                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-base font-semibold leading-6 text-slate-900 transition-colors group-hover:text-blue-700 dark:text-slate-100 dark:group-hover:text-blue-400 mb-2">
-                      {problem.title}
-                    </h3>
+                    <Link
+                      to={`/app/problem/${problem.post_id}`}
+                      className="mb-2 block"
+                    >
+                      <h3 className="text-base font-semibold leading-6 text-slate-900 transition-colors hover:text-blue-700 dark:text-slate-100 dark:hover:text-blue-400">
+                        {problem.title}
+                      </h3>
+                    </Link>
 
-                    <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
-                      <span>
-                        by {problem.full_name || problem.name || problem.author_name || "Unknown User"}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+                      <span className="flex items-center gap-1">
+                        by{" "}
+                        {problem.user_id ? (
+                          <Link
+                            to={`/app/profile/${problem.user_id}`}
+                            className="font-medium text-blue-600 transition-colors hover:underline dark:text-blue-400"
+                          >
+                            {problem.full_name ||
+                              problem.name ||
+                              problem.author_name ||
+                              "Unknown User"}
+                          </Link>
+                        ) : (
+                          <span>
+                            {problem.full_name ||
+                              problem.name ||
+                              problem.author_name ||
+                              "Unknown User"}
+                          </span>
+                        )}
                       </span>
 
                       <span className="flex items-center gap-1">
@@ -541,12 +563,15 @@ const hasActiveFilters =
                     {problem.solution_count || 0} Solutions
                   </span>
 
-                  <span className="flex items-center gap-1">
+                  <Link
+                    to={`/app/problem/${problem.post_id}`}
+                    className="flex items-center gap-1 font-medium text-blue-600 transition-colors hover:underline dark:text-blue-400"
+                  >
                     <TrendingUp className="w-4 h-4" />
                     View details
-                  </span>
+                  </Link>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>

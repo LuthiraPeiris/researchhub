@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-import { loginUser } from "../services/authService";
+import { loginUser, startGoogleOAuth } from "../services/authService";
 import { AppAlert } from "../components/AppAlert";
 
 export function LoginPage() {
@@ -38,6 +38,15 @@ export function LoginPage() {
       setError(err.message || "Login failed. Please check your details.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    try {
+      setError("");
+      startGoogleOAuth();
+    } catch (err) {
+      setError(err.message || "Unable to start Google authentication");
     }
   };
 
@@ -217,6 +226,7 @@ export function LoginPage() {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
+              onClick={handleGoogleLogin}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50"
             >
               <FaGoogle className="h-4 w-4" />

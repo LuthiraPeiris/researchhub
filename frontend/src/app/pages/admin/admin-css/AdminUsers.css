@@ -1,0 +1,235 @@
+.admin-users-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-users-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.admin-users-subtitle {
+  color: #6b7280;
+}
+
+/* Badge */
+
+.admin-users-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.admin-users-badge-icon {
+  color: #0ea5e9;
+}
+
+.admin-users-badge-text {
+  font-weight: 600;
+}
+
+/* ------------------- Search ----------------------- */
+
+.admin-users-filter-section {
+  display: flex;
+  gap: 15px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.admin-users-search-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.admin-users-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.admin-users-search-input,
+.admin-users-select {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  outline: none;
+  font-size: 15px;
+}
+
+.admin-users-select {
+  width: 180px;
+  padding-left: 14px;
+}
+
+.admin-users-search-input:focus,
+.admin-users-select:focus {
+  border-color: #0ea5e9;
+}
+
+/* ------------------------- Table ----------------------- */
+
+.admin-users-table-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.admin-users-table-responsive {
+  overflow: auto;
+}
+
+.admin-users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-users-table th {
+  background: #f8fafc;
+  padding: 16px;
+  text-align: left;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.admin-users-table td {
+  padding: 18px 16px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.admin-users-tr:hover {
+  background: #f9fafb;
+}
+
+/* -----------------------------  User --------------------------- */
+
+.admin-users-details-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-users-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+}
+
+.admin-users-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+.admin-users-email-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ------------------ - Role --------------------- */
+
+.admin-users-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.admin-users-role-admin {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.admin-users-role-user {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* --------------------- Date ------------------ */
+
+.admin-users-date-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7280;
+}
+
+/* Delete */
+
+.admin-users-td-actions {
+  text-align: right;
+}
+
+.admin-users-btn-delete {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: #ef4444;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-users-btn-delete:hover {
+  background: #fee2e2;
+}
+
+.admin-users-protected {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+/* Empty */
+
+.admin-users-table-info {
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .admin-users-header,
+  .admin-users-filter-section {
+    flex-direction: column;
+  }
+
+  .admin-users-select {
+    width: 100%;
+  }
+}

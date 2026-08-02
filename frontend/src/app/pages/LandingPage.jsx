@@ -9,6 +9,7 @@ import {
   Trophy,
   X,
 } from "lucide-react";
+import API_BASE_URL from "../services/api";
 
 const workflow = [
   {
@@ -98,6 +99,19 @@ export function LandingPage() {
     setMobileMenuOpen(false);
   };
 
+  const scrollToHero = (event) => {
+  event.preventDefault();
+
+  setMobileMenuOpen(false);
+
+  document
+    .getElementById("hero")
+    ?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   useEffect(() => {
   const fetchActiveProblems = async () => {
     try {
@@ -105,7 +119,7 @@ export function LandingPage() {
       setProblemsError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/posts/public/active"
+        `${API_BASE_URL}/posts/public/active`
       );
 
       if (!response.ok) {
@@ -132,7 +146,7 @@ useEffect(() => {
       setSolvedProblemsError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/posts/public/solved"
+        `${API_BASE_URL}/posts/public/solved`
       );
 
       if (!response.ok) {
@@ -160,20 +174,21 @@ useEffect(() => {
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
           <Link
-            to="/"
-            onClick={closeMobileMenu}
-            className="flex items-center gap-2.5"
-          >
-            <img
-              src="/collabsolve-logo.png"
-              alt="CollabSolve"
-              className="h-9 w-9 rounded-lg object-cover"
-            />
+              to="/"
+              onClick={scrollToHero}
+              aria-label="Scroll to CollabSolve home section"
+              className="group flex items-center gap-2.5"
+            >
+              <img
+                src="/collabsolve-logo.png"
+                alt="CollabSolve"
+                className="h-9 w-9 rounded-lg object-cover transition-transform duration-200 group-hover:scale-[1.03]"
+              />
 
-            <span className="text-lg font-semibold tracking-tight text-slate-950">
-              CollabSolve
-            </span>
-          </Link>
+              <span className="text-lg font-semibold tracking-tight text-slate-950 transition-colors duration-200 group-hover:text-blue-700">
+                CollabSolve
+              </span>
+            </Link>
 
           {/* Desktop navigation */}
           <div className="hidden items-center gap-7 text-sm text-slate-600 md:flex">
@@ -290,7 +305,7 @@ useEffect(() => {
       </nav>
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-slate-50">
+      <section id="hero" className="relative scroll-mt-16 overflow-hidden border-b border-slate-200 bg-slate-50">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-1/2 top-0 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-blue-100/70 blur-3xl" />
           <div className="absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-cyan-100/70 blur-3xl" />
@@ -344,7 +359,7 @@ useEffect(() => {
           <div className="relative">
             <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-blue-100/70 via-white to-cyan-100/70 blur-2xl" />
 
-            <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
+            <div className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-900/10">
               <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                 <div>
                   <div className="text-sm font-semibold text-slate-900">
@@ -408,7 +423,7 @@ useEffect(() => {
     solvedProblems.map((problem) => (
       <article
         key={problem.post_id}
-        className="rounded-lg border border-slate-200 bg-white p-4"
+        className="group rounded-lg border border-slate-200 bg-white p-4 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md"
       >
         {/* Problem */}
         <div className="flex items-start justify-between gap-3">
@@ -555,7 +570,7 @@ useEffect(() => {
     activeProblems.map((problem) => (
       <article
         key={problem.post_id}
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-md"
+        className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-900/5"
       >
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-base font-semibold leading-6 text-slate-900">
@@ -632,9 +647,9 @@ useEffect(() => {
             {workflow.map((step) => (
               <div
                 key={step.number}
-                className="rounded-xl border border-slate-200 bg-white p-5"
+                className="group rounded-xl border border-slate-200 bg-slate-50 p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-900/5"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-sm font-semibold text-blue-700">
+                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-sm font-semibold text-blue-700 transition-transform duration-300 group-hover:scale-105">
                   {step.number}
                 </div>
 
@@ -680,7 +695,7 @@ useEffect(() => {
                   key={item}
                   className="flex items-center gap-3 text-sm text-slate-700"
                 >
-                  <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
+                  <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-hover:scale-110" />
                   {item}
                 </div>
               ))}
@@ -695,7 +710,7 @@ useEffect(() => {
             </Link>
           </div>
 
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-900/5">
   <div className="border-b border-slate-200 px-5 py-4">
     <div className="flex items-center justify-between gap-4">
       <div>
@@ -744,7 +759,7 @@ useEffect(() => {
 
     {/* Archive entries */}
     <div className="mt-5 space-y-3">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 transition-colors hover:border-emerald-200">
+      <div className="group rounded-lg border border-slate-200 bg-white p-4 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50/30 hover:shadow-md">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h4 className="text-sm font-semibold leading-5 text-slate-900">
@@ -757,7 +772,7 @@ useEffect(() => {
             </p>
           </div>
 
-          <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
+          <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-hover:scale-110" />
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
@@ -770,7 +785,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 transition-colors hover:border-emerald-200">
+      <div className="group rounded-lg border border-slate-200 bg-white p-4 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50/30 hover:shadow-md">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h4 className="text-sm font-semibold leading-5 text-slate-900">
@@ -783,7 +798,7 @@ useEffect(() => {
             </p>
           </div>
 
-          <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
+          <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600 transition-transform duration-300 group-hover:scale-110" />
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
@@ -814,8 +829,8 @@ useEffect(() => {
       {/* CTA */}
       <section className="border-t border-slate-200 bg-white py-16">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
-          <div className="rounded-xl border border-blue-200 bg-blue-50 px-6 py-10 text-center sm:px-10">
-            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600 text-white">
+          <div className="group rounded-xl border border-blue-200 bg-blue-50 px-6 py-10 text-center transition-all duration-300 ease-out hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-900/10 sm:px-10">
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
               <Trophy className="h-5 w-5" />
             </div>
 

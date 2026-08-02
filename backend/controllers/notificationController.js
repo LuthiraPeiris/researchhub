@@ -5,21 +5,33 @@ export const getNotifications = async (req, res) => {
     const limitValue = Number(req.query.limit) || 20;
     const safeLimit = Math.min(Math.max(limitValue, 1), 100);
 
-    // Clean old read notifications before fetching
+    // Remove read notifications older than 30 days before fetching
     await db.query(
       `
       DELETE FROM notifications
       WHERE user_id = ?
-      AND is_read = TRUE
-      AND created_at < NOW() - INTERVAL 30 DAY
+        AND is_read = TRUE
+        AND created_at < NOW() - INTERVAL 30 DAY
       `,
       [req.user.user_id]
     );
 
     const [notifications] = await db.query(
       `
-      SELECT 
-        n.*,
+      SELECT
+        n.notification_id,
+        n.user_id,
+        n.actor_user_id,
+        n.message,
+        n.type,
+        n.is_read,
+        n.reference_id,
+        n.reference_type,
+        n.created_at,
+
+        actor.full_name AS actor_name,
+        actor.email AS actor_email,
+        actor.profile_picture AS actor_profile_picture,
 
         CASE
           WHEN n.reference_type = 'post' THEN n.reference_id
@@ -27,13 +39,20 @@ export const getNotifications = async (req, res) => {
           WHEN n.reference_type = 'comment' THEN c.post_id
           ELSE NULL
         END AS target_post_id
+
       FROM notifications n
-      LEFT JOIN solutions s 
-        ON n.reference_type = 'solution' 
+
+      LEFT JOIN users actor
+        ON n.actor_user_id = actor.user_id
+
+      LEFT JOIN solutions s
+        ON n.reference_type = 'solution'
         AND n.reference_id = s.solution_id
+
       LEFT JOIN comments c
         ON n.reference_type = 'comment'
         AND n.reference_id = c.comment_id
+
       WHERE n.user_id = ?
       ORDER BY n.created_at DESC
       LIMIT ?
@@ -55,7 +74,12 @@ export const markNotificationAsRead = async (req, res) => {
     const { notificationId } = req.params;
 
     const [notifications] = await db.query(
-      "SELECT * FROM notifications WHERE notification_id = ? AND user_id = ?",
+      `
+      SELECT notification_id
+      FROM notifications
+      WHERE notification_id = ?
+        AND user_id = ?
+      `,
       [notificationId, req.user.user_id]
     );
 
@@ -66,8 +90,13 @@ export const markNotificationAsRead = async (req, res) => {
     }
 
     await db.query(
-      "UPDATE notifications SET is_read = TRUE WHERE notification_id = ?",
-      [notificationId]
+      `
+      UPDATE notifications
+      SET is_read = TRUE
+      WHERE notification_id = ?
+        AND user_id = ?
+      `,
+      [notificationId, req.user.user_id]
     );
 
     res.status(200).json({
@@ -84,7 +113,11 @@ export const markNotificationAsRead = async (req, res) => {
 export const markAllNotificationsAsRead = async (req, res) => {
   try {
     await db.query(
-      "UPDATE notifications SET is_read = TRUE WHERE user_id = ?",
+      `
+      UPDATE notifications
+      SET is_read = TRUE
+      WHERE user_id = ?
+      `,
       [req.user.user_id]
     );
 
@@ -104,7 +137,12 @@ export const deleteNotification = async (req, res) => {
     const { notificationId } = req.params;
 
     const [notifications] = await db.query(
-      "SELECT * FROM notifications WHERE notification_id = ? AND user_id = ?",
+      `
+      SELECT notification_id
+      FROM notifications
+      WHERE notification_id = ?
+        AND user_id = ?
+      `,
       [notificationId, req.user.user_id]
     );
 
@@ -115,8 +153,12 @@ export const deleteNotification = async (req, res) => {
     }
 
     await db.query(
-      "DELETE FROM notifications WHERE notification_id = ?",
-      [notificationId]
+      `
+      DELETE FROM notifications
+      WHERE notification_id = ?
+        AND user_id = ?
+      `,
+      [notificationId, req.user.user_id]
     );
 
     res.status(200).json({

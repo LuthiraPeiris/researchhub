@@ -14,6 +14,7 @@ import { AppAlert } from "../components/AppAlert";
 
 export function PostProblem() {
   const [files, setFiles] = useState([]);
+  const [isDraggingFiles, setIsDraggingFiles] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [fields, setFields] = useState([]);
 
@@ -141,16 +142,43 @@ const validateFiles = (selectedFiles) => {
   return validFiles;
 };
 
+  const addFiles = (selectedFiles) => {
+    setError("");
+
+    const validFiles = validateFiles(Array.from(selectedFiles));
+    setFiles((currentFiles) => [...currentFiles, ...validFiles]);
+  };
+
   const handleFileChange = (e) => {
-  setError("");
+    addFiles(e.target.files);
+    e.target.value = "";
+  };
 
-  const selectedFiles = Array.from(e.target.files);
-  const validFiles = validateFiles(selectedFiles);
+  const handleFileDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "copy";
+    setIsDraggingFiles(true);
+  };
 
-  setFiles([...files, ...validFiles]);
+  const handleFileDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  e.target.value = "";
-};
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsDraggingFiles(false);
+    }
+  };
+
+  const handleFileDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingFiles(false);
+
+    if (e.dataTransfer.files.length > 0) {
+      addFiles(e.dataTransfer.files);
+    }
+  };
 
   const removeFile = (index) => {
     setFiles(files.filter((_, i) => i !== index));
@@ -179,62 +207,95 @@ const validateFiles = (selectedFiles) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    setMessage("");
-    setError("");
+  setMessage("");
+  setError("");
 
-    if (!formData.title || !formData.description) {
-      setError("Title and description are required");
-      return;
+  const title = formData.title.trim();
+  const description = formData.description.trim();
+
+  if (!title || !description) {
+    setError("Title and description are required");
+    return;
+  }
+
+  if (!formData.field_id) {
+    setError("Please select a field");
+    return;
+  }
+
+  if (!formData.difficulty_level) {
+    setError("Please select a difficulty level");
+    return;
+  }
+
+  if (files.length > MAX_FILE_COUNT) {
+    setError(
+      `You can upload a maximum of ${MAX_FILE_COUNT} files`,
+    );
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    /*
+     * Step 1: Create the post and receive its database ID.
+     */
+    const postResponse = await createPost({
+      title,
+      description,
+      post_type: formData.post_type,
+      field_id: formData.field_id,
+      difficulty_level: formData.difficulty_level,
+    });
+
+    const postId =
+      postResponse.post_id || postResponse.postId;
+
+    if (!postId) {
+      throw new Error(
+        "The post was created, but no post ID was returned",
+      );
     }
 
-    if (!formData.field_id) {
-      setError("Please select a field");
-      return;
+    /*
+     * Step 2: Upload selected attachments to the
+     * separate attachment endpoint.
+     *
+     * uploadPostAttachments must create FormData
+     * and append every file using the field name "files".
+     */
+    if (files.length > 0) {
+      await uploadPostAttachments(postId, files);
     }
 
-    if (!formData.difficulty_level) {
-      setError("Please select a difficulty level");
-      return;
-    }
+    setMessage("Problem published successfully!");
+    setSimilarProblems([]);
 
-    setLoading(true);
+    setFormData({
+      title: "",
+      description: "",
+      field_id: "",
+      difficulty_level: "",
+      post_type: "problem",
+    });
 
-    try {
-      const postResponse = await createPost({
-        title: formData.title,
-        description: formData.description,
-        post_type: formData.post_type,
-        field_id: formData.field_id,
-        difficulty_level: formData.difficulty_level,
-      });
+    setSelectedTags([]);
+    setFiles([]);
+  } catch (err) {
+    console.error("Publish problem error:", err);
 
-      const postId = postResponse.post_id;
-
-      if (files.length > 0) {
-        await uploadPostAttachments(postId, files);
-      }
-
-      setMessage("Problem published successfully!");
-      setSimilarProblems([]);
-
-      setFormData({
-        title: "",
-        description: "",
-        field_id: "",
-        difficulty_level: "",
-        post_type: "problem",
-      });
-
-      setSelectedTags([]);
-      setFiles([]);
-    } catch (err) {
-      setError(err.message || "Failed to publish problem");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setError(
+      err.response?.data?.message ||
+        err.message ||
+        "Failed to publish problem",
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="mx-auto max-w-4xl p-5 lg:p-7 text-slate-900 dark:text-slate-100">
@@ -360,7 +421,17 @@ const validateFiles = (selectedFiles) => {
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <label className="mb-3 block text-sm font-medium text-slate-800 dark:text-slate-200">Attachments</label>
 
-          <label className="block cursor-pointer rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center transition-colors hover:border-blue-400 hover:bg-blue-50/30 dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-blue-700">
+          <label
+            onDragEnter={handleFileDragOver}
+            onDragOver={handleFileDragOver}
+            onDragLeave={handleFileDragLeave}
+            onDrop={handleFileDrop}
+            className={`block cursor-pointer rounded-lg border border-dashed p-6 text-center transition-colors ${
+              isDraggingFiles
+                ? "border-blue-500 bg-blue-50 ring-2 ring-blue-100 dark:border-blue-500 dark:bg-blue-950/30 dark:ring-blue-900/50"
+                : "border-slate-300 bg-slate-50 hover:border-blue-400 hover:bg-blue-50/30 dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-blue-700"
+            }`}
+          >
             <Upload className="mx-auto mb-3 h-8 w-8 text-slate-400 dark:text-slate-500" />
 
             <p className="mb-2 text-gray-900 dark:text-gray-100">
@@ -380,7 +451,7 @@ const validateFiles = (selectedFiles) => {
               multiple
               onChange={handleFileChange}
               className="hidden"
-              accept=".pdf,.png,.jpg,.jpeg,.csv,.json,.txt,.zip"
+              accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,.txt,.zip"
             />
           </label>
 

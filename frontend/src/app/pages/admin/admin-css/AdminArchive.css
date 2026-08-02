@@ -1,0 +1,252 @@
+.admin-archive-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* -------------------------- Header ---------------------------- */
+
+.admin-archive-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-archive-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.admin-archive-subtitle {
+  color: #6b7280;
+}
+
+/* --------------------- Badge ----------------------- */
+
+.admin-archive-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.admin-archive-badge-icon {
+  width: 20px;
+  height: 20px;
+  color: #0ea5e9;
+}
+
+.admin-archive-badge-text {
+  font-weight: 600;
+  color: #374151;
+}
+
+/* -----------------------  Search ---------------------- */
+
+.admin-archive-filter-section {
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.admin-archive-search-wrapper {
+  position: relative;
+}
+
+.admin-archive-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.admin-archive-search-input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.admin-archive-search-input:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+/* Table */
+
+.admin-archive-table-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.admin-archive-table-responsive {
+  overflow-x: auto;
+}
+
+.admin-archive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-archive-thead {
+  background: #f8fafc;
+}
+
+.admin-archive-table th {
+  padding: 16px;
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-archive-th-right {
+  text-align: right !important;
+}
+
+.admin-archive-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.admin-archive-tr {
+  transition: 0.2s;
+}
+
+.admin-archive-tr:hover {
+  background: #f9fafb;
+}
+
+.admin-archive-table-info {
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* ID */
+
+.admin-archive-td-id {
+  font-family: monospace;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Post */
+
+.admin-archive-post-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-archive-post-desc {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Meta */
+
+.admin-archive-meta-line,
+.admin-archive-meta-subline,
+.admin-archive-date-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-archive-meta-line {
+  font-size: 14px;
+  color: #111827;
+}
+
+.admin-archive-meta-subline {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.admin-archive-meta-icon,
+.admin-archive-date-icon {
+  width: 16px;
+  height: 16px;
+  color: #9ca3af;
+}
+
+.admin-archive-date-line {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Actions */
+
+.admin-archive-td-actions {
+  text-align: right;
+}
+
+.admin-archive-actions-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-archive-btn-restore,
+.admin-archive-btn-delete {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-archive-btn-restore {
+  color: #0ea5e9;
+}
+
+.admin-archive-btn-restore:hover {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.admin-archive-btn-delete {
+  color: #ef4444;
+}
+
+.admin-archive-btn-delete:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .admin-archive-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

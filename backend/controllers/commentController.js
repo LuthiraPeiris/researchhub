@@ -63,12 +63,13 @@ export const addComment = async (req, res) => {
 
 if (Number(post.user_id) !== Number(req.user.user_id)) {
   await createNotificationIfAllowed({
-    userId: post.user_id,
-    message: `A new comment was added to your post: ${post.title}`,
-    type: "comment",
-    referenceId: result.insertId,
-    referenceType: "comment",
-  });
+  userId: post.user_id,
+  actorUserId: req.user.user_id,
+  message: `A new comment was added to your post: ${post.title}`,
+  type: "comment",
+  referenceId: result.insertId,
+  referenceType: "comment",
+});
 }
 
     await addReputationEvent({

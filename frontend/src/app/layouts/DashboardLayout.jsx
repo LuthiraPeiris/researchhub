@@ -139,7 +139,6 @@ setNotifications(notificationList);
 
   const handleSearchChange = (event) => {
   const value = event.target.value;
-
   setSearchText(value);
 
   const trimmedValue = value.trim().toLowerCase();
@@ -147,6 +146,16 @@ setNotifications(notificationList);
   if (!trimmedValue) {
     setSearchSuggestions([]);
     setShowSearchSuggestions(false);
+
+    const params = new URLSearchParams(searchParams);
+    params.delete("search");
+
+    const queryString = params.toString();
+
+    navigate(queryString ? `/app?${queryString}` : "/app", {
+      replace: true,
+    });
+
     return;
   }
 
@@ -255,7 +264,13 @@ const handleSuggestionSelect = (fieldName) => {
     return imagePath;
   }
 
-  return `${API_BASE_URL.replace("/api", "")}${imagePath}`;
+  const apiOrigin = API_BASE_URL.replace(/\/api\/?$/, "");
+
+  if (imagePath.startsWith("/uploads")) {
+    return `${apiOrigin}${imagePath}`;
+  }
+
+  return `${apiOrigin}/uploads/s3/${imagePath}`;
 };
 
   const sidebarWidthClass = sidebarCollapsed ? "w-[72px]" : "w-64";

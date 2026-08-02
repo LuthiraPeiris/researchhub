@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppAlert } from "../components/AppAlert";
+import { API_ORIGIN } from "../services/api";
 import {
   Bell,
   CheckCircle,
@@ -33,6 +34,7 @@ export function NotificationsPage() {
       setMessage("");
 
       const data = await getNotifications();
+
       const notificationList = Array.isArray(data)
         ? data
         : data.notifications || [];
@@ -65,6 +67,7 @@ export function NotificationsPage() {
     if (type === "solution") return Lightbulb;
     if (type === "verification") return CheckCircle;
     if (type === "comment") return MessageSquare;
+
     return Bell;
   };
 
@@ -82,6 +85,22 @@ export function NotificationsPage() {
     }
 
     return "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300";
+  };
+
+  const getProfileImageUrl = (imagePath) => {
+    if (!imagePath) {
+      return "/default-profile.png";
+    }
+
+    if (imagePath.startsWith("http")) {
+      return imagePath;
+    }
+
+    if (imagePath.startsWith("/uploads")) {
+      return `${API_ORIGIN}${imagePath}`;
+    }
+
+    return `${API_ORIGIN}/uploads/s3/${imagePath}`;
   };
 
   const handleOpenNotification = async (notification) => {
@@ -104,9 +123,11 @@ export function NotificationsPage() {
         return;
       }
 
-      if (notification.reference_type === "post" && notification.reference_id) {
+      if (
+        notification.reference_type === "post" &&
+        notification.reference_id
+      ) {
         navigate(`/app/problem/${notification.reference_id}`);
-        return;
       }
     } catch (err) {
       setError(err.message || "Failed to open notification");
@@ -119,6 +140,7 @@ export function NotificationsPage() {
     try {
       setActionLoading(true);
       setError("");
+      setMessage("");
 
       await markAllNotificationsAsRead();
 
@@ -128,6 +150,8 @@ export function NotificationsPage() {
           is_read: 1,
         }))
       );
+
+      setMessage("All notifications marked as read");
     } catch (err) {
       setError(err.message || "Failed to mark notifications as read");
     } finally {
@@ -139,14 +163,18 @@ export function NotificationsPage() {
     try {
       setActionLoading(true);
       setError("");
+      setMessage("");
 
       await deleteNotification(notificationId);
 
       setNotifications((prev) =>
         prev.filter(
-          (notification) => notification.notification_id !== notificationId
+          (notification) =>
+            notification.notification_id !== notificationId
         )
       );
+
+      setMessage("Notification deleted successfully");
     } catch (err) {
       setError(err.message || "Failed to delete notification");
     } finally {
@@ -160,12 +188,13 @@ export function NotificationsPage() {
   ).length;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-5 p-5 lg:p-7 text-slate-900 dark:text-slate-100">
+    <div className="mx-auto max-w-6xl space-y-5 p-5 text-slate-900 dark:text-slate-100 lg:p-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
             Notifications
           </h1>
+
           <p className="text-sm text-slate-500 dark:text-slate-400">
             View updates about your problems, solutions, and account activity.
           </p>
@@ -173,6 +202,7 @@ export function NotificationsPage() {
 
         {notifications.length > 0 && (
           <button
+            type="button"
             onClick={handleMarkAllRead}
             disabled={actionLoading || unreadCount === 0}
             className="rounded-md border border-slate-300 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
@@ -187,6 +217,7 @@ export function NotificationsPage() {
           <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
             {notifications.length}
           </div>
+
           <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
             Total Notifications
           </div>
@@ -196,6 +227,7 @@ export function NotificationsPage() {
           <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
             {unreadCount}
           </div>
+
           <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
             Unread
           </div>
@@ -205,6 +237,7 @@ export function NotificationsPage() {
           <div className="text-lg font-semibold leading-none text-slate-900 dark:text-slate-100">
             {notifications.length - unreadCount}
           </div>
+
           <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
             Read
           </div>
@@ -218,7 +251,12 @@ export function NotificationsPage() {
       )}
 
       <div className="space-y-3">
-        <AppAlert type="error" message={error} onClose={() => setError("")} />
+        <AppAlert
+          type="error"
+          message={error}
+          onClose={() => setError("")}
+        />
+
         <AppAlert
           type="success"
           message={message}
@@ -235,6 +273,7 @@ export function NotificationsPage() {
           <h2 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
             No notifications yet
           </h2>
+
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Important updates will appear here.
           </p>
@@ -245,8 +284,21 @@ export function NotificationsPage() {
         <div className="space-y-3">
           {notifications.map((notification) => {
             const Icon = getNotificationIcon(notification.type);
+
             const isUnread =
-              notification.is_read === 0 || notification.is_read === false;
+              notification.is_read === 0 ||
+              notification.is_read === false;
+
+            const hasActor = Boolean(notification.actor_user_id);
+
+            const actorName =
+              notification.actor_name ||
+              notification.actor_email?.split("@")[0] ||
+              "CollabSolve user";
+
+            const actorImage = getProfileImageUrl(
+              notification.actor_profile_picture
+            );
 
             return (
               <div
@@ -258,17 +310,40 @@ export function NotificationsPage() {
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <div
-                    className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border ${getNotificationStyle(
-                      notification.type
-                    )}`}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </div>
+                  {hasActor ? (
+                    <Link
+                      to={`/app/profile/${notification.actor_user_id}`}
+                      className="flex-shrink-0 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
+                      aria-label={`View ${actorName}'s profile`}
+                    >
+                      <img
+                        src={actorImage}
+                        alt={actorName}
+                        className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200 transition hover:ring-2 hover:ring-blue-400 dark:ring-slate-700"
+                      />
+                    </Link>
+                  ) : (
+                    <div
+                      className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border ${getNotificationStyle(
+                        notification.type
+                      )}`}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </div>
+                  )}
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="min-w-0">
+                        {hasActor && (
+                          <Link
+                            to={`/app/profile/${notification.actor_user_id}`}
+                            className="mb-1 inline-block text-sm font-semibold text-slate-900 transition-colors hover:text-blue-600 hover:underline dark:text-slate-100 dark:hover:text-blue-400"
+                          >
+                            {actorName}
+                          </Link>
+                        )}
+
                         <p className="mb-2 text-sm leading-6 text-slate-800 dark:text-slate-200">
                           {notification.message}
                         </p>
@@ -290,7 +365,10 @@ export function NotificationsPage() {
 
                       <div className="flex flex-shrink-0 items-center gap-2">
                         <button
-                          onClick={() => handleOpenNotification(notification)}
+                          type="button"
+                          onClick={() =>
+                            handleOpenNotification(notification)
+                          }
                           disabled={actionLoading}
                           className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
@@ -299,6 +377,7 @@ export function NotificationsPage() {
                         </button>
 
                         <button
+                          type="button"
                           onClick={() =>
                             handleDeleteNotification(
                               notification.notification_id
