@@ -13,7 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-import { registerUser } from "../services/authService";
+import { registerUser, startGoogleOAuth } from "../services/authService";
 import { AppAlert } from "../components/AppAlert";
 
 export function RegisterPage() {
@@ -67,6 +67,15 @@ export function RegisterPage() {
       setError(err.message || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    try {
+      setError("");
+      startGoogleOAuth();
+    } catch (err) {
+      setError(err.message || "Unable to start Google authentication");
     }
   };
 
@@ -170,6 +179,7 @@ export function RegisterPage() {
           <div className="mt-5 grid grid-cols-2 gap-3">
             <button
               type="button"
+              onClick={handleGoogleLogin}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-700 shadow-sm transition-all hover:border-slate-400 hover:bg-slate-50"
             >
               <FaGoogle className="h-4 w-4" />

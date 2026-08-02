@@ -1,5 +1,33 @@
 import API_BASE_URL from "./api";
 
+export const startGoogleOAuth = () => {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const redirectUri =
+    import.meta.env.VITE_GOOGLE_REDIRECT_URI ||
+    `${window.location.origin}/auth-callback`;
+
+  if (!clientId || clientId === "YOUR_GOOGLE_CLIENT_ID") {
+    throw new Error("Google authentication is not configured");
+  }
+
+  const options = new URLSearchParams({
+    redirect_uri: redirectUri,
+    client_id: clientId,
+    access_type: "offline",
+    response_type: "code",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email",
+    ].join(" "),
+    state: "google",
+  });
+
+  window.location.assign(
+    `https://accounts.google.com/o/oauth2/v2/auth?${options.toString()}`
+  );
+};
+
 export const registerUser = async (userData) => {
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",

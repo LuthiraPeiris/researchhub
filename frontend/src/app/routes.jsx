@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { AuthCallback } from "./pages/AuthCallback";
 
 import { DashboardLayout } from "./layouts/DashboardLayout";
 import { Dashboard } from "./pages/Dashboard";
@@ -22,7 +23,14 @@ import { NotFound } from "./pages/NotFound";
 
 // Admin imports
 import AdminRoute from "./components/AdminRoute";
+import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminPosts from "./pages/admin/AdminPosts";
+import AdminComments from "./pages/admin/AdminComments";
+import AdminSolutions from "./pages/admin/AdminSolutions";
+import AdminArchive from "./pages/admin/AdminArchive";
+import AdminFields from "./pages/admin/AdminFields";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +46,10 @@ export const router = createBrowserRouter([
     Component: RegisterPage,
   },
   {
+    path: "/auth-callback",
+    Component: AuthCallback,
+  },
+  {
     path: "/app",
     Component: DashboardLayout,
     children: [
@@ -50,7 +62,7 @@ export const router = createBrowserRouter([
       { path: "saved-problems", Component: SavedProblems },
       { path: "notifications", Component: NotificationsPage },
       { path: "settings", Component: SettingsPage },
-      { path: "profile/:username", Component: UserProfile },
+      { path: "profile/:userId", Component: UserProfile },
       { path: "leaderboard", Component: Leaderboard },
       { path: "archive", Component: KnowledgeArchive },
     ],
@@ -61,9 +73,18 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: (
       <AdminRoute>
-        <AdminDashboard />
+        <AdminLayout />
       </AdminRoute>
     ),
+    children: [
+      { index: true, element: <AdminDashboard /> },
+      { path: "users", element: <AdminUsers /> },
+      { path: "posts", element: <AdminPosts /> },
+      { path: "comments", element: <AdminComments /> },
+      { path: "solutions", element: <AdminSolutions /> },
+      { path: "archive", element: <AdminArchive /> },
+      { path: "fields", element: <AdminFields /> },
+    ],
   },
 
   {

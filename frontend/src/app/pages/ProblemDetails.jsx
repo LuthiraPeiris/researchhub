@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { createPortal } from "react-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { AppAlert } from "../components/AppAlert";
+import { API_ORIGIN } from "../services/api";
 import {
   ThumbsUp,
   MessageSquare,
@@ -11,6 +13,8 @@ import {
   FileText,
   Download,
   Eye,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 
 import {
@@ -75,6 +79,8 @@ export function ProblemDetails() {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [solutionValidationWarning, setSolutionValidationWarning] =
+    useState("");
 
   const currentUser = getCurrentUser();
 
@@ -233,7 +239,9 @@ export function ProblemDetails() {
 
   const handleAddSolution = async () => {
   if (!solutionText.trim()) {
-    setError("Solution cannot be empty");
+    setSolutionValidationWarning(
+      "Please enter a relevant solution before submitting.",
+    );
     return;
   }
 
@@ -255,7 +263,14 @@ export function ProblemDetails() {
     setActiveTab("solutions");
     setMessage("Solution submitted successfully");
   } catch (err) {
-    setError(err.message || "Failed to submit solution");
+    if (err.code === "SOLUTION_VALIDATION_WARNING") {
+      setSolutionValidationWarning(
+        err.message ||
+          "This solution is not acceptable. Please revise it and try again.",
+      );
+    } else {
+      setError(err.message || "Failed to submit solution");
+    }
   } finally {
     setActionLoading(false);
   }
@@ -483,7 +498,7 @@ const handleSharePost = async () => {
       return filePath;
     }
 
-    return `http://localhost:5000${filePath}`;
+    return `${API_ORIGIN}${filePath}`;
   };
 
   const getFileSizeText = (attachment) => {
@@ -585,10 +600,10 @@ const nestedComments = buildCommentTree(comments);
     }
 
     if (imagePath.startsWith("/uploads")) {
-      return `http://localhost:5000${imagePath}`;
+      return `${API_ORIGIN}${imagePath}`;
     }
 
-    return imagePath;
+    return `${API_ORIGIN}/uploads/s3/${imagePath}`;
   };
 
   if (loading) {
@@ -623,35 +638,40 @@ const nestedComments = buildCommentTree(comments);
         : ""
     }`}
   >
-    <div className="flex items-start gap-4 mb-4">
-      <img
-  src={
-    comment.profile_picture
-      ? getImageUrl(comment.profile_picture)
-      : "/default-profile.png"
-  }
-  alt={comment.full_name}
-  className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"
-/>
+    <div className="mb-4 flex items-start gap-4">
+  <Link to={`/app/profile/${comment.user_id}`} className="shrink-0">
+    <img
+      src={
+        comment.profile_picture
+          ? getImageUrl(comment.profile_picture)
+          : "/default-profile.png"
+      }
+      alt={comment.full_name || "User"}
+      className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200 transition hover:ring-2 hover:ring-blue-400 dark:ring-slate-700"
+    />
+  </Link>
 
-      <div className="flex-1">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-gray-900 font-medium dark:text-gray-100">
-            {comment.full_name || "Unknown User"}
-          </span>
+  <div className="flex-1">
+    <div className="mb-1 flex items-center gap-2">
+      <Link
+        to={`/app/profile/${comment.user_id}`}
+        className="font-medium text-gray-900 transition-colors hover:text-blue-600 hover:underline dark:text-gray-100 dark:hover:text-blue-400"
+      >
+        {comment.full_name || "Unknown User"}
+      </Link>
 
-          {level > 0 && (
-            <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60">
-              Reply
-            </span>
-          )}
-        </div>
-
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          {formatDate(comment.created_at)}
+      {level > 0 && (
+        <span className="rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-xs text-blue-600 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300">
+          Reply
         </span>
-      </div>
+      )}
     </div>
+
+    <span className="text-sm text-gray-500 dark:text-gray-400">
+      {formatDate(comment.created_at)}
+    </span>
+  </div>
+</div>
 
     <p className="mb-3 whitespace-pre-line text-sm leading-6 text-slate-700 dark:text-slate-300">
       {comment.comment_text}
@@ -828,19 +848,24 @@ const nestedComments = buildCommentTree(comments);
                 </h1>
 
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
-                  <div className="flex items-center gap-2">
-                    <img
-  src={
-    problem.profile_picture
-      ? getImageUrl(problem.profile_picture)
-      : "/default-profile.png"
-  }
-  alt={problem.full_name}
-  className="w-6 h-6 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
-/>
+                  <Link
+  to={`/app/profile/${problem.user_id}`}
+  className="group flex items-center gap-2"
+>
+  <img
+    src={
+      problem.profile_picture
+        ? getImageUrl(problem.profile_picture)
+        : "/default-profile.png"
+    }
+    alt={problem.full_name || "User"}
+    className="h-6 w-6 rounded-full object-cover ring-2 ring-gray-200 transition group-hover:ring-blue-300 dark:ring-gray-700 dark:group-hover:ring-blue-700"
+  />
 
-                    <span>{problem.full_name || "Unknown User"}</span>
-                  </div>
+  <span className="transition-colors group-hover:text-blue-600 group-hover:underline dark:group-hover:text-blue-400">
+    {problem.full_name || "Unknown User"}
+  </span>
+</Link>
 
                   <span className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
@@ -1165,25 +1190,30 @@ const nestedComments = buildCommentTree(comments);
                     </div>
                   )}
 
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src={
-                        solution.profile_picture
-                          ? getImageUrl(solution.profile_picture)
-                          : "/default-profile.png"
-                      }
-                      alt={solution.full_name || "User"}
-                      className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
-                    />
+                  <div className="mb-4 flex items-center gap-3">
+  <Link to={`/app/profile/${solution.user_id}`} className="shrink-0">
+    <img
+      src={
+        solution.profile_picture
+          ? getImageUrl(solution.profile_picture)
+          : "/default-profile.png"
+      }
+      alt={solution.full_name || "User"}
+      className="h-8 w-8 rounded-full object-cover ring-2 ring-gray-200 transition hover:ring-blue-400 dark:ring-gray-700"
+    />
+  </Link>
 
-                    <span className="text-gray-900 dark:text-gray-100">
-                      {solution.full_name || "Unknown User"}
-                    </span>
+  <Link
+    to={`/app/profile/${solution.user_id}`}
+    className="font-medium text-gray-900 transition-colors hover:text-blue-600 hover:underline dark:text-gray-100 dark:hover:text-blue-400"
+  >
+    {solution.full_name || "Unknown User"}
+  </Link>
 
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {formatDate(solution.created_at)}
-                    </span>
-                  </div>
+  <span className="text-sm text-gray-500 dark:text-gray-400">
+    {formatDate(solution.created_at)}
+  </span>
+</div>
 
                   <p className="text-gray-700 mb-4 whitespace-pre-line dark:text-gray-300">
                     {solution.solution_text || solution.content}
@@ -1276,6 +1306,58 @@ const nestedComments = buildCommentTree(comments);
           )}
         </div>
       </div>
+
+      {solutionValidationWarning &&
+        createPortal(
+        <div
+          className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/50 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="solution-validation-title"
+          onClick={() => setSolutionValidationWarning("")}
+        >
+          <div
+            className="w-full max-w-sm rounded-xl border border-amber-200 bg-white p-5 shadow-2xl dark:border-amber-900/60 dark:bg-slate-900"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start gap-3">
+              <div className="rounded-full bg-amber-100 p-2 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+                <AlertTriangle className="h-5 w-5" />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <h2
+                  id="solution-validation-title"
+                  className="text-base font-semibold text-slate-900 dark:text-slate-100"
+                >
+                  Solution needs improvement
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  {solutionValidationWarning}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSolutionValidationWarning("")}
+                aria-label="Close warning"
+                className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSolutionValidationWarning("")}
+              className="mt-5 w-full rounded-md bg-amber-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-amber-600"
+            >
+              Edit solution
+            </button>
+          </div>
+        </div>,
+        document.body,
+      )}
     </div>
   );
 }

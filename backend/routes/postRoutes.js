@@ -11,23 +11,20 @@ import {
   getPostSaveStatus,
   getMySavedPosts,
   getRecommendedPosts,
-  getPublicRecentPosts,
-  getPublicSolvedProblems,
   getPublicActiveProblems,
+  getPublicSolvedProblems,
 } from "../controllers/postController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/public/recent", getPublicRecentPosts);
-router.get("/public/solved", getPublicSolvedProblems);
-router.get("/public/active", getPublicActiveProblems);
-
 router.get("/search", protect, searchPosts);
 router.get("/similar", getSimilarProblems);
 router.get("/saved/me", protect, getMySavedPosts);
 router.get("/recommended", protect, getRecommendedPosts);
+router.get("/public/active", getPublicActiveProblems);
+router.get("/public/solved", getPublicSolvedProblems);
 
 router.get("/:postId/save-status", protect, getPostSaveStatus);
 router.post("/:postId/save", protect, toggleSavePost);

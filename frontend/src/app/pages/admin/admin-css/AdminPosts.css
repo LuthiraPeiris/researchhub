@@ -1,0 +1,265 @@
+.admin-posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ------------------------- Header ----------------------*/
+
+.admin-posts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-posts-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.admin-posts-subtitle {
+  color: #6b7280;
+}
+
+.admin-posts-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.admin-posts-badge-icon {
+  width: 20px;
+  height: 20px;
+  color: #0ea5e9;
+}
+
+.admin-posts-badge-text {
+  font-weight: 600;
+  color: #374151;
+}
+
+/* ------------------------- Filter ----------------------- */
+
+.admin-posts-filter-section {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.admin-posts-search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.admin-posts-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.admin-posts-search-input,
+.admin-posts-select {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  outline: none;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.admin-posts-search-input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+}
+
+.admin-posts-select {
+  width: 180px;
+  padding: 12px 16px;
+}
+
+.admin-posts-search-input:focus,
+.admin-posts-select:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+.admin-posts-table-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.admin-posts-table-responsive {
+  overflow-x: auto;
+}
+
+.admin-posts-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-posts-thead {
+  background: #f8fafc;
+}
+
+.admin-posts-table th {
+  padding: 16px;
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-posts-th-right {
+  text-align: right !important;
+}
+
+.admin-posts-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.admin-posts-tr {
+  transition: 0.2s;
+}
+
+.admin-posts-tr:hover {
+  background: #f9fafb;
+}
+
+.admin-posts-table-info {
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Title */
+
+.admin-posts-post-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.admin-posts-post-desc {
+  font-size: 13px;
+  color: #6b7280;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Meta */
+
+.admin-posts-meta-line,
+.admin-posts-meta-subline,
+.admin-posts-date-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-posts-meta-line {
+  color: #111827;
+}
+
+.admin-posts-meta-subline,
+.admin-posts-date-line {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.admin-posts-meta-icon,
+.admin-posts-date-icon {
+  width: 16px;
+  height: 16px;
+  color: #9ca3af;
+}
+
+.admin-posts-td-id {
+  font-family: monospace;
+  color: #6b7280;
+}
+
+/* Status */
+
+.admin-posts-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Actions */
+
+.admin-posts-td-actions {
+  text-align: right;
+}
+
+.admin-posts-actions-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-posts-btn-archive,
+.admin-posts-btn-delete {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-posts-btn-archive {
+  color: #f59e0b;
+}
+
+.admin-posts-btn-archive:hover {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.admin-posts-btn-delete {
+  color: #ef4444;
+}
+
+.admin-posts-btn-delete:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .admin-posts-header,
+  .admin-posts-filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-posts-select {
+    width: 100%;
+  }
+}

@@ -13,7 +13,7 @@ import {
 } from "../controllers/userController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
-import { upload } from "../middleware/uploadMiddleware.js";
+import { profilePictureUpload } from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.put("/:userId", protect, updateUserProfile);
 router.put(
   "/:userId/profile-picture",
   protect,
-  upload.single("profile_picture"),
+  profilePictureUpload.single("profile_picture"),
   updateProfilePicture
 );
 

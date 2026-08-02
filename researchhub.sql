@@ -60,7 +60,7 @@ CREATE TABLE `comment_likes` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `comment_likes_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`comment_id`) ON DELETE CASCADE,
   CONSTRAINT `comment_likes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `comment_likes` (
 
 LOCK TABLES `comment_likes` WRITE;
 /*!40000 ALTER TABLE `comment_likes` DISABLE KEYS */;
-INSERT INTO `comment_likes` VALUES (2,2,5,'2026-06-06 10:42:04');
+INSERT INTO `comment_likes` VALUES (2,2,5,'2026-06-06 10:42:04'),(5,5,9,'2026-08-01 11:21:11');
 /*!40000 ALTER TABLE `comment_likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +96,7 @@ CREATE TABLE `comments` (
   CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`parent_comment_id`) REFERENCES `comments` (`comment_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_parent_comment` FOREIGN KEY (`parent_comment_id`) REFERENCES `comments` (`comment_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +105,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (2,4,6,NULL,'I like to know more about this.','2026-06-06 07:15:04','2026-06-06 07:15:04'),(3,3,7,NULL,'Hey how are you buddy??','2026-06-06 16:48:18','2026-06-06 16:48:18'),(4,3,7,3,'I was talking about the mess. do not think about it that much','2026-06-06 16:48:47','2026-06-06 16:48:47');
+INSERT INTO `comments` VALUES (2,4,6,NULL,'I like to know more about this.','2026-06-06 07:15:04','2026-06-06 07:15:04'),(3,3,7,NULL,'Hey how are you buddy??','2026-06-06 16:48:18','2026-06-06 16:48:18'),(4,3,7,3,'I was talking about the mess. do not think about it that much','2026-06-06 16:48:47','2026-06-06 16:48:47'),(5,7,5,NULL,'def validate_composition(expression, defined_functions):\n    # BUG: Only checks the first function name found, not all of them\n    for func in defined_functions:\n        if func in expression:\n            return True\n    return False','2026-08-01 11:20:27','2026-08-01 11:20:27'),(7,7,5,NULL,'i have a thought','2026-08-01 20:58:21','2026-08-01 20:58:21');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,7 +184,7 @@ CREATE TABLE `notification_preferences` (
   PRIMARY KEY (`preference_id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `notification_preferences_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +193,7 @@ CREATE TABLE `notification_preferences` (
 
 LOCK TABLES `notification_preferences` WRITE;
 /*!40000 ALTER TABLE `notification_preferences` DISABLE KEYS */;
-INSERT INTO `notification_preferences` VALUES (1,3,1,1,1,1,1,'2026-06-07 10:33:29'),(5,5,1,1,1,1,1,'2026-06-07 08:06:48');
+INSERT INTO `notification_preferences` VALUES (1,3,1,1,1,1,1,'2026-06-07 10:33:29'),(5,5,1,1,1,1,1,'2026-06-07 08:06:48'),(90,9,1,1,1,1,1,'2026-08-01 11:20:27');
 /*!40000 ALTER TABLE `notification_preferences` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,6 +207,7 @@ DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
   `notification_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `actor_user_id` int DEFAULT NULL,
   `message` text NOT NULL,
   `type` enum('comment','solution','badge','verification','system') DEFAULT 'system',
   `is_read` tinyint(1) DEFAULT '0',
@@ -215,8 +216,10 @@ CREATE TABLE `notifications` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`notification_id`),
   KEY `user_id` (`user_id`),
+  KEY `fk_notifications_actor` (`actor_user_id`),
+  CONSTRAINT `fk_notifications_actor` FOREIGN KEY (`actor_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +228,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (2,6,'Your solution was verified by the problem owner.','verification',1,2,'solution','2026-06-06 07:59:27'),(3,6,'A new solution was submitted for your problem: Bio medical examination test','solution',1,3,'solution','2026-06-06 08:23:44'),(4,3,'A new solution was submitted for your problem: Software testing issue in React app','solution',1,4,'solution','2026-06-06 12:05:21'),(5,7,'Your solution was marked as solved by the problem owner.','verification',1,4,'solution','2026-06-06 12:06:19'),(6,6,'A new solution was submitted for your problem: Bio medical examination test','solution',1,5,'solution','2026-06-06 13:40:07'),(7,3,'Your solution was marked as solved by the problem owner.','verification',1,5,'solution','2026-06-06 13:41:43'),(8,3,'A new solution was submitted for your problem: Software Engineering is getting replaced by the AI.','solution',1,6,'solution','2026-06-06 19:12:43'),(9,8,'Your solution was marked as solved by the problem owner.','verification',1,6,'solution','2026-06-06 19:13:15'),(10,3,'A new solution was submitted for your problem: Software Engineering is getting replaced by the AI.','solution',1,7,'solution','2026-06-06 19:58:26'),(11,3,'A new solution was submitted for your problem: Software Engineering is getting replaced by the AI.','solution',1,8,'solution','2026-06-07 08:07:22'),(12,5,'You earned a new badge: First Solution','badge',1,1,'badge','2026-06-07 08:07:22');
+INSERT INTO `notifications` VALUES (4,3,NULL,'A new solution was submitted for your problem: Software testing issue in React app','solution',1,4,'solution','2026-06-06 12:05:21'),(7,3,NULL,'Your solution was marked as solved by the problem owner.','verification',1,5,'solution','2026-06-06 13:41:43'),(8,3,NULL,'A new solution was submitted for your problem: Software Engineering is getting replaced by the AI.','solution',1,6,'solution','2026-06-06 19:12:43'),(10,3,NULL,'A new solution was submitted for your problem: Software Engineering is getting replaced by the AI.','solution',1,7,'solution','2026-06-06 19:58:26'),(11,3,NULL,'A new solution was submitted for your problem: Software Engineering is getting replaced by the AI.','solution',1,8,'solution','2026-06-07 08:07:22'),(13,9,NULL,'A new comment was added to your post: Function Composition Validator','comment',1,5,'comment','2026-08-01 11:20:27'),(14,9,NULL,'A new solution was submitted for your problem: Function Composition Validator','solution',1,10,'solution','2026-08-01 11:25:57'),(15,9,5,'A new comment was added to your post: Function Composition Validator','comment',1,6,'comment','2026-08-01 20:03:58'),(16,9,5,'A new solution was submitted for your problem: Function Composition Validator','solution',0,11,'solution','2026-08-01 20:43:59'),(17,9,5,'A new solution was submitted for your problem: Function Composition Validator','solution',0,12,'solution','2026-08-01 20:50:35'),(18,9,5,'A new comment was added to your post: Function Composition Validator','comment',0,7,'comment','2026-08-01 20:58:21'),(19,9,5,'A new solution was submitted for your problem: Function Composition Validator','solution',0,13,'solution','2026-08-01 21:03:22'),(20,3,5,'A new solution was submitted for your problem: Software testing issue in React app','solution',0,14,'solution','2026-08-02 06:23:49');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,14 +242,14 @@ DROP TABLE IF EXISTS `post_attachments`;
 CREATE TABLE `post_attachments` (
   `attachment_id` int NOT NULL AUTO_INCREMENT,
   `post_id` int NOT NULL,
-  `file_name` varchar(255) NOT NULL,
-  `file_type` varchar(100) DEFAULT NULL,
-  `file_size` int DEFAULT NULL,
-  `file_path` varchar(255) NOT NULL,
-  `uploaded_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `original_name` varchar(255) NOT NULL,
+  `s3_key` varchar(1024) NOT NULL,
+  `mime_type` varchar(150) DEFAULT NULL,
+  `file_size` bigint DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`attachment_id`),
-  KEY `post_id` (`post_id`),
-  CONSTRAINT `post_attachments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE
+  KEY `fk_post_attachment_post` (`post_id`),
+  CONSTRAINT `fk_post_attachment_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -256,7 +259,7 @@ CREATE TABLE `post_attachments` (
 
 LOCK TABLES `post_attachments` WRITE;
 /*!40000 ALTER TABLE `post_attachments` DISABLE KEYS */;
-INSERT INTO `post_attachments` VALUES (1,4,'Writing the Proposal.pdf','application/pdf',NULL,'/uploads/1780729386673-Writing the Proposal.pdf','2026-06-06 07:03:06');
+INSERT INTO `post_attachments` VALUES (1,8,'Test222.pdf','posts/8/eb469ad1-5950-4313-8e52-63ea7688cb65-test222.pdf','application/pdf',74837,'2026-08-01 16:53:03');
 /*!40000 ALTER TABLE `post_attachments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,7 +287,7 @@ CREATE TABLE `posts` (
   KEY `field_id` (`field_id`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`field_id`) REFERENCES `fields` (`field_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +296,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (2,3,'Software testing issue in React app','I am having a problem with software testing and validation in my React application.','problem',NULL,'intermediate','solved','2026-06-06 05:06:09','2026-06-06 12:06:19',0),(3,6,'Bio medical examination test','I have created a bio medical exam preparation test. so that you can refer to that to gain some knowledge.','research',NULL,'beginner','solved','2026-06-06 06:42:21','2026-06-06 13:41:43',0),(4,7,'Artisitic photography','I like to teach you the photograpy of the world.','problem',NULL,'beginner','solved','2026-06-06 07:03:06','2026-06-06 07:59:27',0),(5,3,'Software Engineering is getting replaced by the AI.','is this true? ','problem',3,'beginner','solved','2026-06-06 17:44:13','2026-06-06 19:13:15',0),(6,5,'ESP32 WiFi reconnect issue','My ESP32 disconnects from WiFi and does not reconnect automatically.','problem',6,'beginner','open','2026-06-28 05:41:04','2026-06-28 05:41:04',0);
+INSERT INTO `posts` VALUES (2,3,'Software testing issue in React app','I am having a problem with software testing and validation in my React application.','problem',NULL,'intermediate','solved','2026-06-06 05:06:09','2026-06-06 12:06:19',0),(3,6,'Bio medical examination test','I have created a bio medical exam preparation test. so that you can refer to that to gain some knowledge.','research',NULL,'beginner','solved','2026-06-06 06:42:21','2026-06-06 13:41:43',0),(4,7,'Artisitic photography','I like to teach you the photograpy of the world.','problem',NULL,'beginner','solved','2026-06-06 07:03:06','2026-06-06 07:59:27',0),(5,3,'Software Engineering is getting replaced by the AI.','is this true? ','problem',3,'beginner','solved','2026-06-06 17:44:13','2026-06-06 19:13:15',0),(6,5,'ESP32 WiFi reconnect issue','My ESP32 disconnects from WiFi and does not reconnect automatically.','problem',6,'beginner','open','2026-06-28 05:41:04','2026-06-28 05:41:04',0),(7,9,'Function Composition Validator','Given a string representing a function composition expression (e.g., \"f(g(x))\"), validate whether all function names used are defined in a provided dictionary. Return true if all functions exist, otherwise false.','problem',2,'advanced','open','2026-08-01 11:17:23','2026-08-01 11:17:23',0),(8,5,'Count Vowels','Write a function that counts the number of vowels (a, e, i, o, u) in a given string. Count both uppercase and lowercase vowels.\n\nInput: \"Hello World\"\nOutput: 3 (e, o, o)','problem',5,'beginner','open','2026-08-01 16:52:59','2026-08-01 16:52:59',0);
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,7 +316,7 @@ CREATE TABLE `reputation` (
   PRIMARY KEY (`reputation_id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `reputation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +325,7 @@ CREATE TABLE `reputation` (
 
 LOCK TABLES `reputation` WRITE;
 /*!40000 ALTER TABLE `reputation` DISABLE KEYS */;
-INSERT INTO `reputation` VALUES (3,3,10,'Beginner','2026-06-06 13:41:43'),(4,4,0,'Beginner','2026-06-06 04:08:55'),(5,5,6,'Beginner','2026-06-07 08:10:02'),(6,6,10,'Beginner','2026-06-06 07:59:27'),(7,7,10,'Beginner','2026-06-06 12:06:19'),(11,8,17,'Beginner','2026-06-06 19:58:26');
+INSERT INTO `reputation` VALUES (3,3,10,'Beginner','2026-06-06 13:41:43'),(4,4,0,'Beginner','2026-06-06 04:08:55'),(5,5,26,'Beginner','2026-08-02 06:23:49'),(6,6,10,'Beginner','2026-06-06 07:59:27'),(7,7,10,'Beginner','2026-06-06 12:06:19'),(11,8,17,'Beginner','2026-06-06 19:58:26'),(18,9,0,'Beginner','2026-08-01 11:13:07'),(22,10,0,'Beginner','2026-08-01 17:09:36');
 /*!40000 ALTER TABLE `reputation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,7 +348,7 @@ CREATE TABLE `reputation_events` (
   PRIMARY KEY (`event_id`),
   UNIQUE KEY `unique_reputation_event` (`user_id`,`event_type`,`reference_type`,`reference_id`),
   CONSTRAINT `reputation_events_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,7 +357,7 @@ CREATE TABLE `reputation_events` (
 
 LOCK TABLES `reputation_events` WRITE;
 /*!40000 ALTER TABLE `reputation_events` DISABLE KEYS */;
-INSERT INTO `reputation_events` VALUES (1,8,3,'submit_solution','solution',6,'Submitted a solution','2026-06-06 19:12:43'),(2,8,10,'verified_solution','solution',6,'Solution was verified','2026-06-06 19:13:15'),(3,8,1,'solution_like_received','solution_like',6000003,'Solution received a like','2026-06-06 19:13:18'),(4,8,3,'submit_solution','solution',7,'Submitted a solution','2026-06-06 19:58:26'),(5,5,3,'submit_solution','solution',8,'Submitted a solution','2026-06-07 08:07:22'),(6,5,3,'submit_solution','solution',9,'Submitted a solution','2026-06-07 08:10:02');
+INSERT INTO `reputation_events` VALUES (1,8,3,'submit_solution','solution',6,'Submitted a solution','2026-06-06 19:12:43'),(2,8,10,'verified_solution','solution',6,'Solution was verified','2026-06-06 19:13:15'),(3,8,1,'solution_like_received','solution_like',6000003,'Solution received a like','2026-06-06 19:13:18'),(4,8,3,'submit_solution','solution',7,'Submitted a solution','2026-06-06 19:58:26'),(5,5,3,'submit_solution','solution',8,'Submitted a solution','2026-06-07 08:07:22'),(6,5,3,'submit_solution','solution',9,'Submitted a solution','2026-06-07 08:10:02'),(7,5,1,'post_comment','comment',5,'Posted a comment','2026-08-01 11:20:27'),(8,5,2,'comment_like_received','comment_like',5000009,'Comment received a like','2026-08-01 11:21:11'),(9,5,3,'submit_solution','solution',10,'Submitted a solution','2026-08-01 11:25:57'),(10,5,1,'post_comment','comment',6,'Posted a comment','2026-08-01 20:03:58'),(11,5,3,'submit_solution','solution',11,'Submitted a solution','2026-08-01 20:43:59'),(12,5,3,'submit_solution','solution',12,'Submitted a solution','2026-08-01 20:50:35'),(13,5,1,'post_comment','comment',7,'Posted a comment','2026-08-01 20:58:21'),(14,5,3,'submit_solution','solution',13,'Submitted a solution','2026-08-01 21:03:22'),(15,5,3,'submit_solution','solution',14,'Submitted a solution','2026-08-02 06:23:49');
 /*!40000 ALTER TABLE `reputation_events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,15 +401,15 @@ DROP TABLE IF EXISTS `solution_attachments`;
 CREATE TABLE `solution_attachments` (
   `attachment_id` int NOT NULL AUTO_INCREMENT,
   `solution_id` int NOT NULL,
-  `file_name` varchar(255) NOT NULL,
-  `file_path` varchar(500) NOT NULL,
-  `file_type` varchar(100) DEFAULT NULL,
-  `file_size` int DEFAULT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `s3_key` varchar(1024) NOT NULL,
+  `mime_type` varchar(150) DEFAULT NULL,
+  `file_size` bigint DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`attachment_id`),
-  KEY `solution_id` (`solution_id`),
-  CONSTRAINT `solution_attachments_ibfk_1` FOREIGN KEY (`solution_id`) REFERENCES `solutions` (`solution_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_solution_attachment_solution` (`solution_id`),
+  CONSTRAINT `fk_solution_attachment_solution` FOREIGN KEY (`solution_id`) REFERENCES `solutions` (`solution_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +418,6 @@ CREATE TABLE `solution_attachments` (
 
 LOCK TABLES `solution_attachments` WRITE;
 /*!40000 ALTER TABLE `solution_attachments` DISABLE KEYS */;
-INSERT INTO `solution_attachments` VALUES (1,3,'1778839516919.jpg','/uploads/solutions/1780734224429-269618877.jpg','image/jpeg',NULL,'2026-06-06 08:23:44'),(3,7,'69797040-transaction.pdf','/uploads/solutions/1780775906125-523863267.pdf','application/pdf',179051,'2026-06-06 19:58:26');
 /*!40000 ALTER TABLE `solution_attachments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -473,7 +475,7 @@ CREATE TABLE `solutions` (
   CONSTRAINT `solutions_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
   CONSTRAINT `solutions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `solutions_ibfk_3` FOREIGN KEY (`selected_by_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -482,7 +484,7 @@ CREATE TABLE `solutions` (
 
 LOCK TABLES `solutions` WRITE;
 /*!40000 ALTER TABLE `solutions` DISABLE KEYS */;
-INSERT INTO `solutions` VALUES (2,4,6,'I have given the most suitable answer to this. like i have to know more about this research and the market gap of the world.',1,7,'2026-06-06 07:59:27','2026-06-06 07:15:38',0),(3,3,7,'This is the solution that i found in the post.',0,NULL,NULL,'2026-06-06 08:23:44',0),(4,2,7,'This is the solution to this',1,3,'2026-06-06 12:06:19','2026-06-06 12:05:21',0),(5,3,3,'This is Luthira\'s solution. is this right?',1,6,'2026-06-06 13:41:43','2026-06-06 13:40:07',0),(7,5,8,'I like to do this first. this is the second solution from Jayasara That is about to publish.',0,NULL,NULL,'2026-06-06 19:58:26',0),(9,5,5,'This is the solution by Avihska. TAke this and that',0,NULL,NULL,'2026-06-07 08:10:01',0);
+INSERT INTO `solutions` VALUES (2,4,6,'I have given the most suitable answer to this. like i have to know more about this research and the market gap of the world.',1,7,'2026-06-06 07:59:27','2026-06-06 07:15:38',0),(3,3,7,'This is the solution that i found in the post.',0,NULL,NULL,'2026-06-06 08:23:44',0),(4,2,7,'This is the solution to this',1,3,'2026-06-06 12:06:19','2026-06-06 12:05:21',0),(5,3,3,'This is Luthira\'s solution. is this right?',1,6,'2026-06-06 13:41:43','2026-06-06 13:40:07',0),(7,5,8,'I like to do this first. this is the second solution from Jayasara That is about to publish.',0,NULL,NULL,'2026-06-06 19:58:26',0),(9,5,5,'This is the solution by Avihska. TAke this and that',0,NULL,NULL,'2026-06-07 08:10:01',0),(10,7,5,'def tokenize(source_code):\r\n    import re\r\n    \r\n    # Pattern: identifiers, numbers, operators, parentheses, and braces\r\n    pattern = r\'([a-zA-Z_][a-zA-Z0-9_]*|\\d+|[+\\-*/=<>!]+|[(){}])\'\r\n    \r\n    tokens = re.findall(pattern, source_code)\r\n    \r\n    # Remove whitespace-only tokens (they aren\'t captured anyway)\r\n    return tokens',0,NULL,NULL,'2026-08-01 11:25:57',0),(13,7,5,'def validate_composition(expr, funcs):\r\n    return all(t in funcs or t in [\'x\', \'\'] for t in \'\'.join(c for c in expr if c.isalpha()).split(\'x\'))',0,NULL,NULL,'2026-08-01 21:03:22',0);
 /*!40000 ALTER TABLE `solutions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -503,7 +505,7 @@ CREATE TABLE `user_badges` (
   KEY `badge_id` (`badge_id`),
   CONSTRAINT `user_badges_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `user_badges_ibfk_2` FOREIGN KEY (`badge_id`) REFERENCES `badges` (`badge_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -559,7 +561,7 @@ CREATE TABLE `user_settings` (
   PRIMARY KEY (`setting_id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `user_settings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -568,7 +570,7 @@ CREATE TABLE `user_settings` (
 
 LOCK TABLES `user_settings` WRITE;
 /*!40000 ALTER TABLE `user_settings` DISABLE KEYS */;
-INSERT INTO `user_settings` VALUES (1,3,'light','2026-06-09 06:44:36'),(8,5,'light','2026-06-07 08:06:48');
+INSERT INTO `user_settings` VALUES (1,3,'light','2026-06-09 06:44:36'),(8,5,'light','2026-08-02 03:35:01'),(120,9,'light','2026-08-01 20:24:26');
 /*!40000 ALTER TABLE `user_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -611,7 +613,7 @@ CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
+  `password_hash` varchar(255) DEFAULT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
   `bio` text,
   `university_or_organization` varchar(150) DEFAULT NULL,
@@ -619,9 +621,11 @@ CREATE TABLE `users` (
   `status` enum('active','inactive','blocked') DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `google_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `google_id` (`google_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -630,7 +634,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (3,'Luthira Peiris','luthira@gmail.com','$2b$10$VTrLYqjRdYTyJIuVLMgWRuPLjyP7P13ryEJbQi4jje2fPQI.iFR0i','/uploads/1780766709995-89448875f5a974958e6b7711c4c390e8.jpg',NULL,'Sabaragamuwa University','student','active','2026-06-03 16:56:20','2026-06-07 12:28:22'),(4,'Admin','admin@gmail.com','$2b$10$tDVr/wij/.ATH/RDr2vzz.3bFGyxo8Dlu/VXkw/xZ9lLzBr4Nojx6',NULL,NULL,'Sabaragamuwa University','admin','active','2026-06-06 04:08:55','2026-06-06 04:10:20'),(5,'Avishka','avishka@gmail.com','$2b$10$6CISGsL5w6sPknv/1CLk5.OyyO0S8HU9lDXi8Xkk6WwXk06nSVbZa',NULL,NULL,'Sabaragamuwa University','student','active','2026-06-06 05:07:18','2026-06-06 05:07:18'),(6,'Methma','methma@gmail.com','$2b$10$dqp8PfizA4m6/xwauSc0oOEbdq9fwR8s9lgu1m/rgWuVW36nf.cb.',NULL,NULL,'Sabaragamuwa University','researcher','active','2026-06-06 06:40:28','2026-06-06 06:40:28'),(7,'Thidushan','thidushan@gmail.com','$2b$10$Tw6ZLJh5m/GmHYIVHD24e.BGWJZh8X2lerw/ecBh0LqBnDIzvyCIS',NULL,NULL,'Sabaragamuwa University','student','active','2026-06-06 06:43:41','2026-06-06 06:43:41'),(8,'Jayasara','jayasara@gmail.com','$2b$10$bCWVmyEav9Q8RaLpuf2YAuhcepQkgJdS.9e0RYSFp/YTjMLaLA5t6',NULL,NULL,'Sabaragamuwa University','student','active','2026-06-06 19:10:27','2026-06-06 19:10:27');
+INSERT INTO `users` VALUES (3,'Luthira Peiris','luthira@gmail.com','$2b$10$VTrLYqjRdYTyJIuVLMgWRuPLjyP7P13ryEJbQi4jje2fPQI.iFR0i','/uploads/1780766709995-89448875f5a974958e6b7711c4c390e8.jpg',NULL,'Sabaragamuwa University','student','active','2026-06-03 16:56:20','2026-06-07 12:28:22',NULL),(4,'Admin','admin@gmail.com','$2b$10$tDVr/wij/.ATH/RDr2vzz.3bFGyxo8Dlu/VXkw/xZ9lLzBr4Nojx6',NULL,NULL,'Sabaragamuwa University','admin','active','2026-06-06 04:08:55','2026-06-06 04:10:20',NULL),(5,'Avishka','avishka@gmail.com','$2b$10$6CISGsL5w6sPknv/1CLk5.OyyO0S8HU9lDXi8Xkk6WwXk06nSVbZa','/uploads/s3/profile-pictures/67aac1dc-7aa4-4dae-93ed-6a860e38994a-images.jpg',NULL,'Sabaragamuwa University','student','active','2026-06-06 05:07:18','2026-08-01 16:49:41',NULL),(6,'Methma','methma@gmail.com','$2b$10$dqp8PfizA4m6/xwauSc0oOEbdq9fwR8s9lgu1m/rgWuVW36nf.cb.',NULL,NULL,'Sabaragamuwa University','researcher','active','2026-06-06 06:40:28','2026-06-06 06:40:28',NULL),(7,'Thidushan','thidushan@gmail.com','$2b$10$Tw6ZLJh5m/GmHYIVHD24e.BGWJZh8X2lerw/ecBh0LqBnDIzvyCIS','/uploads/1785321256580-327676652.jpg',NULL,'Sabaragamuwa University','student','active','2026-06-06 06:43:41','2026-07-29 10:34:16',NULL),(8,'Jayasara','jayasara@gmail.com','$2b$10$bCWVmyEav9Q8RaLpuf2YAuhcepQkgJdS.9e0RYSFp/YTjMLaLA5t6',NULL,NULL,'Sabaragamuwa University','student','active','2026-06-06 19:10:27','2026-06-06 19:10:27',NULL),(9,'thimaya','thimaya@gmail.com','$2b$10$npwVgWzE6g9h/7nJ8CfeiOLAsGTREicMT8JqywcHFwfQd5bQW/Fr6',NULL,NULL,'Colombo university','student','active','2026-08-01 11:13:07','2026-08-01 11:13:07',NULL),(10,'Luthira Peiris','luthirapeiris1@gmail.com',NULL,'https://lh3.googleusercontent.com/a/ACg8ocJNbu2cnSgiuTkJW0jQzzqz5B9f0M0oxthD429zlCSbx04vIA=s96-c',NULL,NULL,'student','active','2026-08-01 17:09:36','2026-08-01 17:09:36','114273527997997136618');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -643,4 +647,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-01 17:48:23
+-- Dump completed on 2026-08-02 22:51:16

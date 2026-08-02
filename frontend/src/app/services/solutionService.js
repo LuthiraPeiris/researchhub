@@ -48,7 +48,10 @@ export const addSolution = async (postId, solutionText, solutionFiles = []) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed to submit solution");
+    const error = new Error(data.message || "Failed to submit solution");
+    error.code = data.code;
+    error.validation = data.validation;
+    throw error;
   }
 
   return data;

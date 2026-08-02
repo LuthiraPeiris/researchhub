@@ -10,6 +10,7 @@ const preferenceColumnByType = {
 
 export const createNotificationIfAllowed = async ({
   userId,
+  actorUserId = null,
   message,
   type = "system",
   referenceId = null,
@@ -54,16 +55,45 @@ export const createNotificationIfAllowed = async ({
     }
   }
 
-  await connection.query(
+  // Do not create a notification when users trigger an action
+  // on their own content, except for system notifications.
+  if (
+    actorUserId &&
+    Number(actorUserId) === Number(userId) &&
+    type !== "system"
+  ) {
+    return {
+      created: false,
+      reason: "Actor and recipient are the same user",
+    };
+  }
+
+  const [result] = await connection.query(
     `
     INSERT INTO notifications
-    (user_id, message, type, is_read, reference_id, reference_type)
-    VALUES (?, ?, ?, 0, ?, ?)
+    (
+      user_id,
+      actor_user_id,
+      message,
+      type,
+      is_read,
+      reference_id,
+      reference_type
+    )
+    VALUES (?, ?, ?, ?, 0, ?, ?)
     `,
-    [userId, message, type, referenceId, referenceType]
+    [
+      userId,
+      actorUserId || null,
+      message,
+      type,
+      referenceId,
+      referenceType,
+    ]
   );
 
   return {
     created: true,
+    notificationId: result.insertId,
   };
 };

@@ -191,25 +191,37 @@ export function ReceivedSolutions() {
                 </div>
 
                 {isVerified ? (
-                  <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300">
-                    Pending Review
-                  </span>
-                ) : (
-                  <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm dark:bg-yellow-950/40 dark:text-yellow-300 dark:border dark:border-yellow-900/60">
-                    Pending Review
-                  </span>
-                )}
+  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
+    Marked Solved
+  </span>
+) : (
+  <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-xs font-medium text-yellow-700 dark:border-yellow-900/60 dark:bg-yellow-950/30 dark:text-yellow-300">
+    Pending Review
+  </span>
+)}
               </div>
 
               <div className="flex items-center gap-3 mt-1 text-xs text-slate-500 dark:text-gray-400 mb-4">
-                <User className="w-4 h-4" />
+                <Link
+  to={`/app/profile/${solution.solution_user_id}`}
+  aria-label={`View ${
+    solution.solution_author_name || "user"
+  } profile`}
+>
+  <User className="h-4 w-4 transition-colors hover:text-blue-600" />
+</Link>
 
-                <span>
-                  Submitted by{" "}
-                  {solution.solution_author_name ||
-                    solution.solution_author_email ||
-                    "Unknown User"}
-                </span>
+                <span className="flex items-center gap-1">
+  Submitted by{" "}
+  <Link
+    to={`/app/profile/${solution.solution_user_id}`}
+    className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+  >
+    {solution.solution_author_name ||
+      solution.solution_author_email ||
+      "Unknown User"}
+  </Link>
+</span>
 
                 <span>•</span>
 

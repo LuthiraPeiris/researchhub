@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { getArchiveItems } from "../services/archiveService";
 import { AppAlert } from "../components/AppAlert";
+import { API_ORIGIN } from "../services/api";
 
 export function KnowledgeArchive() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -86,7 +87,7 @@ export function KnowledgeArchive() {
       return filePath;
     }
 
-    return `http://localhost:5000${filePath}`;
+    return `${API_ORIGIN}${filePath}`;
   };
 
   const filteredArchiveItems = archiveItems.filter((item) => {
@@ -246,10 +247,20 @@ export function KnowledgeArchive() {
 
                             <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                               <span className="flex items-center gap-1">
-                                <User className="h-3.5 w-3.5" />
-                                Problem by{" "}
-                                {problem.post_author || "Unknown User"}
-                              </span>
+  <User className="h-3.5 w-3.5" />
+  Problem by{" "}
+
+  {problem.post_author_id ? (
+    <Link
+      to={`/app/profile/${problem.post_author_id}`}
+      className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+    >
+      {problem.post_author || "Unknown User"}
+    </Link>
+  ) : (
+    <span>{problem.post_author || "Unknown User"}</span>
+  )}
+</span>
 
                               <span className="flex items-center gap-1">
                                 <Clock className="h-3.5 w-3.5" />
@@ -281,11 +292,19 @@ export function KnowledgeArchive() {
                             Verified Solution
                           </span>
 
-                          {problem.solution_author && (
-                            <span className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300">
-                              Solution by {problem.solution_author}
-                            </span>
-                          )}
+                          {problem.solution_author &&
+  (problem.solution_author_id ? (
+    <Link
+      to={`/app/profile/${problem.solution_author_id}`}
+      className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs text-blue-700 transition-colors hover:bg-blue-100 hover:underline dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300 dark:hover:bg-blue-950/50"
+    >
+      Solution by {problem.solution_author}
+    </Link>
+  ) : (
+    <span className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs text-blue-700 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-300">
+      Solution by {problem.solution_author}
+    </span>
+  ))}
                         </div>
 
                         <div className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/40">
