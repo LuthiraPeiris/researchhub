@@ -5,10 +5,14 @@ dotenv.config();
 
 const db = mysql.createPool({
   host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT || 3306),
+  port: Number(process.env.DB_PORT),
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+
+  ssl: {
+    rejectUnauthorized: false,
+  },
 
   waitForConnections: true,
   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT || 10),
@@ -17,17 +21,24 @@ const db = mysql.createPool({
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
 
-  connectTimeout: 10000,
+  connectTimeout: 15000,
 });
 
 export const testDatabaseConnection = async () => {
-  const connection = await db.getConnection();
+  let connection;
 
   try {
+    connection = await db.getConnection();
     await connection.query("SELECT 1");
-    console.log("Database connection successful");
+
+    console.log("Aiven MySQL connection successful");
+  } catch (error) {
+    console.error("Aiven MySQL connection failed:", error.message);
+    throw error;
   } finally {
-    connection.release();
+    if (connection) {
+      connection.release();
+    }
   }
 };
 
