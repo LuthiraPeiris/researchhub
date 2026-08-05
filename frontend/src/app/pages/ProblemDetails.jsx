@@ -77,6 +77,8 @@ export function ProblemDetails() {
 
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
+  const [commentLikeLoading, setCommentLikeLoading] = useState(null);
+  const [solutionLikeLoading, setSolutionLikeLoading] = useState(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [solutionValidationWarning, setSolutionValidationWarning] =
@@ -323,7 +325,10 @@ export function ProblemDetails() {
 };
 
 const handleCommentLike = async (commentId) => {
+  if (commentLikeLoading !== null) return;
+
   try {
+    setCommentLikeLoading(commentId);
     setError("");
     setMessage("");
 
@@ -334,13 +339,16 @@ const handleCommentLike = async (commentId) => {
         comment.comment_id === commentId
           ? {
               ...comment,
-              like_count: data.like_count,
+              liked: data.liked,
+              like_count: Number(data.like_count),
             }
           : comment
       )
     );
   } catch (err) {
     setError(err.message || "Failed to like comment");
+  } finally {
+    setCommentLikeLoading(null);
   }
 };
 
@@ -388,7 +396,10 @@ const handleDeleteSolutionAttachment = async (attachmentId) => {
 };
 
 const handleSolutionLike = async (solutionId) => {
+  if (solutionLikeLoading !== null) return;
+
   try {
+    setSolutionLikeLoading(solutionId);
     setError("");
     setMessage("");
 
@@ -399,13 +410,16 @@ const handleSolutionLike = async (solutionId) => {
         solution.solution_id === solutionId
           ? {
               ...solution,
-              like_count: data.like_count,
+              liked: data.liked,
+              like_count: Number(data.like_count),
             }
           : solution
       )
     );
   } catch (err) {
     setError(err.message || "Failed to like solution");
+  } finally {
+    setSolutionLikeLoading(null);
   }
 };
 
@@ -680,9 +694,16 @@ const nestedComments = buildCommentTree(comments);
 
     <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
       <button
+        type="button"
         onClick={() => handleCommentLike(comment.comment_id)}
-        disabled={actionLoading}
-        className="flex items-center gap-1 hover:text-[#0ea5e9] transition-colors disabled:opacity-60"
+        disabled={commentLikeLoading !== null}
+        aria-label={comment.liked ? "Unlike comment" : "Like comment"}
+        aria-pressed={Boolean(comment.liked)}
+        className={`flex items-center gap-1 transition-colors disabled:opacity-60 ${
+          comment.liked
+            ? "text-[#0ea5e9]"
+            : "hover:text-[#0ea5e9]"
+        }`}
       >
         <ThumbsUp className="w-4 h-4" />
         {comment.like_count || 0}
@@ -1272,9 +1293,16 @@ const nestedComments = buildCommentTree(comments);
 
 <div className="flex items-center gap-4">
   <button
+    type="button"
     onClick={() => handleSolutionLike(solution.solution_id)}
-    disabled={actionLoading}
-    className="flex items-center gap-1 text-gray-600 hover:text-[#0ea5e9] transition-colors disabled:opacity-60 dark:text-gray-400 dark:hover:text-[#38bdf8]"
+    disabled={solutionLikeLoading !== null}
+    aria-label={solution.liked ? "Unlike solution" : "Like solution"}
+    aria-pressed={Boolean(solution.liked)}
+    className={`flex items-center gap-1 transition-colors disabled:opacity-60 ${
+      solution.liked
+        ? "text-[#0ea5e9] dark:text-[#38bdf8]"
+        : "text-gray-600 hover:text-[#0ea5e9] dark:text-gray-400 dark:hover:text-[#38bdf8]"
+    }`}
   >
     <ThumbsUp className="w-4 h-4" />
     {solution.like_count || 0}
