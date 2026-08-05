@@ -90,6 +90,13 @@
   color: #0ea5e9;
 }
 
+.admin-sidebar-link.active,
+.admin-sidebar-link.active:hover {
+  background: #0ea5e9;
+  color: #fff;
+  border-color: #0ea5e9;
+}
+
 .admin-sidebar-icon {
   width: 20px;
   height: 20px;
@@ -146,6 +153,13 @@
 .dark .admin-sidebar-link:hover {
   background: #1f2937;
   color: #38bdf8;
+}
+
+.dark .admin-sidebar-link.active,
+.dark .admin-sidebar-link.active:hover {
+  background: #0ea5e9;
+  color: #fff;
+  border-color: #0ea5e9;
 }
 
 .dark .logout:hover {
