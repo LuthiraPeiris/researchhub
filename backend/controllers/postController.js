@@ -370,6 +370,7 @@ export const searchPosts = async (req, res) => {
       LEFT JOIN fields ON posts.field_id = fields.field_id
       LEFT JOIN solutions ON posts.post_id = solutions.post_id
       WHERE posts.user_id != ?
+        AND posts.status != 'solved'
       `;
 
     const params = [userId];
@@ -397,6 +398,8 @@ export const searchPosts = async (req, res) => {
     if (status && status !== "all") {
       sql += ` AND posts.status = ?`;
       params.push(status);
+    } else {
+      sql += ` AND posts.status != 'solved'`;
     }
 
     if (difficulty_level && difficulty_level !== "all") {
