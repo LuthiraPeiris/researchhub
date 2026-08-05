@@ -46,8 +46,7 @@
 .admin-sidebar-title {
   font-size: 20px;
   font-weight: bold;
-  background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
-  -webkit-text-fill-color: transparent;
+  color: #0ea5e9;
 }
 
 .admin-sidebar-toggle {
