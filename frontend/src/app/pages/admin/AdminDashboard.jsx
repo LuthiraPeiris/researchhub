@@ -79,48 +79,36 @@ const AdminDashboard = () => {
       label: "Total Users",
       value: stats.users,
       icon: Users,
-      color: "from-blue-500 to-indigo-500",
-      shadow: "shadow-blue-500/20",
       link: "/admin/users",
     },
     {
       label: "Total Posts",
       value: stats.posts,
       icon: FileText,
-      color: "from-sky-500 to-cyan-500",
-      shadow: "shadow-sky-500/20",
       link: "/admin/posts",
     },
     {
       label: "Comments",
       value: stats.comments,
       icon: MessageSquare,
-      color: "from-purple-500 to-pink-500",
-      shadow: "shadow-purple-500/20",
       link: "/admin/comments",
     },
     {
       label: "Solutions",
       value: stats.solutions,
       icon: Lightbulb,
-      color: "from-emerald-500 to-teal-500",
-      shadow: "shadow-emerald-500/20",
       link: "/admin/solutions",
     },
     {
       label: "Fields",
       value: stats.fields,
       icon: Layers,
-      color: "from-amber-500 to-orange-500",
-      shadow: "shadow-amber-500/20",
       link: "/admin/fields",
     },
     {
       label: "Archived Posts",
       value: stats.archive,
       icon: Archive,
-      color: "from-rose-500 to-red-500",
-      shadow: "shadow-rose-500/20",
       link: "/admin/archive",
     },
   ];
@@ -153,7 +141,7 @@ const AdminDashboard = () => {
                     <h3 className="admin-dashboard-card-value">{card.value}</h3>
                   </div>
                   <div
-                    className={`admin-dashboard-card-icon-base bg-gradient-to-br ${card.color} ${card.shadow}`}
+                    className="admin-dashboard-card-icon-base"
                   >
                     <Icon className="w-6 h-6" />
                   </div>
