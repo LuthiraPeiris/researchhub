@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { FaGithub, FaGoogle } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { loginUser, startGoogleOAuth } from "../services/authService";
 import { AppAlert } from "../components/AppAlert";
 
@@ -223,22 +223,14 @@ export function LoginPage() {
           </div>
 
           {/* Social login */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex justify-center">
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50"
+              className="inline-flex w-full max-w-[calc(50%-0.375rem)] items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50"
             >
               <FaGoogle className="h-4 w-4" />
               Google
-            </button>
-
-            <button
-              type="button"
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50"
-            >
-              <FaGithub className="h-4 w-4" />
-              GitHub
             </button>
           </div>
         </div>

@@ -174,8 +174,14 @@ export const deleteComment = async (req, res) => {
 
 export const toggleCommentLike = async (req, res) => {
   try {
-    const { commentId } = req.params;
+    const commentId = Number(req.params.commentId);
     const userId = req.user.user_id;
+
+    if (!Number.isInteger(commentId) || commentId <= 0) {
+      return res.status(400).json({
+        message: "Invalid comment ID",
+      });
+    }
 
     const [comments] = await db.query(
       "SELECT comment_id FROM comments WHERE comment_id = ?",
@@ -252,7 +258,7 @@ export const toggleCommentLike = async (req, res) => {
     res.status(200).json({
       message: liked ? "Comment liked" : "Comment unliked",
       liked,
-      like_count: likeCountRows[0].like_count,
+      like_count: Number(likeCountRows[0].like_count),
     });
   } catch (error) {
     res.status(500).json({
