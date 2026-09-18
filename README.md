@@ -7,6 +7,10 @@ CollabSolve is a full-stack collaborative problem-solving platform for students,
 ```text
 Problem → Discussion → Solution → Verification → Knowledge Archive
 ```
+## Architecture
+
+![Image Alt](https://github.com/LuthiraPeiris/researchhub/blob/7069b24b93cb8d9b4f40631bd09c7ac1c3ef94f5/frontend/public/architecture.png)
+
 
 ## Key Features
 
